@@ -17,7 +17,9 @@ def main() -> None:
             "thread_id": "conversation-234"
         }
     }
-    # result = graph.invoke(
+
+    # Verify if HITL works
+    #result = graph.invoke(
     #     {
     #         "messages": [
     #             {
@@ -29,21 +31,21 @@ def main() -> None:
     #         ]
     #     },
     #     config,
-    # )
+    #)
 
-    result = graph.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": (
-                        "Get the weather for Berlin please"
-                    ),
-                }
-            ]
-        },
-        config,
-    )
+    #result = graph.invoke(
+    #    {
+    #        "messages": [
+    #            {
+    #                "role": "user",
+    #                "content": (
+    #                    "Get the weather for Berlin please"
+    #                ),
+     #           }
+    #        ]
+    #    },
+    #    config,
+    #)
 
 
     print(

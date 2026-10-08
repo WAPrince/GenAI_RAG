@@ -49,7 +49,7 @@ Potentially use MCP Inspector for  MCP server tests
 
 manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
 
-uv run python -m pycharmai.main_mcp
+uv run python -m pycharmai.main_rag_mcp_vector_langgraph
 
 Verify, RAG works: 
 

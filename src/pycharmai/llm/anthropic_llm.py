@@ -58,22 +58,16 @@ class AnthropicLLM:
             final_text = ""
 
             for block in response.content:
-
                 if block.type == "text":
                     final_text += block.text
 
                 elif block.type == "tool_use":
-
-                    result = get_temperature(
-                        block.input["city"]
-                    )
-
+                    result = get_temperature( block.input["city"])
                     tool_results.append({
                         "type": "tool_result",
                         "tool_use_id": block.id,
                         "content": str(result),
                     })
-
             if not tool_results:
                 return final_text
 
