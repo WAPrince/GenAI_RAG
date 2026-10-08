@@ -7,13 +7,13 @@ This is a sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, 
 
 execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE env vars )
 
+
 ###
 **1st USE CASE 'Mock an agent tool answer'**
     
                         agent has a mocked tool answer
 
 uv run python -m main01_mocked_tool
-
 
 
 ###
@@ -92,10 +92,6 @@ Verify, RAG works:
                             a super agent ask three worker agents and asynchronously incorporates their answer
 
 uv run python -m main05_agent_orchestrator
-
-
-
-
 
 
 ###

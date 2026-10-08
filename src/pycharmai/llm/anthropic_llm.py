@@ -58,10 +58,13 @@ class AnthropicLLM:
             final_text = ""
 
             for block in response.content:
+                # LLM has answer
                 if block.type == "text":
                     final_text += block.text
 
+                # LLM reasoning ( ReAct ) => LLM requires a tool
                 elif block.type == "tool_use":
+                    # LLM acts ( ReAct ) => hardcoded call of a special tool (!)
                     result = get_temperature( block.input["city"])
                     tool_results.append({
                         "type": "tool_result",
