@@ -4,9 +4,9 @@ This is sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RA
 
 
 ###
-**Core Usecasee** 
+**Core Usecase** 
 
-simulate a RAG scenario
+Simulate a RAG scenario
                         ask agent a question                      
                         agent is configured with tools 
                         one tool is a vector search database ( Qdrant )
@@ -15,33 +15,41 @@ simulate a RAG scenario
 
 *0. Prepare environment*
 
-execute the start.sh script
+execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE )
 
 *1. Start vector database* 
 
 docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
-Add document to Qdrant  ( create Chunks, Embeddings )
+
+Add document to Qdrant  ( create Chunks, Embeddings ):
+
 uv run python -m pycharmai.rag.ingestAPI
 
-Check content via dashboard: http://localhost:6333/dashboard#/collections
+[ Check content via dashboard: http://localhost:6333/dashboard#/collections ]
 
 *2. Start MCP server*
 
-manually provide a new port number into server_fastmoc.py @ mcp = FastMCP("demo-server",port=PORTNUMBER)
+manually provide a new port number into server_fastmcp.py @ mcp = FastMCP("demo-server",port=PORTNUMBER)
+
 uv run python -m pycharmai.mcp.fastmcpServer
 
-check if MCP Server is running: 
-Powershell: Test-NetConnection localhost -Port 3004
-GitBash:    netstat -ano | findstr :3004 
+[ check if MCP Server is running: 
+
+Powershell: Test-NetConnection localhost -Port PORTNUMBER
+
+GitBash:    netstat -ano | findstr :PORTNUMBER ]
 
 Potentially use MCP Inspector for  MCP server tests
 
 *3. Execute RAG*
-manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp",      
+manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
+
 uv run python -m pycharmai.main_mcp
 
 Verify, RAG works: 
+
 => ask "Was ist im Harz passiert", only document news_min.txt includes a reference to the Harz 
+
 => the answer contains exactly this reference
 
 
