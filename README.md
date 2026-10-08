@@ -41,11 +41,18 @@ uv run python -m main03_hitl_llm_tool_langgraph
 ###
 **4th USE CASE 'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, vector ) and Langgraph'** 
 
-                        ask agent a question  
+                        before: a document has been injected into the vector search database
+                                the agent is configured with one tool that equals a MCP client 
+                        
+                        then: ask the agent a question 
 
-                        agent is configured with one tool that equals a vector search database ( Qdrant Docker container )
+                        the agent needs its tool
 
-                        search for content using MCP and Qdrant ( execute a similiarity search of answer and chunk embeddings )
+                        the tool calls the MCP client => MCP server
+
+                        the MCP server delegates the query to a vector search database ( Qdrant Docker container )
+
+                        execution of a similiarity search using the query embedding and the chunk embeddings
 
                         [ future extensions AWS Guardrail, HITL , ... ]
 
