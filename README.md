@@ -7,10 +7,14 @@ This is sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RA
 **Core Usecase** 
 
 Simulate a RAG scenario
-                        ask agent a question                      
+                        ask agent a question  
+
                         agent is configured with tools 
+
                         one tool is a vector search database ( Qdrant )
+
                         get question answered by using MCP and Qdrant and similiarity search 
+
                         [ future extensions AWS Guardrail, HITL , ... ]
 
 *0. Prepare environment*
