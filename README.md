@@ -46,6 +46,7 @@ GitBash:    netstat -ano | findstr :PORTNUMBER ]
 Potentially use MCP Inspector for  MCP server tests
 
 *3. Execute RAG*
+
 manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
 
 uv run python -m pycharmai.main_mcp
