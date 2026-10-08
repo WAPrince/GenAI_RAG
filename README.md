@@ -4,9 +4,8 @@ This is sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RA
 
 
 ###
-**Core Usecase** 
+**1st USE CASE 'RAG/MCP/Vector/AWS Bedrock'** 
 
-Simulate a RAG scenario
                         ask agent a question  
 
                         agent is configured with tools 
@@ -59,6 +58,12 @@ Verify, RAG works:
 
 
 ###
+**2nd USE CASE 'Human in the loop (HITL) with Langgraph'** 
+
+uv run python -m main_humanInTheLoop_langgraph
+
+
+###
 **Utilities**
 
 *Document ingestion*
@@ -78,3 +83,5 @@ uv add boto3
 
 Bedrock Demo
 uv run python src/PyCharmAI/aws/bedrock.py
+
+[Code partially created with help of Gemini & ChatGpt]
