@@ -2,36 +2,52 @@
 
 This is a sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RAG, HITL, ... ) 
 
-*Prepare environment*
 
-execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE )
+**Prerequisite**
+
+execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE env vars )
 
 ###
-**1st USE CASE 'Human in the loop (HITL) with Langgraph only'** 
+**1st USE CASE 'Mock an agent tool answer'**
+    
+                        agent has a mocked tool answer
+
+uv run python -m main_mocked_tool
+
+
+
+###
+**2nd USE CASE 'Human in the loop (HITL) with Langgraph only'** 
+
+                        agent asks user two times for approval
+
+                        realise a generic interrupt handling ( reusable )
 
 uv run python -m main_hitl_langgraph
 
 
 ###
-**2nd USE CASE 'Human in the loop (HITL) with llm ( Anthropic via AWS Bedrock ), tool and Langgraph'** 
+**3rd USE CASE 'Human in the loop (HITL) with llm ( Anthropic via AWS Bedrock ), tool and Langgraph'** 
+                        
+                        ask agent to delete a file using a tool
+
+                        agent requires human approval 
+
+                        simple interrupt handling
 
 uv run python -m main_hitl_llm_langgraph
 
 
 ###
-**3rd USE CASE 'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, vector ) and Langgraph'** 
+**4th USE CASE 'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, vector ) and Langgraph'** 
 
                         ask agent a question  
 
-                        agent is configured with tools 
+                        agent is configured with one tool that equals a vector search database ( Qdrant Docker container )
 
-                        one tool is a vector search database ( Qdrant )
-
-                        get question answered by using MCP and Qdrant and similiarity search 
+                        search for content using MCP and Qdrant ( execute a similiarity search of answer and chunk embeddings )
 
                         [ future extensions AWS Guardrail, HITL , ... ]
-
-
 
 *1. Start vector database* 
 
@@ -45,7 +61,7 @@ uv run python -m pycharmai.rag.ingestAPI
 
 *2. Start MCP server*
 
-manually provide a new port number into server_fastmcp.py @ mcp = FastMCP("demo-server",port=PORTNUMBER)
+prerequisite: provide a new port number into server_fastmcp.py @ mcp = FastMCP("demo-server",port=PORTNUMBER)
 
 uv run python -m pycharmai.mcp.fastmcpServer
 
@@ -59,7 +75,7 @@ Potentially use MCP Inspector for  MCP server tests
 
 *3. Execute RAG*
 
-manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
+prerequisite: manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
 
 uv run python -m pycharmai.main_llm_rag_mcp_vector_langgraph
 
@@ -68,6 +84,15 @@ Verify, RAG works:
 => ask "Was ist im Harz passiert", only document news_min.txt includes a reference to the Harz 
 
 => the answer contains exactly this reference
+
+
+###
+**5th USE CASE 'A super agent orchestrates three worker agents - asynchronous handling'
+
+                            a super agent ask three worker agents and asynchronously incorporates their answer
+
+uv run python -m main_agent_orechstrator
+
 
 
 
