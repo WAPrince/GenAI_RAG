@@ -94,7 +94,7 @@ Verify, RAG works:
 
 
 ###
-**5th USE CASE 'A super agent orchestrates three worker agents - asynchronous handling'
+**5th USE CASE 'A super agent orchestrates three worker agents - asynchronous handling'**
 
                             a super agent ask three worker agents and asynchronously incorporates their answer
 
