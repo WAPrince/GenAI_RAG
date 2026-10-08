@@ -1,10 +1,25 @@
 **Motivation**
 
-This is sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RAG, HITL, ... ) 
+This is a sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RAG, HITL, ... ) 
+
+*Prepare environment*
+
+execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE )
+
+###
+**1st USE CASE 'Human in the loop (HITL) with Langgraph only'** 
+
+uv run python -m main_hitl_langgraph
 
 
 ###
-**1st USE CASE 'RAG/MCP/Vector/AWS Bedrock'** 
+**2nd USE CASE 'Human in the loop (HITL) with llm ( Anthropic via AWS Bedrock ), tool and Langgraph'** 
+
+uv run python -m main_hitl_llm_langgraph
+
+
+###
+**3rd USE CASE 'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, vector ) and Langgraph'** 
 
                         ask agent a question  
 
@@ -16,9 +31,7 @@ This is sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RA
 
                         [ future extensions AWS Guardrail, HITL , ... ]
 
-*0. Prepare environment*
 
-execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE )
 
 *1. Start vector database* 
 
@@ -48,7 +61,7 @@ Potentially use MCP Inspector for  MCP server tests
 
 manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
 
-uv run python -m pycharmai.main_rag_mcp_vector_langgraph
+uv run python -m pycharmai.main_llm_rag_mcp_vector_langgraph
 
 Verify, RAG works: 
 
@@ -57,10 +70,7 @@ Verify, RAG works:
 => the answer contains exactly this reference
 
 
-###
-**2nd USE CASE 'Human in the loop (HITL) with Langgraph'** 
 
-uv run python -m main_humanInTheLoop_langgraph
 
 
 ###

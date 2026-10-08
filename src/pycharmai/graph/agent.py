@@ -21,7 +21,7 @@ async def create_graph():
     tools = [
         #get_temperature,
         #calculate,
-        #delete_file,
+        delete_file,
         *mcp_tools,
     ]
 
@@ -33,7 +33,6 @@ async def create_graph():
 
     def call_model(state: AgentState) -> dict:
         response = llm_with_tools.invoke(state["messages"])
-        # arn:aws:bedrock:us-east-1:043924217572:guardrail/5lobt7esxinl
         return {"messages": [response]}
 
     def human_approval(state: AgentState) -> dict:
@@ -56,9 +55,11 @@ async def create_graph():
             )
 
             if decision == "approve":
+                print("Decision: 'approve' selected")
                 return {"approval_status": "approved"}
-
-            return {"approval_status": "rejected"}
+            else:
+                print("Decision: 'rejected' selected")
+                return {"approval_status": "rejected"}
 
         return {"approval_status": "approved"}
 
@@ -77,14 +78,15 @@ async def create_graph():
 
     def route_after_approval(state: AgentState) -> str:
         if state.get("approval_status") == "approved":
+            print("approved routes to toolsapprove")
             return "tools"
-
-        return "end"
+        else:
+            print("rejected routes to END")
+            return "end"
 
 
     # TODO
     def guardrail_input(state: AgentState) -> AgentState:
-
         result = bedrock_runtime.apply_guardrail(
             guardrailIdentifier=GUARDRAIL_ID,
             guardrailVersion=GUARDRAIL_VERSION,
@@ -143,8 +145,6 @@ async def create_graph():
         },
     )
     builder.add_edge("tools", "call_model")
-
-
 
     checkpointer = InMemorySaver()
 
