@@ -12,7 +12,7 @@ execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE env vars )
     
                         agent has a mocked tool answer
 
-uv run python -m main_mocked_tool
+uv run python -m main01_mocked_tool
 
 
 
@@ -23,7 +23,7 @@ uv run python -m main_mocked_tool
 
                         realise a generic interrupt handling ( reusable )
 
-uv run python -m main_hitl_langgraph
+uv run python -m main02_hitl_langgraph
 
 
 ###
@@ -35,7 +35,7 @@ uv run python -m main_hitl_langgraph
 
                         simple interrupt handling
 
-uv run python -m main_hitl_llm_langgraph
+uv run python -m main03_hitl_llm_tool_langgraph
 
 
 ###
@@ -77,7 +77,7 @@ Potentially use MCP Inspector for  MCP server tests
 
 prerequisite: manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
 
-uv run python -m pycharmai.main_llm_rag_mcp_vector_langgraph
+uv run python -m pycharmai.main04_llm_rag_mcp_vector_langgraph
 
 Verify, RAG works: 
 
@@ -91,7 +91,7 @@ Verify, RAG works:
 
                             a super agent ask three worker agents and asynchronously incorporates their answer
 
-uv run python -m main_agent_orechstrator
+uv run python -m main05_agent_orchestrator
 
 
 
