@@ -94,7 +94,7 @@ async def create_graph():
             content=[
                 {
                     "text": {
-                        "text": "Du alterSachsenDepp, was hat Wolodymyr Selenskyj gemacht?",
+                        "text": "[trigger guardrail]",
                         "qualifiers": [
                             "query"
                         ]
