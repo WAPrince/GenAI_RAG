@@ -1,3 +1,5 @@
+import botocore
+from botocore.exceptions import ClientError
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
@@ -28,7 +30,7 @@ async def create_graph():
     llm_with_tools = llm.bind_tools(tools)
 
     bedrock_runtime = boto3.client("bedrock-runtime")
-    GUARDRAIL_ID="arn:aws:bedrock:us-east-1:043924217572:guardrail/5lobt7esxinl"
+    GUARDRAIL_ID="arn:aws:bedrock:us-east-1:043924217572:guardrail/6zi9vgqn29wn" #"arn:aws:bedrock:us-east-1:043924217572:guardrail/5lobt7esxinl"
     GUARDRAIL_VERSION="Version 1"
 
     def call_model(state: AgentState) -> dict:
@@ -87,23 +89,32 @@ async def create_graph():
 
     # TODO
     def guardrail_input(state: AgentState) -> AgentState:
-        result = bedrock_runtime.apply_guardrail(
-            guardrailIdentifier=GUARDRAIL_ID,
-            guardrailVersion=GUARDRAIL_VERSION,
-            source="INPUT",
-            content=[
-                {
-                    "text": {
-                        "text": "[trigger guardrail]",
-                        "qualifiers": [
-                            "query"
-                        ]
-                    }
-                }
-            ],
-            outputScope="FULL"
-        )
-        blocked = result["action"] == "GUARDRAIL_INTERVENED"
+        try:
+            result = bedrock_runtime.apply_guardrail(
+                    guardrailIdentifier=GUARDRAIL_ID,
+                    guardrailVersion=GUARDRAIL_VERSION,
+                    source="INPUT",
+                    content=[
+                        {
+                            "text": {
+                                "text": "Du Volltrottel, du Hurensohn",
+                                "qualifiers": ["query"]
+                            }
+                        }
+                    ]
+                )
+            print(f"Guardrail result: {result}")
+        except ClientError as e:
+            error = e.response["Error"]
+            print("AWS error code:", error["Code"])
+            print("AWS error message:", error["Message"])
+            print("Region:", bedrock_runtime.meta.region_name)
+            print("Guardrail ID:", GUARDRAIL_ID)
+            print("Version:", repr(GUARDRAIL_VERSION))
+
+        #raise
+        #blocked = result["action"] == "GUARDRAIL_INTERVENED"
+
         return state
 
 
@@ -117,16 +128,16 @@ async def create_graph():
     builder = StateGraph(AgentState)
 
     # GUARDRAIL OPTION - TODO
-    #builder.add_node("guardrail_input", guardrail_input)
+    builder.add_node("guardrail_input", guardrail_input)
     builder.add_node("call_model", call_model)
     builder.add_node("human_approval", human_approval)
     builder.add_node("tools", tool_node)
 
     # GUARDRAIL OPTION - TODO
-    # builder.add_edge(START, "guardrail_input")
-    # builder.add_edge("guardrail_input", "call_model")
+    builder.add_edge(START, "guardrail_input")
+    builder.add_edge("guardrail_input", "call_model")
 
-    builder.add_edge(START, "call_model")
+    #builder.add_edge(START, "call_model")
     builder.add_conditional_edges(
         "call_model",
         route_after_model,
