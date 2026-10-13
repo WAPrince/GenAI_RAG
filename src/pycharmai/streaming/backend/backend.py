@@ -24,7 +24,6 @@ Erkläre technische Themen präzise und mit kurzen Beispielen.
 """
 
 
-print("hallo")
 llm = ChatAnthropic(
     model=MODEL,
     temperature=0,
@@ -36,27 +35,20 @@ def call_model(state: MessagesState):
         SystemMessage(content=SYSTEM_PROMPT),
         *state["messages"],
     ]
-
     response = llm.invoke(messages)
-
     return {"messages": [response]}
 
-print("hallo 1")
 builder = StateGraph(MessagesState)
 builder.add_node("assistant", call_model)
 builder.add_edge(START, "assistant")
 builder.add_edge("assistant", END)
-print("hallo 2")
 checkpointer = InMemorySaver()
 graph = builder.compile(checkpointer=checkpointer)
-print("hallo 3")
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=20_000)
     thread_id: str | None = None
-
 app = FastAPI(title="LangGraph Streaming Chat API")
-print("hallo 4")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -64,7 +56,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-print("hallo 5")
 @app.get("/health")
 def health():
     return {"status": "ok", "model": MODEL}
