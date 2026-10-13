@@ -103,7 +103,7 @@ uv run python -m main05_agent_orchestrator
 
 
 ###
-**6th USE CASE 'AWS Guardrails integration'
+**6th USE CASE 'AWS Guardrails integration'**
         
                             user request containing inappropriate language or PII will be incepted by AWS guardrail and
                             will not be forwarded to the LLM
@@ -113,7 +113,7 @@ uv run python -m main05_agent_orchestrator
 
 
 ###
-**7th USE CASE 'FastAPI Streaming'
+**7th USE CASE 'FastAPI Streaming'**
 => see folder src/pycharmai/streaming and data/FastAPI_Streaming.png
 
 
