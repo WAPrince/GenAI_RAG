@@ -114,6 +114,7 @@ uv run python -m main05_agent_orchestrator
 
 ###
 **7th USE CASE 'FastAPI Streaming'
+=> see folder src/pycharmai/streaming and data/FastAPI_Streaming.png
 
 
 ###
