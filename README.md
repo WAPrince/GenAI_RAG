@@ -101,6 +101,21 @@ Verify, RAG works:
 uv run python -m main05_agent_orchestrator
 
 
+
+###
+**6th USE CASE 'AWS Guardrails integration'
+        
+                            user request containing inappropriate language or PII will be incepted by AWS guardrail and
+                            will not be forwarded to the LLM
+
+    
+
+
+
+###
+**7th USE CASE 'FastAPI Streaming'
+
+
 ###
 **Utilities**
 
