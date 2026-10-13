@@ -5,7 +5,7 @@ This is a sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, 
 
 **Prerequisite**
 
-execute the start.sh script ( set ANTHROPIC_API_KEY, AWS_PROFILE env vars )
+execute the start.sh script ( **`set ANTHROPIC_API_KEY, AWS_PROFILE env vars`** )
 
 
 ###
