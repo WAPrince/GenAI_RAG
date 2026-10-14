@@ -6,7 +6,7 @@ This is a sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, 
 **Prerequisite**
 
 execute the start.sh script ( **`set ANTHROPIC_API_KEY, AWS_PROFILE env vars`** )
-
+( The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. )
 
 ###
 **1st USE CASE 'Mock an agent tool answer'**
