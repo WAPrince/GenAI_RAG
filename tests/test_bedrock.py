@@ -2,9 +2,9 @@ from pycharmai.aws.bedrock import BedrockClient
 
 
 def test():
-    client = BedrockClient("eu-central-1")
+    client = BedrockClient("us-east-1")
     response = client.converse(
-        model_id="eu.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        model_id="us.anthropic.claude-sonnet-4-6",
         prompt="what date is today?",
     )
     answer = response["output"]["message"]["content"][0]["text"]

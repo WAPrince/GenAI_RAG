@@ -34,7 +34,7 @@ async def create_graph():
     llm_with_tools = llm.bind_tools(tools)
 
     bedrock_runtime = boto3.client("bedrock-runtime")
-    GUARDRAIL_ID="arn:aws:bedrock:us-east-1:043924217572:guardrail/6zi9vgqn29wn" #"arn:aws:bedrock:us-east-1:043924217572:guardrail/5lobt7esxinl"
+    GUARDRAIL_ID="arn:aws:bedrock:us-east-1:043924217572:guardrail/6zi9vgqn29wn"
     GUARDRAIL_VERSION="Version 1"
 
     @mlflow.trace(span_type=SpanType.CHAT_MODEL)

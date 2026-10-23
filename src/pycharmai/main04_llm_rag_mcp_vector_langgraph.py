@@ -1,5 +1,6 @@
 import asyncio
 import mlflow
+from mlflow.entities import SpanType
 from mlflow.genai.scorers import RelevanceToQuery, Correctness
 
 from pycharmai.graph.agent import create_graph
@@ -10,11 +11,11 @@ import os
 TRACKING_URI = "http://localhost:5000"
 os.environ["MLFLOW_TRACKING_URI"] = TRACKING_URI  # the MCP server subprocess reads this
 mlflow.set_tracking_uri(TRACKING_URI)
-experiment = mlflow.set_experiment("mcp-server-demo-16")
+experiment = mlflow.set_experiment("mcp-server-demo-17")
 print(f"Experiment: {experiment.name} (id={experiment.experiment_id})")
 
 
-mlflow.trace#(span_type=SpanType.AGENT)
+mlflow.trace(span_type=SpanType.AGENT)
 async def run_agent(prompt: str) -> None:
 
     graph = await create_graph()
