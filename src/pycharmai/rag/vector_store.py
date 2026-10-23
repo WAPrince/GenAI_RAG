@@ -1,5 +1,6 @@
 from qdrant_client import QdrantClient,models
 from pycharmai.rag.embeddings import create_embedding_model
+import mlflow
 
 QDRANT_URL = "http://localhost:6333"
 COLLECTION_NAME = "knowledge"
@@ -10,6 +11,7 @@ def create_qdrant_client() -> QdrantClient:
         url=QDRANT_URL,
     )
 
+@mlflow.trace(span_type="RETRIEVER")
 def search_documents(
     query: str,
     limit: int = 3,

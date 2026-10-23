@@ -1,9 +1,10 @@
-import botocore
+import mlflow
 from botocore.exceptions import ClientError
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
 from langgraph.types import interrupt
+from mlflow.entities import SpanType
 
 from pycharmai.graph.state import AgentState
 from pycharmai.llm.bedrock import create_llm
@@ -13,6 +14,9 @@ from pycharmai.tools import calculate, delete_file, get_temperature
 import boto3
 
 
+mlflow.langchain.autolog()
+
+@mlflow.trace(span_type=SpanType.CHAIN)
 async def create_graph():
     llm = create_llm()
 
@@ -33,6 +37,7 @@ async def create_graph():
     GUARDRAIL_ID="arn:aws:bedrock:us-east-1:043924217572:guardrail/6zi9vgqn29wn" #"arn:aws:bedrock:us-east-1:043924217572:guardrail/5lobt7esxinl"
     GUARDRAIL_VERSION="Version 1"
 
+    @mlflow.trace(span_type=SpanType.CHAT_MODEL)
     def call_model(state: AgentState) -> dict:
         response = llm_with_tools.invoke(state["messages"])
         return {"messages": [response]}
@@ -86,8 +91,6 @@ async def create_graph():
             print("rejected routes to END")
             return "end"
 
-
-    # TODO
     def guardrail_input(state: AgentState) -> AgentState:
         try:
             result = bedrock_runtime.apply_guardrail(
@@ -97,7 +100,7 @@ async def create_graph():
                     content=[
                         {
                             "text": {
-                                "text": "Du Volltrottel, du Hurensohn",
+                                "text": "",
                                 "qualifiers": ["query"]
                             }
                         }
@@ -128,16 +131,16 @@ async def create_graph():
     builder = StateGraph(AgentState)
 
     # GUARDRAIL OPTION - TODO
-    builder.add_node("guardrail_input", guardrail_input)
+    #builder.add_node("guardrail_input", guardrail_input)
     builder.add_node("call_model", call_model)
     builder.add_node("human_approval", human_approval)
     builder.add_node("tools", tool_node)
 
     # GUARDRAIL OPTION - TODO
-    builder.add_edge(START, "guardrail_input")
-    builder.add_edge("guardrail_input", "call_model")
+    #builder.add_edge(START, "guardrail_input")
+    #builder.add_edge("guardrail_input", "call_model")
 
-    #builder.add_edge(START, "call_model")
+    builder.add_edge(START, "call_model")
     builder.add_conditional_edges(
         "call_model",
         route_after_model,
