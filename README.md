@@ -1,7 +1,7 @@
 **Motivation**
 
-This is a sandbox project. The goal is to learn essentials of GenAI ( LLM, MCP, RAG, HITL, ... ) 
-
+This is a selection of research prototypes to test concepts such as LLM agents and orchestration, RAG, MCP, HITL, guardrails   
+using LangChain/LangGraph, AWS Bedrock.  
 
 **Prerequisite**
 
@@ -55,6 +55,9 @@ uv run python -m main03_hitl_llm_tool_langgraph
                         execution of a similiarity search using the query embedding and the chunk embeddings
 
                         [ future extensions AWS Guardrail, HITL , ... ]
+*0. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )
+./mlflow.exe server --port 5000
+see https://mlflow.org/cookbook/
 
 *1. Start vector database* 
 
