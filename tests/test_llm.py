@@ -1,4 +1,4 @@
-from pycharmai.main import answer_question
+from pycharmai import answer_question
 
 class MockLLM:
 

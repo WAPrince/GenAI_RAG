@@ -1,6 +1,5 @@
-from qdrant_client import QdrantClient,models
+from qdrant_client import QdrantClient
 from pycharmai.rag.embeddings import create_embedding_model
-import mlflow
 
 QDRANT_URL = "http://localhost:6333"
 COLLECTION_NAME = "knowledge"

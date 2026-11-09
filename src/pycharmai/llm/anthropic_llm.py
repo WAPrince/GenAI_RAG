@@ -1,7 +1,7 @@
 from anthropic import Anthropic
-from pycharmai.llm import tools
-from pycharmai.llm.tools import get_temperature
-from pycharmai.config.settings import settings
+from pycharmai.rag import tools
+from pycharmai import get_temperature
+from pycharmai import settings
 
 tools = [
     {

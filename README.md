@@ -9,11 +9,9 @@ execute the start.sh script ( **`set ANTHROPIC_API_KEY, AWS_PROFILE env vars`** 
 ( The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. )
 
 ###
-**1st USE CASE 'Mock an agent tool answer'**
-    
-                        agent has a mocked tool answer
-
-uv run python -m main01_mocked_tool
+**1st USE CASE 'Simple Anthropic chat'**
+                            
+uv run python -m main01_llmAnthropic
 
 
 ###
@@ -23,7 +21,7 @@ uv run python -m main01_mocked_tool
 
                         realise a generic interrupt handling ( reusable )
 
-uv run python -m main02_hitl_langgraph
+uv run python -m main02_langgraph_hitl
 
 
 ###
@@ -35,11 +33,12 @@ uv run python -m main02_hitl_langgraph
 
                         simple interrupt handling
 
-uv run python -m main03_hitl_llm_tool_langgraph
+uv run python -m main03_llmBedrock_langgraph_tool_htil
 
 
 ###
-**4th USE CASE 'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, vector ) and Langgraph'** 
+**4th USE CASE UPDATE ME!**
+'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, vector ) and Langgraph'** 
 
                         before: a document has been injected into the vector search database
                                 the agent is configured with one tool that equals a MCP client 
@@ -56,8 +55,12 @@ uv run python -m main03_hitl_llm_tool_langgraph
 
                         [ future extensions AWS Guardrail, HITL , ... ]
 *0. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )
+
 ./mlflow.exe server --port 5000
-see https://mlflow.org/cookbook/
+or
+uv run --with flask --with mlflow mlflow server --host 127.0.0.1 --port 5000
+UI: http://localhost:5000/
+( see https://mlflow.org/cookbook/ )
 
 *1. Start vector database* 
 
@@ -111,13 +114,13 @@ uv run python -m main05_agent_orchestrator
                             user request containing inappropriate language or PII will be incepted by AWS guardrail and
                             will not be forwarded to the LLM
 
-    
+uv run python -m main06_llmBedrock_ragMacVector_guardrail_langgraph
 
 
 
 ###
 **7th USE CASE 'FastAPI Streaming'**
-=> see folder src/pycharmai/streaming and data/FastAPI_Streaming.png
+=> see folder src/pycharmai/demo/streaming and data/FastAPI_Streaming.png
 
 
 ###

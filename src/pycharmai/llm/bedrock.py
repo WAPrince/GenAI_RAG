@@ -1,12 +1,12 @@
-from pycharmai.config.settings import settings
+#from pycharmai.aws.settings import Settings
 from langchain_aws import ChatBedrockConverse
 
 
 def create_llm() -> ChatBedrockConverse:
 
     return ChatBedrockConverse(
-        model=settings.bedrock_model_id,
-        region_name=settings.aws_region,
+        model="us.anthropic.claude-sonnet-4-6",
+        region_name="us-east-1",
         temperature=0,
         max_tokens=1000,
     )

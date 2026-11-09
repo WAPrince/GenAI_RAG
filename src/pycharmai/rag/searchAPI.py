@@ -5,7 +5,6 @@ from datetime import datetime
 def main() -> None:
     query = "Was ist eine Kafka Partition?"
 
-
     start = datetime.now()
     documents = search_documents(
         query,

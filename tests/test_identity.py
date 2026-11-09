@@ -1,4 +1,4 @@
-from pycharmai.aws.identity import get_identity
+from pycharmai import get_identity
 
 
 def test_aws_identity():

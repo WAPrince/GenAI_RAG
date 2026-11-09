@@ -1,4 +1,4 @@
-from pycharmai.aws.bedrock import BedrockClient
+from pycharmai import BedrockClient
 
 
 def test():
