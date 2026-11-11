@@ -1,8 +1,11 @@
-import asyncio
+import asyncio,os
 import uvicorn
+import uuid
 import inspect
 from fastmcp import FastMCP
-from pycharmai.rag.vector_store import search_documents
+import mlflow
+from mds.rag.vector_store import qdrant_vector_search
+
 
 
 mcp = FastMCP()
@@ -10,14 +13,11 @@ print(inspect.signature(FastMCP))
 print(inspect.signature(mcp.run))
 
 
-#MLflow
 TRACKING_URI = "http://localhost:5000"
-os.environ["MLFLOW_TRACKING_URI"] = TRACKING_URI
+os.environ["MLFLOW_TRACKING_URI"] = TRACKING_URI  # the MCP server subprocess reads this
 mlflow.set_tracking_uri(TRACKING_URI)
-#assert Version(mlflow.__version__) >= Version("3.15"), (
-#    f"The MCP Registry needs MLflow >= 3.15 (found {mlflow.__version__})."
-#)
-#print(f"MLflow {mlflow.__version__} -> {TRACKING_URI}")
+mlflow.set_experiment("mcpserver-" + str(uuid.uuid4()))
+
 
 
 @mcp.tool()
@@ -29,8 +29,10 @@ def add(a: int, b: int) -> int:
 def search_in_vectordb(query: str, limit: int = 3) -> str:
     """Search the qdrant vectordb ( knowledge base )  for information relevant to the query."""
 
+
     try:
-        documents = search_documents(query, limit=limit)
+        print(f"MCP server: call search_documents")
+        documents = qdrant_vector_search(query, limit=limit)
     except Exception as e:
         print(f"Exception {e}")
         return "Exception "+{e}+"occurred!"
@@ -48,9 +50,7 @@ def search_in_vectordb(query: str, limit: int = 3) -> str:
     return "\n\n---\n\n".join(result)
 
 
-
-
-async def main():
+async def run_mcp_server():
     # run_http_async startet einen uvicorn-Server im Hintergrund.
     # Standardmäßig wird der moderne "streamable-http"-Transport verwendet.
     await mcp.run_http_async(
@@ -62,4 +62,5 @@ async def main():
 if __name__ == "__main__":
     log_config = uvicorn.config.LOGGING_CONFIG
     log_config["loggers"]["mcp.server.streamable_http"] = {"level": "CRITICAL"}
-    asyncio.run(main())
+    mlflow.anthropic.autolog()
+    asyncio.run(run_mcp_server())

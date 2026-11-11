@@ -1,6 +1,6 @@
 import boto3
 
-from pycharmai import settings
+from mds import settings
 
 class BedrockLLM:
 

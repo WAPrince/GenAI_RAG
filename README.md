@@ -1,20 +1,47 @@
-**Motivation**
+***Motivation***
 
-This is a selection of research prototypes to test concepts such as LLM agents and orchestration, RAG, MCP, HITL, guardrails   
-using LangChain/LangGraph, AWS Bedrock.  
+test fundamental GenAI building blocks such as:
+
+-LLM agents ( Anthropic & AWS Bedrock )
+
+-agent orchestration, 
+
+-LangGraph,
+
+-RAG, MCP, VectorDB,
+
+-HITL, 
+
+-guardrails,
+
+-MLflow.   
+
+
 
 **Prerequisite**
 
-execute the start.sh script ( **`set ANTHROPIC_API_KEY, AWS_PROFILE env vars`** )
+For direct Anthropic calls the ANTHROPIC_API_KEY env var must be set.
+
+For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set.
+
 ( The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. )
 
-###
+In Bedrock you must activate a LLm model. 
+
+execute the start.sh script ( **`set ANTHROPIC_API_KEY, AWS_PROFILE env vars`** )
+
+
+
+**--------------------------------------------------------------------------------------------------------------------**
+
 **1st USE CASE 'Simple Anthropic chat'**
                             
 uv run python -m main01_llmAnthropic
 
 
-###
+
+**--------------------------------------------------------------------------------------------------------------------**
+
 **2nd USE CASE 'Human in the loop (HITL) with Langgraph only'** 
 
                         agent asks user two times for approval
@@ -24,7 +51,9 @@ uv run python -m main01_llmAnthropic
 uv run python -m main02_langgraph_hitl
 
 
-###
+
+**--------------------------------------------------------------------------------------------------------------------**
+
 **3rd USE CASE 'Human in the loop (HITL) with llm ( Anthropic via AWS Bedrock ), tool and Langgraph'** 
                         
                         ask agent to delete a file using a tool
@@ -36,9 +65,11 @@ uv run python -m main02_langgraph_hitl
 uv run python -m main03_llmBedrock_langgraph_tool_htil
 
 
-###
-**4th USE CASE UPDATE ME!**
-'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, vector ) and Langgraph'** 
+
+**--------------------------------------------------------------------------------------------------------------------**
+
+**4 USE CASES **
+'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, qdrant vector ) and Langgraph'** 
 
                         before: a document has been injected into the vector search database
                                 the agent is configured with one tool that equals a MCP client 
@@ -54,52 +85,63 @@ uv run python -m main03_llmBedrock_langgraph_tool_htil
                         execution of a similiarity search using the query embedding and the chunk embeddings
 
                         [ future extensions AWS Guardrail, HITL , ... ]
-*0. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )
+
+
+**----------------------**
+
+*1. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )*
 
 ./mlflow.exe server --port 5000
-or
-uv run --with flask --with mlflow mlflow server --host 127.0.0.1 --port 5000
-UI: http://localhost:5000/
-( see https://mlflow.org/cookbook/ )
 
-*1. Start vector database* 
+UI: http://localhost:5000/
+
+
+
+**----------------------**
+
+*2. Start vector database* 
 
 docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
 
 Add document to Qdrant  ( create Chunks, Embeddings ):
 
-uv run python -m pycharmai.rag.ingestAPI
+python  qdrantDataImporter
 
-[ Check content via dashboard: http://localhost:6333/dashboard#/collections ]
+UI: http://localhost:6333/dashboard#/collections 
 
-*2. Start MCP server*
+
+**----------------------**
+
+*3. Start MCP server*
 
 prerequisite: provide a new port number into server_fastmcp.py @ mcp = FastMCP("demo-server",port=PORTNUMBER)
 
-uv run python -m pycharmai.mcp.fastmcpServer
-
-[ check if MCP Server is running: 
-
-Powershell: Test-NetConnection localhost -Port PORTNUMBER
-
-GitBash:    netstat -ano | findstr :PORTNUMBER ]
-
-Potentially use MCP Inspector for  MCP server tests
-
-*3. Execute RAG*
-
-prerequisite: manually set same port number in client.py @  "url": "http://localhost:PORTNUMBER/mcp"
-
-uv run python -m pycharmai.main04_llm_rag_mcp_vector_langgraph
-
-Verify, RAG works: 
-
-=> ask "Was ist im Harz passiert", only document news_min.txt includes a reference to the Harz 
-
-=> the answer contains exactly this reference
+python fastmcpServer
 
 
-###
+**----------------------**
+
+*4.1 Execute RAG with MLflow*
+
+python main04.1_llmBedrock_ragMcpVector_hitl_langgraph.py
+
+User Question:  "Was ist in Hannover passiert? Rufe die Vektordatenbank auf!"
+
+Answer: 
+
+
+
+*4.2 Attempt to delete a file*
+
+python main04.2_llmBedrock_ragMcpVector_langgraph_MLflow
+
+Verify, human in the loop ( look at shell! ) is executed.
+
+
+
+**--------------------------------------------------------------------------------------------------------------------**
+
+
 **5th USE CASE 'A super agent orchestrates three worker agents - asynchronous handling'**
 
                             a super agent ask three worker agents and asynchronously incorporates their answer
@@ -107,8 +149,8 @@ Verify, RAG works:
 uv run python -m main05_agent_orchestrator
 
 
+**--------------------------------------------------------------------------------------------------------------------**
 
-###
 **6th USE CASE 'AWS Guardrails integration'**
         
                             user request containing inappropriate language or PII will be incepted by AWS guardrail and
@@ -117,11 +159,17 @@ uv run python -m main05_agent_orchestrator
 uv run python -m main06_llmBedrock_ragMacVector_guardrail_langgraph
 
 
+**--------------------------------------------------------------------------------------------------------------------**
 
-###
 **7th USE CASE 'FastAPI Streaming'**
 => see folder src/pycharmai/demo/streaming and data/FastAPI_Streaming.png
 
+
+**--------------------------------------------------------------------------------------------------------------------**
+
+**--------------------------------------------------------------------------------------------------------------------**
+
+**--------------------------------------------------------------------------------------------------------------------**
 
 ###
 **Utilities**

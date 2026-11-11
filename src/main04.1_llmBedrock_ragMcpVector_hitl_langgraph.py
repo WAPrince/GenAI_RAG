@@ -11,10 +11,10 @@ from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 
 from dotenv import load_dotenv
-from pycharmai.graph.state import AgentState
-from pycharmai.llm.bedrock import create_llm
-from pycharmai.rag.mcp.fastmcpClient import create_mcp_client
-from pycharmai.rag.tools.files import delete_file
+from mds.graph.state import AgentState
+from mds.llm.bedrock import create_llm
+from mds.rag.mcp.fastmcpClient import create_mcp_client
+from mds.rag.tools.files import delete_file
 
 async def run_agent(prompt: str) -> None:
     load_dotenv()
@@ -163,20 +163,19 @@ async def run_agent(prompt: str) -> None:
             ### Simple Interrupt Handling END
             print_result(result)
 
-
 def print_result(result: dict) -> None:
     print("\n========================================")
     print(" RESULT")
     messages = result.get("messages", [])
     if messages:
         print(messages[-1].content)
-
+    print(" RESULT END\n")
+    print("\n========================================")
 
 async def main() -> None:
     await run_agent(
-        "Lösche die Datei data/news_min.txt!"
+        "Lösche die Datei data/qdrant_Input__Nachrichten.txt"
     )
-
 
 if __name__ == "__main__":
     asyncio.run(main())

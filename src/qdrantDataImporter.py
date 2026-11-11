@@ -3,10 +3,10 @@ from uuid import uuid4
 from datetime import datetime
 from qdrant_client import models
 
-from pycharmai.rag.embeddings import create_embedding_model
-from pycharmai.rag.vector_store import create_qdrant_client, COLLECTION_NAME
+from mds.rag.embeddings import create_embedding_model
+from mds.rag.vector_store import create_qdrant_client, COLLECTION_NAME
 
-DATA_FILE5 = Path("C:/Daten/IT/DEV/Python/PyCharmAI/data/news_min.txt") # 1,678 sec 18 KB
+DATA_FILE5 = Path("../data/input/qdrant_Input__Nachrichten.txt") # 1,678 sec 18 KB
 
 def load_document(file :str ) -> str:
     return file.read_text(
@@ -31,8 +31,7 @@ def split_into_chunks(
 
 def ingest(file : str ) -> None:
 
-    #try:
-
+    try:
         text = load_document(file)
 
         start = datetime.now()
@@ -98,8 +97,8 @@ def ingest(file : str ) -> None:
         duration = end - start
         print(f"Einlesedauer in Sekunden: {duration.total_seconds()}")
         print(f"End")
-    #except Exception as e:
-    #    print(f"Exception ${e.str}")
+    except Exception as e:
+        print(f"Exception ${e.str}")
 
 if __name__ == "__main__":
     ingest(DATA_FILE5)

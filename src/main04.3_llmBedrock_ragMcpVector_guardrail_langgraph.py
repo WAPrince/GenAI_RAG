@@ -1,17 +1,25 @@
-import asyncio
+import asyncio, os
+import uuid
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.constants import START, END
+from langgraph.graph import StateGraph
+from langgraph.prebuilt import ToolNode
+from mcp import ClientSession
+from mcp.client.streamable_http import streamable_http_client
 import mlflow
 from mlflow.entities import SpanType
 from mlflow.genai.scorers import RelevanceToQuery, Correctness
-
-from pycharmai.graph.graph import create_graph
-import pandas as pd
-import os
-
-
+from dotenv import load_dotenv
+from mds.llm.bedrock import create_llm
+from mds.rag.mcp.fastmcpClient import create_mcp_client
+from mds.graph.state import AgentState
 
 
+INAPPROPRIATE_TEXT="Du Blödian suche in der Vektordatenbank nach X"
+# also test email filter e.g. "hans@hansen.com" !
 
-#mlflow.trace(span_type=SpanType.AGENT)
+
+
 async def run_agent(prompt: str) -> None:
     load_dotenv()
     print(f" AWS_REGION: {os.getenv("AWS_REGION")}")
@@ -21,7 +29,7 @@ async def run_agent(prompt: str) -> None:
 
     ###########################################################################
 
-    async with streamablehttp_client(mcp_url) as (read, write, _):
+    async with streamable_http_client(mcp_url) as (read, write, _):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -68,6 +76,15 @@ async def run_agent(prompt: str) -> None:
 
                 return state
 
+            def route_after_model(state: AgentState) -> str:
+                last_message = state["messages"][-1]
+                tool_calls = getattr(last_message, "tool_calls", [])
+                if not tool_calls:
+                    return "end"
+                return "tools"
+
+            builder = StateGraph(AgentState)
+
             builder.add_node("guardrail_input", guardrail_input)
             builder.add_node("call_model", call_model)
             builder.add_node("tools", tool_node)
@@ -82,7 +99,6 @@ async def run_agent(prompt: str) -> None:
                     "tools": "tools",
                 },
             )
-
 
             checkpointer = InMemorySaver()
 
@@ -106,8 +122,6 @@ async def run_agent(prompt: str) -> None:
             print_result(result)
 
 
-
-
 def print_result(result: dict) -> None:
     print("\n========================================")
     print(" RESULT")
@@ -118,8 +132,7 @@ def print_result(result: dict) -> None:
 
 async def main() -> None:
     await run_agent(
-        # RAG-Szenario:
-        "Was ist im Harz passiert?"
+        INAPPROPRIATE_TEXT
     )
 
 if __name__ == "__main__":

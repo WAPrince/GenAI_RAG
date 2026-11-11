@@ -1,4 +1,4 @@
-from pycharmai.rag.vector_store import search_documents
+from mds.rag.vector_store import search_documents
 from datetime import datetime
 
 # Qdrant verwendet HNSW als zentralen ANN-Index. D

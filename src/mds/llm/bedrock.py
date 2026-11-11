@@ -1,4 +1,3 @@
-#from pycharmai.aws.settings import Settings
 from langchain_aws import ChatBedrockConverse
 
 

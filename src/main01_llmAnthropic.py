@@ -1,5 +1,5 @@
-from pycharmai.llm.anthropic_llm import AnthropicLLM
-from pycharmai.llm.llmclient import LLMClient
+from mds.llm.anthropic_llm import AnthropicLLM
+from mds.llm.llmclient import LLMClient
 
 def answer_question(
     llm: LLMClient,

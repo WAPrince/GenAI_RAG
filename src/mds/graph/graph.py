@@ -8,12 +8,12 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
 from langgraph.types import interrupt
 
-from pycharmai.graph.state import AgentState
-from pycharmai.llm.bedrock import create_llm
-from pycharmai.rag.mcp.fastmcpClient import create_mcp_client
-from pycharmai.rag.tools.calculator import calculate
-from pycharmai.rag.tools.files import delete_file
-from pycharmai.rag.tools.weather import get_temperature
+from mds.graph.state import AgentState
+from mds.llm.bedrock import create_llm
+from mds.rag.mcp.fastmcpClient import create_mcp_client
+from mds.rag.tools.calculator import calculate
+from mds.rag.tools.files import delete_file
+from mds.rag.tools.weather import get_temperature
 
 import os
 

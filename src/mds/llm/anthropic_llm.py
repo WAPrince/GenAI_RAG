@@ -1,7 +1,7 @@
 from anthropic import Anthropic
-from pycharmai.rag import tools
-from pycharmai import get_temperature
-from pycharmai import settings
+from mds.rag import tools
+from mds import get_temperature
+from mds import settings
 
 tools = [
     {

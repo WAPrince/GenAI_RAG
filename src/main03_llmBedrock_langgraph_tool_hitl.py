@@ -8,11 +8,11 @@ from langgraph.prebuilt import ToolNode
 from langgraph.types import interrupt
 from mcp.client.streamable_http import streamablehttp_client
 from mcp import ClientSession
-from pycharmai.graph.state import AgentState
-from pycharmai.llm.bedrock import create_llm
-from pycharmai.rag.mcp.fastmcpClient import create_mcp_client
-from pycharmai.graph.graph import create_graph
-from pycharmai.rag.tools.files import delete_file
+from mds.graph.state import AgentState
+from mds.llm.bedrock import create_llm
+from mds.rag.mcp.fastmcpClient import create_mcp_client
+from mds.graph.graph import create_graph
+from mds.rag.tools.files import delete_file
 
 async def run_agent(prompt: str) -> None:
 
