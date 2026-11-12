@@ -78,7 +78,6 @@ def qdrant_vector_search(
     except Exception as e :
         print(f"qdrant_client exception: {e}")
 
-
     rerank(documents, query)
 
     return documents
