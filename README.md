@@ -167,7 +167,19 @@ uv run python -m main06_llmBedrock_ragMacVector_guardrail_langgraph
 
 **--------------------------------------------------------------------------------------------------------------------**
 
-**7th USE CASE 'Hybrid and Non-Hybrid RAG Retrieval - use HARRIER o BAAI mopdel embeddings'**
+**7th USE CASE 'Hybrid and non-hybrid RAG Retrieval - use HARRIER / BAAI / QWEN model embeddings'**
+
+*1. Start vector database* 
+
+docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
+
+Add document to Qdrant  ( create Chunks, activate embedding in qdatnDataImporter.py __main__  ):
+
+python  qdrantDataImporter
+
+UI: http://localhost:6333/dashboard#/collections 
+
+uv run python -m main07_llmAnthropic_differentEmbeddings_rerank ( check __main__ for same embedding as used during import ! )
 
 **--------------------------------------------------------------------------------------------------------------------**
 
