@@ -1,13 +1,38 @@
 from fastembed import TextEmbedding
 from mlflow.entities import SpanType
 from qdrant_client import QdrantClient
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 
 from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME
 import mlflow
 
 QDRANT_URL = "http://localhost:6333"
 COLLECTION_NAME = "knowledge"
+
+
+
+
+
+def rerank(retrieved_docs : list[str], query:str) -> list[dict]:
+    reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
+
+    # 1. RICHTIG: Nur reine Text-Paare [Query, Text] für den Reranker bauen
+    text_paare = [[query, item["text"]] for item in retrieved_docs]
+
+    # 2. Neue Reranker-Scores berechnen
+    rerank_scores = reranker.predict(text_paare)
+
+    # 3. Neue Scores den ursprünglichen Objekten (inkl. 'source') wieder zuordnen
+    for item, neuer_score in zip(retrieved_docs, rerank_scores):
+        item["rerank_score"] = float(neuer_score)
+
+    # 4. Nach dem neuen Score absteigend sortieren
+    sortierte_treffer = sorted(retrieved_docs, key=lambda x: x["rerank_score"], reverse=True)
+
+    #for t in sortierte_treffer:
+    #    print(f"Score: {t['rerank_score']:.4f} | Quelle: {t['source']} | Text: {t['text']}")
+
+    return sortierte_treffer
 
 
 def create_qdrant_client() -> QdrantClient:
@@ -21,8 +46,6 @@ def qdrant_vector_search(
     limit: int = 3,
     embedding_model_type :str = BAAI_MODEL_NAME
 ) -> list[dict]:
-
-
     embedding_model = create_embedding_model(embedding_model_type)
     query_embedding =None
     if(type(embedding_model) == SentenceTransformer):
@@ -54,4 +77,8 @@ def qdrant_vector_search(
             )
     except Exception as e :
         print(f"qdrant_client exception: {e}")
+
+
+    rerank(documents, query)
+
     return documents
