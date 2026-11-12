@@ -28,12 +28,12 @@ def add(a: int, b: int) -> int:
     return a + b
 
 @mcp.tool()
-def search_in_vectordb(query: str, limit: int = 3) -> str:
+def search_in_vectordb(query: str, limit: int = 3, hybrid: bool) -> str:
     """Search the qdrant vectordb ( knowledge base )  for information relevant to the query."""
 
     try:
         print(f"MCP server: call search_documents")
-        documents = qdrant_vector_search(query, limit=limit, embedding_model_type=BAAI_MODEL_NAME)
+        documents = qdrant_vector_search(query, limit=limit, embedding_model_type=BAAI_MODEL_NAME, hybrid)
     except Exception as e:
         print(f"Exception {e}")
         return "Exception "+{e}+"occurred!"

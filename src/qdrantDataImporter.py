@@ -2,12 +2,12 @@ from pathlib import Path
 from uuid import uuid4
 from datetime import datetime
 
-from fastembed import TextEmbedding
+from fastembed import TextEmbedding, SparseTextEmbedding
 from qdrant_client import models
 from sentence_transformers import SentenceTransformer
 
 from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME, HARRIER_MODEL_NAME
-from mds.rag.vector_store import create_qdrant_client, COLLECTION_NAME
+from mds.rag.vector_store import create_qdrant_client, COLLECTION_NAME, COLLECTION__DENSE_SPARSE_NAME
 
 DATA_FILE = Path("../data/input/qdrant_Input__Nachrichten.txt") # 1,678 sec 18 KB
 
@@ -76,6 +76,30 @@ def _collection(client, vector_size):
         )
     return
 
+
+def _collection_dense_sparse(client):
+    collections = client.get_collections()
+    collection__dense_saprse_exists = any(
+        collection.name == COLLECTION__DENSE_SPARSE_NAME
+        for collection in collections.collections
+    )
+    if not collection__dense_saprse_exists:
+        client.create_collection(
+            collection_name=COLLECTION__DENSE_SPARSE_NAME,
+            vectors_config={
+                "dense": models.VectorParams(
+                    size=384,  # Passend zu deinem Dense-Modell (z.B. all-MiniLM-L6-v2)
+                    distance=models.Distance.COSINE
+                )
+            },
+            sparse_vectors_config={
+                "sparse": models.SparseVectorParams(
+                    modifier=models.Modifier.IDF  # Wichtig für BM25-Gewichtung
+                )
+            }
+        )
+
+
 def _upsert(file, client, chunks, data_embeddings):
     points = []
     for chunk, embedding in zip(chunks, data_embeddings):
@@ -95,6 +119,42 @@ def _upsert(file, client, chunks, data_embeddings):
         points=points,
     )
 
+def _upsert_dense_space(client, documents : list):
+    dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    sparse_model = SparseTextEmbedding(model_name="Qdrant/bm25")
+
+    documents = [
+        "Qdrant ist eine leistungsstarke Vektordatenbank für KI-Anwendungen.",
+        "Mit hybrider Suche kombiniert man BM25 und Dense Embeddings."
+    ]
+
+    # Embeddings generieren
+    dense_embeddings = list(dense_model.embed(documents))
+    sparse_embeddings = list(sparse_model.embed(documents))
+
+    points = []
+    for idx, (doc, dense_vec, sparse_vec) in enumerate(zip(documents, dense_embeddings, sparse_embeddings)):
+        points.append(
+            models.PointStruct(
+                id=idx,
+                payload={"text": doc},
+                vector={
+                    "dense": dense_vec.tolist(),
+                    "sparse": models.Document(
+                        text=doc,
+                        model="Qdrant/bm25",
+                        options={"language": "german"} # Optional für deutsche Stoppwörter/Stemming
+                    )
+
+                    #    models.SparseVector(
+                    #    indices=sparse_vec.indices.tolist(),
+                    #    values=sparse_vec.values.tolist()
+                    #)
+                }
+            )
+        )
+
+    client.upsert(collection_name=COLLECTION__DENSE_SPARSE_NAME, points=points)
 
 
 @measure_time
@@ -108,8 +168,10 @@ def ingest(file : str, embedding_model_id : str) -> None:
         client = create_qdrant_client()
 
         _collection(client, vector_size=len(data_embeddings[0]))
+        _collection_dense_sparse(client)
 
         _upsert(file,client,chunks, data_embeddings)
+        _upsert_dense_space(client, data_embeddings)
 
     except Exception as e:
         print(f"Exception ${e.str}")

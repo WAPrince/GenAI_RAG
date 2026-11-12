@@ -17,9 +17,9 @@ def find_key(data, target_key="x"):
                 return result
     return None
 
-def retrieveAndRerank(query : str, limit : int, embedding_model_type:str = BAAI_MODEL_NAME):
+def retrieveAndRerank(query : str, limit : int, embedding_model_type:str = BAAI_MODEL_NAME, hybrid : bool = False):
 
-    retrievalResult:list[dict] =  qdrant_vector_search( query, limit, embedding_model_type)
+    retrievalResult:list[dict] =  qdrant_vector_search( query, limit, embedding_model_type, hybrid)
     if retrievalResult is not None and len(retrievalResult) > 0:
         print("Retrieval result:\n")
         for item in retrievalResult:
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     print(f"Frage: {question}")
 
     #vector size 1024
-    retrieveAndRerank(question,3, HARRIER_MODEL_NAME)
+    retrieveAndRerank(question,3, HARRIER_MODEL_NAME, False)
 
     #Vector size 364
     #retrieveAndRerank("Was ist im Harz passiert?", 3, BAAI_MODEL_NAME)

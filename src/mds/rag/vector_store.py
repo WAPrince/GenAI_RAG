@@ -8,10 +8,47 @@ import mlflow
 
 QDRANT_URL = "http://localhost:6333"
 COLLECTION_NAME = "knowledge"
+COLLECTION__DENSE_SPARSE_NAME ="knowledge__dense_sparse"
 
 
+def _search(client, limit , query, query_embedding, documents) -> dict:
+    try:
+        result = client.query_points(
+            collection_name=COLLECTION_NAME,
+            query=query_embedding.tolist(),
+            limit=limit,
+            with_payload=True,
+        )
+        for point in result.points:
+            documents.append(
+                {
+                    "score": point.score,
+                    "text": point.payload["text"],
+                    "source": point.payload["source"],
+                }
+            )
+    except Exception as e:
+        print(f"qdrant_client exception: {e}")
 
+    return rerank(documents, query)
 
+# TODO
+def _search_hybrid(client, limit , query, query_embedding, documents) -> dict:
+    # results = client.query_points(
+    #     collection_name="hybrid_rag_collection",
+    #     prefetch=[
+    #         models.Prefetch(query=query_dense, using="dense", limit=10),
+    #         models.Prefetch(
+    #             query=models.Document(text=query_text, model="Qdrant/bm25"),
+    #             using="sparse",
+    #             limit=10,
+    #         ),
+    #     ],
+    #     query=models.FusionQuery(fusion=models.Fusion.RRF),
+    #     limit=5
+    # )
+    result=None
+    return result
 
 def rerank(retrieved_docs : list[str], query:str) -> list[dict]:
     reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
@@ -35,7 +72,7 @@ def rerank(retrieved_docs : list[str], query:str) -> list[dict]:
     return sortierte_treffer
 
 
-def create_qdrant_client() -> QdrantClient:
+def _create_qdrant_client() -> QdrantClient:
     return QdrantClient(
         url=QDRANT_URL,
     )
@@ -44,8 +81,10 @@ def create_qdrant_client() -> QdrantClient:
 def qdrant_vector_search(
     query: str,
     limit: int = 3,
-    embedding_model_type :str = BAAI_MODEL_NAME
+    embedding_model_type :str = BAAI_MODEL_NAME,
+    hybrid : bool = False
 ) -> list[dict]:
+
     embedding_model = create_embedding_model(embedding_model_type)
     query_embedding =None
     if(type(embedding_model) == SentenceTransformer):
@@ -58,26 +97,12 @@ def qdrant_vector_search(
         print("Query embedding failed!")
         return
 
-    client = create_qdrant_client()
+    client = _create_qdrant_client()
     documents = []
-    try:
-        result = client.query_points(
-            collection_name=COLLECTION_NAME,
-            query=query_embedding.tolist(),
-            limit=limit,
-            with_payload=True,
-        )
-        for point in result.points:
-            documents.append(
-                {
-                    "score": point.score,
-                    "text": point.payload["text"],
-                    "source": point.payload["source"],
-                }
-            )
-    except Exception as e :
-        print(f"qdrant_client exception: {e}")
 
-    rerank(documents, query)
+    if hybrid == False:
+        documents=_search(client, limit, query, query_embedding, documents)
+    else:
+        documents=_search_hybrid(client, limit, query, query_embedding, documents)
 
     return documents
