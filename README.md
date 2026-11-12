@@ -179,7 +179,7 @@ python  qdrantDataImporter
 
 UI: http://localhost:6333/dashboard#/collections 
 
-uv run python -m main07_llmAnthropic_differentEmbeddings_rerank ( check __main__ for same embedding as used during import ! )
+uv run python -m main07_vector_embeddings_hybridRetrieval_rerank ( check __main__ for same embedding as used during import ! )
 
 **--------------------------------------------------------------------------------------------------------------------**
 
