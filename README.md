@@ -10,7 +10,9 @@ Features
 
 -RAG, MCP, VectorDB,
 
--multiple embedding models ( BAAI/bge-small-en-v1.5, microsoft/harrier-oss-v1-0.6b, Qwen/Qwen3-Embedding-8B)
+-multiple embedding models ( BAAI/bge-small-en-v1.5, microsoft/harrier-oss-v1-0.6b, Qwen/Qwen3-Embedding-8B),
+
+-reranking,
 
 -HITL, 
 
@@ -73,7 +75,7 @@ uv run python -m main03_llmBedrock_langgraph_tool_htil
 **4 USE CASES **
 'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, qdrant vector ) and Langgraph'** 
 
-                        before: a document has been injected into the vector search database
+                        before: a document must be injected ( embedded with e.g. BAAI,HARRIER, QWEN ) into the vector search database
                                 the agent is configured with one tool that equals a MCP client 
                         
                         then: ask the agent a question 

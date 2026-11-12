@@ -27,6 +27,5 @@ def main() -> None:
         print(document["text"])
         print("-" * 70)
 
-#Wenn wir unser Projekt weiterbauen, wäre mit Qdrant ein HNSW-vs-Exact-vs-PQ Benchmark in Qdrant wesentlich sinnvoller als zu versuchen, IVF künstlich einzubauen.
 if __name__ == "__main__":
     main()
