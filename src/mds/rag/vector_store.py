@@ -1,6 +1,9 @@
-from fastembed import TextEmbedding
+from typing import Any
+
+from fastembed import TextEmbedding, SparseTextEmbedding
 from mlflow.entities import SpanType
 from qdrant_client import QdrantClient
+from qdrant_client import models
 from sentence_transformers import SentenceTransformer, CrossEncoder
 
 from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME
@@ -34,21 +37,45 @@ def _search(client, limit , query, query_embedding, documents) -> dict:
 
 # TODO
 def _search_hybrid(client, limit , query, query_embedding, documents) -> dict:
-    # results = client.query_points(
-    #     collection_name="hybrid_rag_collection",
-    #     prefetch=[
-    #         models.Prefetch(query=query_dense, using="dense", limit=10),
-    #         models.Prefetch(
-    #             query=models.Document(text=query_text, model="Qdrant/bm25"),
-    #             using="sparse",
-    #             limit=10,
-    #         ),
-    #     ],
-    #     query=models.FusionQuery(fusion=models.Fusion.RRF),
-    #     limit=5
-    # )
-    result=None
-    return result
+
+    dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    # Query in beide Vektorformate umwandeln
+    # 1. Erzeugt die Liste aus 384 Kommazahlen für die Sinnsuche
+    query_dense = list(dense_model.embed([query]))[0].tolist()
+
+    sparse_model = SparseTextEmbedding(
+        model_name="Qdrant/bm25"
+    )
+    # 2. Erzeugt das Objekt mit Wort-Positionen und BM25-Gewichten für die Keyword-Suche
+    query_sparse = list(sparse_model.embed([query]))[0]
+
+    results = client.query_points(
+        collection_name=COLLECTION__DENSE_SPARSE_NAME ,
+        prefetch=[
+            # 1. Semantische Suche
+            models.Prefetch(
+                query=query_dense,
+                using="dense",
+                limit=10,#max number of point to return
+            ),
+            # 2. Keyword-Suche (BM25)
+            models.Prefetch(
+                query=models.SparseVector(
+                    indices=query_sparse.indices.tolist(),
+                    values=query_sparse.values.tolist()
+                ),
+                using="sparse",
+                limit=10,#max number of point to return
+            ),
+        ],
+        # Beide Ergebnislisten mit Reciprocal Rank Fusion zusammenführen
+        query=models.FusionQuery(fusion=models.Fusion.RRF),
+        limit=limit
+    )
+    for hit in results.points:
+        print(f"Score: {hit.score:.4f} | Text: {hit.payload['text']}")
+    return results.points
+
 
 def rerank(retrieved_docs : list[str], query:str) -> list[dict]:
     reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
@@ -83,7 +110,7 @@ def qdrant_vector_search(
     limit: int = 3,
     embedding_model_type :str = BAAI_MODEL_NAME,
     hybrid : bool = False
-) -> list[dict]:
+) -> dict[Any, Any] | None:
 
     embedding_model = create_embedding_model(embedding_model_type)
     query_embedding =None

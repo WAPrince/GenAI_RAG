@@ -17,23 +17,29 @@ def find_key(data, target_key="x"):
                 return result
     return None
 
-def retrieveAndRerank(query : str, limit : int, embedding_model_type:str = BAAI_MODEL_NAME, hybrid : bool = False):
-
-    retrievalResult:list[dict] =  qdrant_vector_search( query, limit, embedding_model_type, hybrid)
+def retrieveNonHybrid(query : str, limit : int, embedding_model_type:str = BAAI_MODEL_NAME):
+    retrievalResult:list[dict] =  qdrant_vector_search( query, limit, embedding_model_type, False)
     if retrievalResult is not None and len(retrievalResult) > 0:
         print("Retrieval result:\n")
         for item in retrievalResult:
+            print(f"SCORE: {find_key(item, "score")}")
             print(f"TEXT: {find_key(item,"text")}")
-            print(f"SCORE: {find_key(item,"score")}")
     else:
         print("Empty retrievalResult")
+
+def retrieveHybrid(query : str, limit : int, embedding_model_type:str = BAAI_MODEL_NAME) :
+    qdrant_vector_search(query, limit, embedding_model_type, True)
+
+
 
 if __name__ == "__main__":
     question:str="Was ist im Harz passiert?"
     print(f"Frage: {question}")
 
     #vector size 1024
-    retrieveAndRerank(question,3, HARRIER_MODEL_NAME, False)
+    #retrieveNonHybrid(question,3, HARRIER_MODEL_NAME)
+    retrieveHybrid(question, 3, HARRIER_MODEL_NAME)
 
     #Vector size 364
-    #retrieveAndRerank("Was ist im Harz passiert?", 3, BAAI_MODEL_NAME)
+    #retrieveNonHybrid(question, 3, BAAI_MODEL_NAME)
+    # retrieveHybrid(question, 3, BAAI_MODEL_NAME)

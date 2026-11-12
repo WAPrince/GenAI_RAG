@@ -8,11 +8,11 @@ Features
 
 -LangGraph,
 
--RAG, MCP, VectorDB,
+-MCP, VectorDB,
 
--multiple embedding models ( BAAI/bge-small-en-v1.5, microsoft/harrier-oss-v1-0.6b, Qwen/Qwen3-Embedding-8B),
-
--reranking,
+-hybrid and non-hybrid RAG retrieval            => USE CASE 7!
+-multiple embedding models ( BAAI/HARRIER/QWEN) => USE CASE 7!
+-reranking                                      => USE CASE 7!
 
 -HITL, 
 
@@ -165,9 +165,7 @@ uv run python -m main06_llmBedrock_ragMacVector_guardrail_langgraph
 
 **--------------------------------------------------------------------------------------------------------------------**
 
-**7th USE CASE 'FastAPI Streaming'**
-=> see folder src/pycharmai/demo/streaming and data/FastAPI_Streaming.png
-
+**7th USE CASE 'Hybrid and Non-Hybrid RAG Retrieval - use HARRIER o BAAI mopdel embeddings'**
 
 **--------------------------------------------------------------------------------------------------------------------**
 

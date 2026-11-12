@@ -7,7 +7,7 @@ from qdrant_client import models
 from sentence_transformers import SentenceTransformer
 
 from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME, HARRIER_MODEL_NAME
-from mds.rag.vector_store import create_qdrant_client, COLLECTION_NAME, COLLECTION__DENSE_SPARSE_NAME
+from mds.rag.vector_store import _create_qdrant_client, COLLECTION_NAME, COLLECTION__DENSE_SPARSE_NAME
 
 DATA_FILE = Path("../data/input/qdrant_Input__Nachrichten.txt") # 1,678 sec 18 KB
 
@@ -119,21 +119,18 @@ def _upsert(file, client, chunks, data_embeddings):
         points=points,
     )
 
-def _upsert_dense_space(client, documents : list):
+def _upsert_dense_space(client, chunks: list, data_embeddings):
     dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
     sparse_model = SparseTextEmbedding(model_name="Qdrant/bm25")
 
-    documents = [
-        "Qdrant ist eine leistungsstarke Vektordatenbank für KI-Anwendungen.",
-        "Mit hybrider Suche kombiniert man BM25 und Dense Embeddings."
-    ]
-
     # Embeddings generieren
-    dense_embeddings = list(dense_model.embed(documents))
-    sparse_embeddings = list(sparse_model.embed(documents))
+    #dense_embeddings = list(dense_model.embed(documents))
+    #texts = [doc.page_content for doc in documents]
+    dense_embeddings = list(dense_model.embed(chunks))
+    sparse_embeddings = list(sparse_model.embed(chunks))
 
     points = []
-    for idx, (doc, dense_vec, sparse_vec) in enumerate(zip(documents, dense_embeddings, sparse_embeddings)):
+    for idx, (doc, dense_vec, sparse_vec) in enumerate(zip(chunks, dense_embeddings, sparse_embeddings)):
         points.append(
             models.PointStruct(
                 id=idx,
@@ -145,11 +142,6 @@ def _upsert_dense_space(client, documents : list):
                         model="Qdrant/bm25",
                         options={"language": "german"} # Optional für deutsche Stoppwörter/Stemming
                     )
-
-                    #    models.SparseVector(
-                    #    indices=sparse_vec.indices.tolist(),
-                    #    values=sparse_vec.values.tolist()
-                    #)
                 }
             )
         )
@@ -165,16 +157,16 @@ def ingest(file : str, embedding_model_id : str) -> None:
 
         data_embeddings =  _get_embeddings(embedding_model_id, chunks)
 
-        client = create_qdrant_client()
+        client = _create_qdrant_client()
 
         _collection(client, vector_size=len(data_embeddings[0]))
         _collection_dense_sparse(client)
 
-        _upsert(file,client,chunks, data_embeddings)
-        _upsert_dense_space(client, data_embeddings)
+        #_upsert(file,client,chunks, data_embeddings)
+        _upsert_dense_space(client, chunks, data_embeddings)
 
     except Exception as e:
-        print(f"Exception ${e.str}")
+        print(f"Exception ${e}")
 
 
 if __name__ == "__main__":
