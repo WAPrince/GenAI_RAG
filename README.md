@@ -1,6 +1,6 @@
 ***Motivation***
 
-test fundamental GenAI building blocks such as:
+Features
 
 -LLM agents ( Anthropic & AWS Bedrock )
 
@@ -10,11 +10,13 @@ test fundamental GenAI building blocks such as:
 
 -RAG, MCP, VectorDB,
 
+-multiple embedding models ( BAAI/bge-small-en-v1.5, microsoft/harrier-oss-v1-0.6b, Qwen/Qwen3-Embedding-8B)
+
 -HITL, 
 
 -guardrails,
 
--MLflow.   
+-MLflow   
 
 
 

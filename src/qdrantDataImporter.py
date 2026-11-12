@@ -1,12 +1,15 @@
 from pathlib import Path
 from uuid import uuid4
 from datetime import datetime
-from qdrant_client import models
 
-from mds.rag.embeddings import create_embedding_model
+from fastembed import TextEmbedding
+from qdrant_client import models
+from sentence_transformers import SentenceTransformer
+
+from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME, HARRIER_MODEL_NAME
 from mds.rag.vector_store import create_qdrant_client, COLLECTION_NAME
 
-DATA_FILE5 = Path("../data/input/qdrant_Input__Nachrichten.txt") # 1,678 sec 18 KB
+DATA_FILE = Path("../data/input/qdrant_Input__Nachrichten.txt") # 1,678 sec 18 KB
 
 def load_document(file :str ) -> str:
     return file.read_text(
@@ -16,7 +19,7 @@ def load_document(file :str ) -> str:
 # fixed chunk size => semantic search will affected ( completeness accuracy consistency costs )+
 def split_into_chunks(
     text: str,
-    chunk_size: int = 300,
+    chunk_size: int = 50,#300,
 ) -> list[str]:
     words = text.split()
 
@@ -29,7 +32,7 @@ def split_into_chunks(
     return chunks
 
 
-def ingest(file : str ) -> None:
+def ingest(file : str, embedding_model_id : str) -> None:
 
     try:
         text = load_document(file)
@@ -40,14 +43,19 @@ def ingest(file : str ) -> None:
         print(f"Document contains {len(text)} characters")
         print(f"Created {len(chunks)} chunks")
 
-        embedding_model = create_embedding_model()
-        print(f"embeddding_model")
+        embedding_model = create_embedding_model(embedding_model_id)
+        data_embeddings = None
+        if (type(embedding_model) == SentenceTransformer):
+            data_embeddings = embedding_model.encode(chunks, prompt_name="query")
+        elif (type(embedding_model) == TextEmbedding):
+            data_embeddings = list(
+                embedding_model.embed(chunks)
+            )
+        else:
+            print("Query embedding failed!")
+            return
 
-        embeddings = list(
-            embedding_model.embed(chunks)
-        )
-        print(f"embedddings")
-        vector_size = len(embeddings[0])
+        vector_size = len(data_embeddings[0])
         print(f"Vecor size {vector_size }")
         # load embeddings to Qdrant vector database in docker container
         client = create_qdrant_client()
@@ -75,7 +83,7 @@ def ingest(file : str ) -> None:
 
         points = []
 
-        for chunk, embedding in zip(chunks, embeddings):
+        for chunk, embedding in zip(chunks, data_embeddings):
             print(f"chunk {chunk.index}")
             points.append(
                  models.PointStruct(
@@ -101,4 +109,8 @@ def ingest(file : str ) -> None:
         print(f"Exception ${e.str}")
 
 if __name__ == "__main__":
-    ingest(DATA_FILE5)
+    #vector size 1024
+    ingest(DATA_FILE, HARRIER_MODEL_NAME)
+
+    #vector size 364
+    #ingest(DATA_FILE, BAAI_MODEL_NAME)

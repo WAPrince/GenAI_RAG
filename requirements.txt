@@ -1,3 +1,4 @@
+accelerate
 anthropic[bedrock]
 alembic
 
@@ -32,3 +33,6 @@ pyspark
 qdrant-client[fastembed]>=1.19.1
 
 sqlalchemy
+sentence-transformers
+transformers
+torch
