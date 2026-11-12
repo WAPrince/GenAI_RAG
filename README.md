@@ -11,7 +11,9 @@ Features
 -MCP, VectorDB,
 
 -hybrid and non-hybrid RAG retrieval            => USE CASE 7!
+
 -multiple embedding models ( BAAI/HARRIER/QWEN) => USE CASE 7!
+
 -reranking                                      => USE CASE 7!
 
 -HITL, 
