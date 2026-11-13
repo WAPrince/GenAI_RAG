@@ -34,12 +34,16 @@ def retrieveHybrid(query : str, limit : int, collection_name,embedding_model:str
 
 
 if __name__ == "__main__":
+
     """
         Execute search queries against Qdrant collections 'medicaments'
         The system prompt part contains the Qdrant collection that contains the desired answers
         The system prompt part contains the embedding model that should be applied to the query for the similiarity search (  it must be the same as the imported Qdrant collection data - otherwise vectors cannot be compared/nothing will be found )
         Choose to call a simple similarity search or an hybrid search
     """
+
+    print(f" Have documents from ./data/input/medicaments been imported in Qdrant collections? ( use qdrantDataImporter.py ))")
+
 
     question:str="Welche Schmerzen können nach Einnahme der Medikamente auftreten?"
 

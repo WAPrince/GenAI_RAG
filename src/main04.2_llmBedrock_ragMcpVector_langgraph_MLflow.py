@@ -25,7 +25,7 @@ async def run_agent(prompt: str) -> None:
     load_dotenv()
     print(f" Is the MLflow server running? ( .venv/Scripts/mlflow.exe server --port 5000  )")
     print(f" Is the MCP server running? )")
-    print(f" Have documents from ./data/input/news been imported? )")
+    print(f" Have documents from ./data/input/news and/or /data/input/medicaments been imported into Qdrant collections? ( use qdrantDataImporter.py ))")
     print(f" AWS_REGION: {os.getenv("AWS_REGION")}")
     print(f" AWS_PROFILE: {os.getenv("AWS_PROFILE")}")
 

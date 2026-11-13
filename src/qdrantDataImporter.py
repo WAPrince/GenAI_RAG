@@ -198,7 +198,7 @@ if __name__ == "__main__":
     for f in list(input_folder.iterdir()):
         print(f"Ingest file {f}")
         #vector size 1024
-        ingest(f, HARRIER_MODEL_NAME, NEWS_PATH)#MEDICAMENTS_PATH)
+        ingest(f, HARRIER_MODEL_NAME, NEWS_PATH) #MEDICAMENTS_PATH)
 
         #vector size 364
         #ingest(FILE, BAAI_MODEL_NAME)
