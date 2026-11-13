@@ -5,7 +5,7 @@ import inspect
 from fastmcp import FastMCP
 import mlflow
 
-from mds.rag.embeddings import BAAI_MODEL_NAME
+from mds.rag.embeddings import BAAI_MODEL_NAME,QWEN_MODEL_NAME, HARRIER_MODEL_NAME
 from mds.rag.vector_store import qdrant_vector_search
 
 
@@ -22,18 +22,31 @@ mlflow.set_experiment("mcpserver-" + str(uuid.uuid4()))
 
 
 
+
+def _get_embedding_model(embedding_model : str) -> str :
+    if embedding_model == "HARRIER":
+        return HARRIER_MODEL_NAME
+    elif embedding_model == "QWEN":
+        return QWEN_MODEL_NAME
+    elif embedding_model == "BAAI":
+        return BAAI_MODEL_NAME
+    else:
+        print("Error get_embedding_model")
+        return
+
 @mcp.tool()
 def add(a: int, b: int) -> int:
     """Add two integers."""
     return a + b
 
 @mcp.tool()
-def search_in_vectordb(query: str, limit: int = 3, hybrid: bool) -> str:
+def search_in_vectordb(query: str, collection_name:str, limit: int = 3, embedding_model:str = "BAAI") -> str:
     """Search the qdrant vectordb ( knowledge base )  for information relevant to the query."""
-
     try:
-        print(f"MCP server: call search_documents")
-        documents = qdrant_vector_search(query, limit=limit, embedding_model_type=BAAI_MODEL_NAME, hybrid)
+        print(f"MCP server: search_in_vectordb")
+        em=_get_embedding_model(embedding_model)
+        print(f"Detected embedding model: {em})")
+        documents = qdrant_vector_search(query, limit=limit, collection_name=collection_name, embedding_model=em, hybrid=False)
     except Exception as e:
         print(f"Exception {e}")
         return "Exception "+{e}+"occurred!"
@@ -57,7 +70,7 @@ async def run_mcp_server():
     await mcp.run_http_async(
         host="127.0.0.1",
         port=3005,
-        transport="streamable-http"  # Optionen: "streamable-http", "sse" oder "http"
+        transport="streamable-http"
     )
 
 if __name__ == "__main__":

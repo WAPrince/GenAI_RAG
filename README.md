@@ -1,3 +1,11 @@
+
+**** HINT START****
+
+As of 13.11.2026 use cases 4.2 and 7 are most complex and running ones
+
+**** HINT  END ****
+
+
 ***Motivation***
 
 Features
@@ -8,7 +16,7 @@ Features
 
 -LangGraph,
 
--MCP, VectorDB,
+-MCP, VectorDB ( multiple Qdrant collections ) ,
 
 -hybrid and non-hybrid RAG retrieval            => USE CASE 7!
 

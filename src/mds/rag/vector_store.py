@@ -10,14 +10,13 @@ from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME
 import mlflow
 
 QDRANT_URL = "http://localhost:6333"
-COLLECTION_NAME = "knowledge"
-COLLECTION__DENSE_SPARSE_NAME ="knowledge__dense_sparse"
 
 
-def _search(client, limit , query, query_embedding, documents) -> dict:
+
+def _search(client, limit , collection, query, query_embedding, documents) -> dict:
     try:
         result = client.query_points(
-            collection_name=COLLECTION_NAME,
+            collection_name=collection,
             query=query_embedding.tolist(),
             limit=limit,
             with_payload=True,
@@ -35,8 +34,7 @@ def _search(client, limit , query, query_embedding, documents) -> dict:
 
     return rerank(documents, query)
 
-# TODO
-def _search_hybrid(client, limit , query, query_embedding, documents) -> dict:
+def _search_hybrid(client, limit , collection, query, query_embedding, documents) -> dict:
 
     dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
     # Query in beide Vektorformate umwandeln
@@ -50,7 +48,7 @@ def _search_hybrid(client, limit , query, query_embedding, documents) -> dict:
     query_sparse = list(sparse_model.embed([query]))[0]
 
     results = client.query_points(
-        collection_name=COLLECTION__DENSE_SPARSE_NAME ,
+        collection_name=collection,
         prefetch=[
             # 1. Semantische Suche
             models.Prefetch(
@@ -108,17 +106,18 @@ def _create_qdrant_client() -> QdrantClient:
 def qdrant_vector_search(
     query: str,
     limit: int = 3,
-    embedding_model_type :str = BAAI_MODEL_NAME,
+    collection_name: str = None,
+    embedding_model :str = BAAI_MODEL_NAME,
     hybrid : bool = False
 ) -> dict[Any, Any] | None:
 
-    embedding_model = create_embedding_model(embedding_model_type)
+    e_m = create_embedding_model(embedding_model)
     query_embedding =None
-    if(type(embedding_model) == SentenceTransformer):
-        query_embedding  = embedding_model.encode(query, prompt_name="query")
-    elif(type(embedding_model) == TextEmbedding):
+    if(type(e_m) == SentenceTransformer):
+        query_embedding  = e_m.encode(query, prompt_name="query")
+    elif(type(e_m) == TextEmbedding):
         query_embedding = next(
-            embedding_model.embed([query])
+            e_m.embed([query])
         )
     else:
         print("Query embedding failed!")
@@ -128,8 +127,8 @@ def qdrant_vector_search(
     documents = []
 
     if hybrid == False:
-        documents=_search(client, limit, query, query_embedding, documents)
+        documents=_search(client, limit, collection_name, query, query_embedding, documents)
     else:
-        documents=_search_hybrid(client, limit, query, query_embedding, documents)
+        documents=_search_hybrid(client, limit, collection_name, query, query_embedding, documents)
 
     return documents

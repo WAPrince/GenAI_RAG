@@ -5,11 +5,15 @@ from datetime import datetime
 from fastembed import TextEmbedding, SparseTextEmbedding
 from qdrant_client import models
 from sentence_transformers import SentenceTransformer
+from mds.rag.vector_store import _create_qdrant_client
 
 from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME, HARRIER_MODEL_NAME
-from mds.rag.vector_store import _create_qdrant_client, COLLECTION_NAME, COLLECTION__DENSE_SPARSE_NAME
+import pathlib
 
-DATA_FILE = Path("../data/input/qdrant_Input__Nachrichten.txt") # 1,678 sec 18 KB
+MEDICAMENTS_PATH = Path("../data/input/medicaments/")
+NEWS_PATH = Path("../data/input/news/")
+
+
 
 
 def measure_time(func):
@@ -30,7 +34,7 @@ def load_document(file :str ) -> str:
 # fixed chunk size => semantic search will affected ( completeness accuracy consistency costs )+
 def _split_into_chunks(
     file: str,
-    chunk_size: int = 50,#300,
+    chunk_size: int = 300,
 ) -> list[str]:
     text = load_document(file)
     words = text.split()
@@ -56,15 +60,24 @@ def _get_embeddings(embedding_model_id:str, chunks) -> list[dict]:
         return
     return data_embeddings
 
-def _collection(client, vector_size):
+
+def _path_to_collection(path:str):
+    if path==MEDICAMENTS_PATH:
+        return "medicaments"
+    elif path==NEWS_PATH:
+        return "news"
+    else:
+        print(f"path {path} unknown!")
+
+def _collection(client, vector_size, path):
     collections = client.get_collections()
     collection_exists = any(
-        collection.name == COLLECTION_NAME
+        collection.name == _path_to_collection(path)
         for collection in collections.collections
     )
     if not collection_exists:
         client.create_collection(
-            collection_name=COLLECTION_NAME,
+            collection_name=_path_to_collection(path),
             vectors_config=models.VectorParams(
                 size=vector_size,
                 distance=models.Distance.COSINE,
@@ -77,15 +90,16 @@ def _collection(client, vector_size):
     return
 
 
-def _collection_dense_sparse(client):
+def _collection_dense_sparse(client, path):
     collections = client.get_collections()
     collection__dense_saprse_exists = any(
-        collection.name == COLLECTION__DENSE_SPARSE_NAME
+        collection.name == _path_to_collection(path)+"__dense_sparse"
         for collection in collections.collections
     )
     if not collection__dense_saprse_exists:
+
         client.create_collection(
-            collection_name=COLLECTION__DENSE_SPARSE_NAME,
+            collection_name=_path_to_collection(path)+"__dense_sparse",
             vectors_config={
                 "dense": models.VectorParams(
                     size=384,  # Passend zu deinem Dense-Modell (z.B. all-MiniLM-L6-v2)
@@ -98,15 +112,21 @@ def _collection_dense_sparse(client):
                 )
             }
         )
+        print(f"Collection {_path_to_collection(path)+"__dense_sparse"} created.")
+    else:
+        print(f"Collection already exists.")
 
 
-def _upsert(file, client, chunks, data_embeddings):
+
+def _upsert(file, client, chunks, data_embeddings, path):
+    current_count = client.count(collection_name=_path_to_collection(path)).count
     points = []
+    idx:int=0
     for chunk, embedding in zip(chunks, data_embeddings):
         print(f"chunk {chunk.index}")
         points.append(
             models.PointStruct(
-                id=str(uuid4()),
+                id=current_count + idx,
                 vector=embedding.tolist(),
                 payload={
                     "text": chunk,
@@ -114,18 +134,19 @@ def _upsert(file, client, chunks, data_embeddings):
                 },
             )
         )
+        idx=idx+1
     client.upsert(
-        collection_name=COLLECTION_NAME,
+        collection_name=_path_to_collection(path),
         points=points,
     )
 
-def _upsert_dense_space(client, chunks: list, data_embeddings):
+def _upsert_dense_space(client, chunks: list, data_embeddings, path):
+
+    current_sparse_dense_count = client.count(collection_name=_path_to_collection(path)+"__dense_sparse").count
     dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
     sparse_model = SparseTextEmbedding(model_name="Qdrant/bm25")
 
     # Embeddings generieren
-    #dense_embeddings = list(dense_model.embed(documents))
-    #texts = [doc.page_content for doc in documents]
     dense_embeddings = list(dense_model.embed(chunks))
     sparse_embeddings = list(sparse_model.embed(chunks))
 
@@ -133,7 +154,7 @@ def _upsert_dense_space(client, chunks: list, data_embeddings):
     for idx, (doc, dense_vec, sparse_vec) in enumerate(zip(chunks, dense_embeddings, sparse_embeddings)):
         points.append(
             models.PointStruct(
-                id=idx,
+                id=current_sparse_dense_count + idx,
                 payload={"text": doc},
                 vector={
                     "dense": dense_vec.tolist(),
@@ -146,11 +167,12 @@ def _upsert_dense_space(client, chunks: list, data_embeddings):
             )
         )
 
-    client.upsert(collection_name=COLLECTION__DENSE_SPARSE_NAME, points=points)
+    client.upsert(collection_name=_path_to_collection(path)+"__dense_sparse", points=points)
+
 
 
 @measure_time
-def ingest(file : str, embedding_model_id : str) -> None:
+def ingest(file : str, embedding_model_id : str, path:str) -> None:
 
     try:
         chunks = _split_into_chunks(file=file)
@@ -159,19 +181,24 @@ def ingest(file : str, embedding_model_id : str) -> None:
 
         client = _create_qdrant_client()
 
-        _collection(client, vector_size=len(data_embeddings[0]))
-        _collection_dense_sparse(client)
+        _collection(client, vector_size=len(data_embeddings[0]), path=path)
+        _collection_dense_sparse(client,path)
 
-        #_upsert(file,client,chunks, data_embeddings)
-        _upsert_dense_space(client, chunks, data_embeddings)
+        _upsert(file,client,chunks, data_embeddings, path)
+        _upsert_dense_space(client, chunks, data_embeddings, path)
 
     except Exception as e:
         print(f"Exception ${e}")
 
 
 if __name__ == "__main__":
-    #vector size 1024
-    ingest(DATA_FILE, HARRIER_MODEL_NAME)
 
-    #vector size 364
-    #ingest(DATA_FILE, BAAI_MODEL_NAME)
+    input_folder = pathlib.Path(NEWS_PATH)#MEDICAMENTS_PATH)
+    # .iterdir() produces a generator Which you can wrap in a list() constructor to materialize
+    for f in list(input_folder.iterdir()):
+        print(f"Ingest file {f}")
+        #vector size 1024
+        ingest(f, HARRIER_MODEL_NAME, NEWS_PATH)#MEDICAMENTS_PATH)
+
+        #vector size 364
+        #ingest(FILE, BAAI_MODEL_NAME)

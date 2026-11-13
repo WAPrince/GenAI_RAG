@@ -24,6 +24,8 @@ mlflow.set_experiment("langgraph-" + str(uuid.uuid4()))
 async def run_agent(prompt: str) -> None:
     load_dotenv()
     print(f" Is the MLflow server running? ( .venv/Scripts/mlflow.exe server --port 5000  )")
+    print(f" Is the MCP server running? )")
+    print(f" Have documents from ./data/input/news been imported? )")
     print(f" AWS_REGION: {os.getenv("AWS_REGION")}")
     print(f" AWS_PROFILE: {os.getenv("AWS_PROFILE")}")
 
@@ -118,10 +120,21 @@ def print_result(result: dict) -> None:
     print(" RESULT END\n")
     print("\n========================================")
 
+
+
+
 async def main() -> None:
+    """
+    Execute search queries against Qdrant collections 'medicaments' and 'news'
+    The system prompt part contains the Qdrant collection that contains the desired answers
+    The system prompt part contains the embedding model that should be applied to the query for the similiarity search (  it is the same as the imported Qdrant collection data )
+    """
+
     mlflow.anthropic.autolog()
     await run_agent(
-        "Was ist in Hannover passiert? Rufe die Vektordatenbank auf!"
+        "Übergebe Collection-Name 'news'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Harz, Eastwick, Hannover? Rufe die Vektordatenbank auf!"
+
+        #"Übergebe Collection-Name 'medicaments'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Amlodipin? Rufe die Vektordatenbank auf!"
     )
 
 if __name__ == "__main__":
