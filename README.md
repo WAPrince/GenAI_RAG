@@ -135,22 +135,28 @@ python fastmcpServer
 
 **----------------------**
 
-*4.1 Execute RAG with MLflow*
 
-python main04.1_llmBedrock_ragMcpVector_hitl_langgraph.py
+*4.1 Attempt to delete a file*
 
-User Question:  "Was ist in Hannover passiert? Rufe die Vektordatenbank auf!"
-
-Answer: 
-
-
-
-*4.2 Attempt to delete a file*
-
-python main04.2_llmBedrock_ragMcpVector_langgraph_MLflow
+python main04.1_llmBedrock_ragMcpVector_hitl_langgraph
 
 Verify, human in the loop ( look at shell! ) is executed.
 
+
+*4.2 Execute RAG with MLflow*
+
+python main04.1_llmBedrock_ragMcpVector_langgraph_MLflow.py
+
+User Question:  "Was ist in Hannover passiert? Rufe die Vektordatenbank auf!"
+
+Prompt: "Übergebe Collection-Name 'news'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Harz, Eastwick, Hannover? Rufe die Vektordatenbank auf!"
+
+
+*4.3 Trigger AWS guardrail execution*
+
+Question consists of an insulting text or an email. Before being passed to AWS Bedrock, AWS Guardrail will check the question content .. and triggers an interrupt in these cases.
+
+python main04.3_llmBedrock_ragMcpVector_guardrail_langgraph_MLflow.py
 
 
 **--------------------------------------------------------------------------------------------------------------------**
