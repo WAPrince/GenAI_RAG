@@ -45,6 +45,8 @@ Without using LLM and Langgraph, the database can be directly accessed -
 
 either via a normal search (  use retrieveNonHybrid ) or via a hybrid search (  use retrieveHybrid ). 
 
+Hybrid search: 1st step: a sparse and a dense search are being executed. In the 2nd step both results are being reranked using a Hugging Face model.
+
 Screenshots of the results under and /data/results/normalSearch_notPrecise.png /data/results/hybridSearch_Precise.png .
 
 The use case allows to test 3 embedding types ( Harrier, Baai and Qwen ). 
