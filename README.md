@@ -39,7 +39,7 @@ In AWS Bedrock you must activate a LLm model.
 
 **rag_hybridsearch_usecase01**
 
-The Qdrant vector database is configured with medicament data ( use  /utils/qdrantDataImporter.py ).
+The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
 
 Without using LLM and Langgraph, the database can be directly accessed - 
 
@@ -49,9 +49,7 @@ Screenshots of the results under and /data/results/normalSearch_notPrecise.png /
 
 The use case allows to test 3 embedding types ( Harrier, Baai and Qwen ). 
 
-Attention database and query must have th same embedding type. 
-
-Use the qdrantDtaImport with the same embedding type as thne one used for searching!
+Attention: database and query must have the same embedding type. Use the qdrantDataImport with the same embedding type as the one used for searching!
 
 How can it be tested:
 
@@ -59,11 +57,13 @@ How can it be tested:
 
 docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
 
-Add MEDICAMENTS documents from data/input/medicamentn to Qdrant  ( embeddings! ):
+Add MEDICAMENTS documents from data/input/medicament to Qdrant  ( embeddings! ):
 
 python  qdrantDataImporter
 
 UI: http://localhost:6333/dashboard#/collections 
+
+Collections 'medicaments' and 'medicaments__dense_sparse' will be created!
 
 *2. Execute the query*
 
@@ -73,11 +73,11 @@ python rag_hybridsearch_usecase01.py
 
 **rag_mlflow_usecase01**
 
-The Qdrant vector database is configured with medicament data ( use  /utils/qdrantDataImporter.py ).
+The Qdrant vector database is configured with NEWS data ( use  /utils/qdrantDataImporter.py ).
 
 In this scenario an LLM ( AWS Bedrock ) decides what is to be done to answer the prompty question 
 
-=> therefore a LangGraph graph is created. It contains the famous agnet  loop of reasoning and acting.
+=> therefore a LangGraph graph is created. It contains the famous agent  loop of reasoning and acting.
 
 Acting means a MCP client : server communication, where the server calls Qdrant.
 
@@ -87,11 +87,14 @@ How can it be tested:
 
 docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
 
-Add NEWS documents from data/input/news to Qdrant  ( embeddings! ):
+Add the NEWS document from data/input/news to Qdrant  ( embeddings! ):
 
 python  qdrantDataImporter
 
 UI: http://localhost:6333/dashboard#/collections 
+
+Collections 'news' and 'news__dense_sparse' will be created!
+
 
 *2. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )*
 
@@ -117,7 +120,7 @@ The prompt contains inappropriate language  / an email address.
 
 No LLM is called.
 
-The Langgraph passes control to AWS Guardrail which detects appropriate rule violation.
+The LangGraph passes control to AWS Guardrail which detects appropriate rule violation.
 
 The rules have been configured in AWS.
 
