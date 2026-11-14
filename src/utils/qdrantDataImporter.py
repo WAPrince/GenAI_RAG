@@ -10,8 +10,8 @@ from mds.rag.vector_store import _create_qdrant_client
 from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME, HARRIER_MODEL_NAME
 import pathlib
 
-MEDICAMENTS_PATH = Path("../data/input/medicaments/")
-NEWS_PATH = Path("../data/input/news/")
+MEDICAMENTS_PATH = Path("../../data/input/medicaments/")
+NEWS_PATH = Path("../../data/input/news/")
 
 
 

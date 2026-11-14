@@ -1,35 +1,24 @@
+***Features***
 
-**** HINT START****
+multiple use cases with the following features:
 
-As of 13.11.2026 use cases 4.2 and 7 are most complex and running ones
+- LLM agents ( Anthropic & AWS Bedrock )
 
-**** HINT  END ****
+- RAG hybrid search against a vector DB  with reranking
 
+- RAG non-hybrid search against a vector DB           
 
-***Motivation***
+- multiple embedding models ( BAAI/HARRIER/QWEN) 
 
-Features
+- RAG realized with LangGraph and MCP
 
--LLM agents ( Anthropic & AWS Bedrock )
+- agent orchestration
 
--agent orchestration, 
+- HITL
 
--LangGraph,
+- guardrails
 
--MCP, VectorDB ( multiple Qdrant collections ) ,
-
--hybrid and non-hybrid RAG retrieval            => USE CASE 7!
-
--multiple embedding models ( BAAI/HARRIER/QWEN) => USE CASE 7!
-
--reranking                                      => USE CASE 7!
-
--HITL, 
-
--guardrails,
-
--MLflow   
-
+- MLflow   
 
 
 **Prerequisite**
@@ -38,93 +27,77 @@ For direct Anthropic calls the ANTHROPIC_API_KEY env var must be set.
 
 For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set.
 
+For HuggingFace model usage ( reranking ) the HF_TOKEN must be set.
+
 ( The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. )
 
-In Bedrock you must activate a LLm model. 
-
-execute the start.sh script ( **`set ANTHROPIC_API_KEY, AWS_PROFILE env vars`** )
+In AWS Bedrock you must activate a LLm model. 
 
 
 
-**--------------------------------------------------------------------------------------------------------------------**
+**-------------------------------------------------------------------------------------------------------------------**
 
-**1st USE CASE 'Simple Anthropic chat'**
-                            
-uv run python -m main01_llmAnthropic
+**rag_hybridsearch_usecase01**
 
+The Qdrant vector database is configured with medicament data ( use  /utils/qdrantDataImporter.py ).
 
+Without using LLM and Langgraph, the database can be directly accessed - 
 
-**--------------------------------------------------------------------------------------------------------------------**
+either via a normal search (  use retrieveNonHybrid ) or via a hybrid search (  use retrieveHybrid ). 
 
-**2nd USE CASE 'Human in the loop (HITL) with Langgraph only'** 
+Screenshots of the results under and /data/results/normalSearch_notPrecise.png /data/results/hybridSearch_Precise.png .
 
-                        agent asks user two times for approval
+The use case allows to test 3 embedding types ( Harrier, Baai and Qwen ). 
 
-                        realise a generic interrupt handling ( reusable )
+Attention database and query must have th same embedding type. 
 
-uv run python -m main02_langgraph_hitl
+Use the qdrantDtaImport with the same embedding type as thne one used for searching!
 
+How can it be tested:
 
-
-**--------------------------------------------------------------------------------------------------------------------**
-
-**3rd USE CASE 'Human in the loop (HITL) with llm ( Anthropic via AWS Bedrock ), tool and Langgraph'** 
-                        
-                        ask agent to delete a file using a tool
-
-                        agent requires human approval 
-
-                        simple interrupt handling
-
-uv run python -m main03_llmBedrock_langgraph_tool_htil
-
-
-
-**--------------------------------------------------------------------------------------------------------------------**
-
-**4 USE CASES **
-'Retrieval augmented generation' with llm ( Anthropic via AWS Bedrock ), rag ( mcp, qdrant vector ) and Langgraph'** 
-
-                        before: a document must be injected ( embedded with e.g. BAAI,HARRIER, QWEN ) into the vector search database
-                                the agent is configured with one tool that equals a MCP client 
-                        
-                        then: ask the agent a question 
-
-                        the agent needs its tool
-
-                        the tool calls the MCP client => MCP server
-
-                        the MCP server delegates the query to a vector search database ( Qdrant Docker container )
-
-                        execution of a similiarity search using the query embedding and the chunk embeddings
-
-                        [ future extensions AWS Guardrail, HITL , ... ]
-
-
-**----------------------**
-
-*1. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )*
-
-./mlflow.exe server --port 5000
-
-UI: http://localhost:5000/
-
-
-
-**----------------------**
-
-*2. Start vector database* 
+*1. Just start the Qdrant vector database* 
 
 docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
 
-Add document to Qdrant  ( create Chunks, Embeddings ):
+Add MEDICAMENTS documents from data/input/medicamentn to Qdrant  ( embeddings! ):
 
 python  qdrantDataImporter
 
 UI: http://localhost:6333/dashboard#/collections 
 
+*2. Execute the query*
 
-**----------------------**
+python rag_hybridsearch_usecase01.py
+
+**-------------------------------------------------------------------------------------------------------------------**
+
+**rag_mlflow_usecase01**
+
+The Qdrant vector database is configured with medicament data ( use  /utils/qdrantDataImporter.py ).
+
+In this scenario an LLM ( AWS Bedrock ) decides what is to be done to answer the prompty question 
+
+=> therefore a LangGraph graph is created. It contains the famous agnet  loop of reasoning and acting.
+
+Acting means a MCP client : server communication, where the server calls Qdrant.
+
+How can it be tested:
+
+*1. Just start the Qdrant vector database* 
+
+docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
+
+Add NEWS documents from data/input/news to Qdrant  ( embeddings! ):
+
+python  qdrantDataImporter
+
+UI: http://localhost:6333/dashboard#/collections 
+
+*2. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )*
+
+./mlflow.exe server --port 5000
+
+UI: http://localhost:5000/
 
 *3. Start MCP server*
 
@@ -132,72 +105,64 @@ prerequisite: provide a new port number into server_fastmcp.py @ mcp = FastMCP("
 
 python fastmcpServer
 
+*4. Execute the query*
 
-**----------------------**
+python rag_mlflow_usecase01.py
+
+**-------------------------------------------------------------------------------------------------------------------**
+
+**rag_guardrail_usedcase01**
+
+The prompt contains inappropriate language  / an email address.
+
+No LLM is called.
+
+The Langgraph passes control to AWS Guardrail which detects appropriate rule violation.
+
+The rules have been configured in AWS.
+
+The AWS Guardrail answer gets interpreted.
+
+No Agent loop.
+
+**-------------------------------------------------------------------------------------------------------------------**
+
+**rag_guardrail_usedcase02**
+
+The prompt contains inappropriate language  / an email address.
+
+AWS Guardrail is called before the LLM is called.
+
+**-------------------------------------------------------------------------------------------------------------------**
+
+**agentorchestation_usecase01**
+
+Agent hierarchy: a supervisor agents  coordinates 3 low-level agents. 
+
+Orchestration via asyncio features.
+
+No LangGraph.
+
+No  LLM.
+
+**-------------------------------------------------------------------------------------------------------------------**
+
+**hitl_usecase01**
+
+LangGraph-based.
+
+No LLM.
+
+**hitl_usecase02**
+
+LangGraph and LLM.
+
+Tools contain MCP tools and the delete tool.
+
+A user must confirm, that a file is to be deleted.
 
 
-*4.1 Attempt to delete a file*
 
-python main04.1_llmBedrock_ragMcpVector_hitl_langgraph
-
-Verify, human in the loop ( look at shell! ) is executed.
-
-
-*4.2 Execute RAG with MLflow*
-
-python main04.1_llmBedrock_ragMcpVector_langgraph_MLflow.py
-
-User Question:  "Was ist in Hannover passiert? Rufe die Vektordatenbank auf!"
-
-Prompt: "Übergebe Collection-Name 'news'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Harz, Eastwick, Hannover? Rufe die Vektordatenbank auf!"
-
-
-*4.3 Trigger AWS guardrail execution*
-
-Question consists of an insulting text or an email. Before being passed to AWS Bedrock, AWS Guardrail will check the question content .. and triggers an interrupt in these cases.
-
-python main04.3_llmBedrock_ragMcpVector_guardrail_langgraph_MLflow.py
-
-
-**--------------------------------------------------------------------------------------------------------------------**
-
-
-**5th USE CASE 'A super agent orchestrates three worker agents - asynchronous handling'**
-
-                            a super agent ask three worker agents and asynchronously incorporates their answer
-
-uv run python -m main05_agent_orchestrator
-
-
-**--------------------------------------------------------------------------------------------------------------------**
-
-**6th USE CASE 'AWS Guardrails integration'**
-        
-                            user request containing inappropriate language or PII will be incepted by AWS guardrail and
-                            will not be forwarded to the LLM
-
-uv run python -m main06_llmBedrock_ragMacVector_guardrail_langgraph
-
-
-**--------------------------------------------------------------------------------------------------------------------**
-
-**7th USE CASE 'Hybrid and non-hybrid RAG Retrieval - use HARRIER / BAAI / QWEN model embeddings'**
-
-*1. Start vector database* 
-
-docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
-
-Add document to Qdrant  ( create Chunks, activate embedding in qdatnDataImporter.py __main__  ):
-
-python  qdrantDataImporter
-
-UI: http://localhost:6333/dashboard#/collections 
-
-uv run python -m main07_vector_embeddings_hybridRetrieval_rerank ( check __main__ for same embedding as used during import ! )
-
-**--------------------------------------------------------------------------------------------------------------------**
-
-**--------------------------------------------------------------------------------------------------------------------**
 
 **--------------------------------------------------------------------------------------------------------------------**
 
