@@ -15,10 +15,10 @@ print(inspect.signature(FastMCP))
 print(inspect.signature(mcp.run))
 
 
-TRACKING_URI = "http://localhost:5000"
-os.environ["MLFLOW_TRACKING_URI"] = TRACKING_URI  # the MCP server subprocess reads this
-mlflow.set_tracking_uri(TRACKING_URI)
-mlflow.set_experiment("mcpserver-" + str(uuid.uuid4()))
+#TRACKING_URI = "http://localhost:5000"
+#os.environ["MLFLOW_TRACKING_URI"] = TRACKING_URI  # the MCP server subprocess reads this
+#mlflow.set_tracking_uri(TRACKING_URI)
+#mlflow.set_experiment("mcpserver-" + str(uuid.uuid4()))
 
 
 
@@ -43,13 +43,13 @@ def add(a: int, b: int) -> int:
 def search_in_vectordb(query: str, collection_name:str, limit: int = 3, embedding_model:str = "BAAI") -> str:
     """Search the qdrant vectordb ( knowledge base )  for information relevant to the query."""
     try:
-        print(f"MCP server: search_in_vectordb")
+        print(f"MCP server: search_in_vectordb : params query: {query}, collection: {collection_name}")
         em=_get_embedding_model(embedding_model)
         print(f"Detected embedding model: {em})")
         documents = qdrant_vector_search(query, limit=limit, collection_name=collection_name, embedding_model=em, hybrid=False)
     except Exception as e:
-        print(f"Exception {e}")
-        return "Exception "+{e}+"occurred!"
+        print(f"search_in_vectordb Exception {e}")
+        return "search_in_vectordb Exception "+{e}+"occurred!"
     if not documents:
         return "No relevant documents found!"
 
@@ -69,12 +69,12 @@ async def run_mcp_server():
     # Standardmäßig wird der moderne "streamable-http"-Transport verwendet.
     await mcp.run_http_async(
         host="127.0.0.1",
-        port=3005,
+        port=3006,
         transport="streamable-http"
     )
 
 if __name__ == "__main__":
     log_config = uvicorn.config.LOGGING_CONFIG
     log_config["loggers"]["mcp.server.streamable_http"] = {"level": "CRITICAL"}
-    mlflow.anthropic.autolog()
+    #mlflow.anthropic.autolog()
     asyncio.run(run_mcp_server())

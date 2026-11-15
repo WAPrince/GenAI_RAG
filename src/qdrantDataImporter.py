@@ -10,8 +10,9 @@ from mds.rag.vector_store import _create_qdrant_client
 from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME, HARRIER_MODEL_NAME
 import pathlib
 
-MEDICAMENTS_PATH = Path("../../data/input/medicaments/")
-NEWS_PATH = Path("../../data/input/news/")
+# Paths are valid if program started from src folder
+MEDICAMENTS_PATH = Path("../data/input/medicaments/")
+NEWS_PATH = Path("../data/input/news/")
 
 
 
@@ -50,8 +51,10 @@ def _get_embeddings(embedding_model_id:str, chunks) -> list[dict]:
     data_embeddings = None
     embedding_model = create_embedding_model(embedding_model_id)
     if (type(embedding_model) == SentenceTransformer):
+        print(f"_get_embeddings {embedding_model}")
         data_embeddings = embedding_model.encode(chunks, prompt_name="query")
     elif (type(embedding_model) == TextEmbedding):
+        print(f"_get_embeddings {embedding_model}")
         data_embeddings = list(
             embedding_model.embed(chunks)
         )
@@ -108,7 +111,8 @@ def _collection_dense_sparse(client, path):
             },
             sparse_vectors_config={
                 "sparse": models.SparseVectorParams(
-                    modifier=models.Modifier.IDF  # Wichtig für BM25-Gewichtung
+                    modifier=models.Modifier.IDF,
+                    # Wichtig für BM25-Gewichtung
                 )
             }
         )
@@ -193,12 +197,14 @@ def ingest(file : str, embedding_model_id : str, path:str) -> None:
 
 if __name__ == "__main__":
 
-    input_folder = pathlib.Path(NEWS_PATH)#MEDICAMENTS_PATH)
+    input_folder = pathlib.Path(MEDICAMENTS_PATH)
     # .iterdir() produces a generator Which you can wrap in a list() constructor to materialize
     for f in list(input_folder.iterdir()):
         print(f"Ingest file {f}")
-        #vector size 1024
-        ingest(f, HARRIER_MODEL_NAME, NEWS_PATH) #MEDICAMENTS_PATH)
-
         #vector size 364
-        #ingest(FILE, BAAI_MODEL_NAME)
+        ingest(f, BAAI_MODEL_NAME , MEDICAMENTS_PATH)
+        #ingest(f, HARRIER_MODEL_NAME , MEDICAMENTS_PATH)
+
+
+        #vector size 1024
+        #ingest(FILE, HARRIER_MODEL_NAME, NEWS_PATH)

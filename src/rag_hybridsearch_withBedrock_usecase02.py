@@ -123,17 +123,20 @@ def print_result(result: dict) -> None:
 
 
 
-async def main() -> None:
+async def main(embeddingModel:str = "BAAI", qdrantCollection:str = "news", hybrid:bool=TRUE ) -> None:
     """
-    Execute search queries against Qdrant collections 'medicaments' and 'news'
-    The system prompt part contains the Qdrant collection that contains the desired answers
-    The system prompt part contains the embedding model that should be applied to the query for the similiarity search (  it is the same as the imported Qdrant collection data )
+    The system prompt controls: embedding model ( the same embedding model Qdrant must be applied to data and query for similarity search to work )
+                                qdrant collection / grounding data  ( Qdrant collections 'medicaments' and 'news' )
+                                hybrid search with reranking or simple search
+    The user prompt contains:   user question
     """
 
-    mlflow.anthropic.autolog()
+    #mlflow.anthropic.autolog()
+
     await run_agent(
-        "Übergebe Collection-Name 'news'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Harz, Eastwick, Hannover? Rufe die Vektordatenbank auf!"
+       "Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments', führe eine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'"
 
+        #"Übergebe Collection-Name 'news'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Harz, Eastwick, Hannover? Rufe die Vektordatenbank auf!"
         #"Übergebe Collection-Name 'medicaments'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Amlodipin? Rufe die Vektordatenbank auf!"
     )
 

@@ -15,6 +15,7 @@ QDRANT_URL = "http://localhost:6333"
 
 def _search(client, limit , collection, query, query_embedding, documents) -> dict:
     try:
+        print(f"_search - params: limit: {limit}, collection: {collection}, query: {query}, query_embedding: {query_embedding}, documents: {documents}")
         result = client.query_points(
             collection_name=collection,
             query=query_embedding.tolist(),
@@ -54,16 +55,16 @@ def _search_hybrid(client, limit , collection, query, query_embedding, documents
             models.Prefetch(
                 query=query_dense,
                 using="dense",
-                limit=10,#max number of point to return
+                limit=5,#max number of point to return
             ),
             # 2. Keyword-Suche (BM25)
             models.Prefetch(
                 query=models.SparseVector(
                     indices=query_sparse.indices.tolist(),
-                    values=query_sparse.values.tolist()
+                    values=query_sparse.values.tolist(),#
                 ),
                 using="sparse",
-                limit=10,#max number of point to return
+                limit=5,#max number of point to return
             ),
         ],
         # Beide Ergebnislisten mit Reciprocal Rank Fusion zusammenführen
@@ -111,24 +112,42 @@ def qdrant_vector_search(
     hybrid : bool = False
 ) -> dict[Any, Any] | None:
 
-    e_m = create_embedding_model(embedding_model)
-    query_embedding =None
-    if(type(e_m) == SentenceTransformer):
-        query_embedding  = e_m.encode(query, prompt_name="query")
-    elif(type(e_m) == TextEmbedding):
-        query_embedding = next(
-            e_m.embed([query])
-        )
-    else:
-        print("Query embedding failed!")
-        return
+    documents= []
+    try:
+        print("qdrant_vector_search 1")
+        e_m = create_embedding_model(embedding_model)
+        query_embedding =None
+        print("qdrant_vector_search 2")
+        if(type(e_m) == SentenceTransformer):
+            print("qdrant_vector_search 3.1")
+            query_embedding  = e_m.encode(query, prompt_name="query")
+            print("qdrant_vector_search 3.2")
+        elif(type(e_m) == TextEmbedding):
+            print("qdrant_vector_search 4.1")
+            query_embedding = next(
+                e_m.embed([query])
+            )
+            print("qdrant_vector_search 4.22")
+        else:
+            print("Query embedding failed!")
+            return
 
-    client = _create_qdrant_client()
-    documents = []
+        print("qdrant_vector_search 5")
+        client = _create_qdrant_client()
+        print("qdrant_vector_search 6")
+        info = client.get_collection(collection_name=collection_name)
+        print(info.config.params.vectors)
 
-    if hybrid == False:
-        documents=_search(client, limit, collection_name, query, query_embedding, documents)
-    else:
-        documents=_search_hybrid(client, limit, collection_name, query, query_embedding, documents)
+        if hybrid == False:
+            print("qdrant_vector_search 7.1")
+            documents=_search(client, limit, collection_name, query, query_embedding, documents)
+            print("qdrant_vector_search 7.2")
+        else:
+            print("qdrant_vector_search 8.1")
+            documents=_search_hybrid(client, limit, collection_name, query, query_embedding, documents)
+            print("qdrant_vector_search 8.2")
+
+    except Excepion as e:
+        print(f"qdrant_vector_search Exception: {e}")
 
     return documents

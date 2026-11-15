@@ -73,7 +73,7 @@ python rag_hybridsearch_usecase01.py
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag_mlflow_usecase01**
+**rag_hybridsearch_withAnthropic_usecase03 rag_hybridsearch_withBedrock_usecase02**
 
 The Qdrant vector database is configured with NEWS data ( use  /utils/qdrantDataImporter.py ).
 
@@ -91,7 +91,8 @@ docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
 
 Add the NEWS document from data/input/news to Qdrant  ( embeddings! ):
 
-python  qdrantDataImporter
+cd src
+src> ..\.venv\Scripts\python.exe -m utils.qdrantDataImporter
 
 UI: http://localhost:6333/dashboard#/collections 
 
@@ -106,13 +107,15 @@ UI: http://localhost:5000/
 
 *3. Start MCP server*
 
-prerequisite: provide a new port number into server_fastmcp.py @ mcp = FastMCP("demo-server",port=PORTNUMBER)
+cd src
+src> ..\.venv\Scripts\python.exe -m utils.fastmcpServer
 
-python fastmcpServer
+
 
 *4. Execute the query*
-
-python rag_mlflow_usecase01.py
+cd src
+src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_usecase03.py
+src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withBedrock_usecase02.py
 
 **-------------------------------------------------------------------------------------------------------------------**
 

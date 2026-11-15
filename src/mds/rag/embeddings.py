@@ -19,15 +19,18 @@ QWEN_MODEL_NAME = "Qwen/Qwen3-Embedding-8B"
 
 def create_embedding_model(embedding_model_id:str) -> Any:
     if (embedding_model_id == BAAI_MODEL_NAME):
+        print(f"create_embedding_model {BAAI_MODEL_NAME}")
         return TextEmbedding(
             model_name=BAAI_MODEL_NAME,
         )
     elif (embedding_model_id == HARRIER_MODEL_NAME):
+        print(f"create_embedding_model {HARRIER_MODEL_NAME}")
         return  SentenceTransformer(
             "microsoft/harrier-oss-v1-0.6b",
             model_kwargs={"dtype": torch.float32},#{"torch_dtype": "auto", "device_map": "auto"},
         )
     elif (embedding_model_id == QWEN_MODEL_NAME):
+        print(f"create_embedding_model {QWEN_MODEL_NAME}")
         return  SentenceTransformer(
             "Qwen/Qwen3-Embedding-8B",
             model_kwargs={"torch_dtype": "auto", "device_map": "auto"},

@@ -14,5 +14,7 @@ __pycache__/
 mlartifacts/
 mlflow.db
 
+fastembed_cache
+
 start.sh
 .env

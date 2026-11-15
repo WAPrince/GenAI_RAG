@@ -47,10 +47,10 @@ if __name__ == "__main__":
 
     question:str="Welche Schmerzen können nach Einnahme der Medikamente auftreten?"
 
-    #vector size 1024
-    retrieveNonHybrid(question,10, "medicaments", HARRIER_MODEL_NAME)
+    #HARRIER_MODEL: vector size 1024
+    #retrieveNonHybrid(question,10, "medicaments", HARRIER_MODEL_NAME)
     #retrieveHybrid(question, 10, "medicaments__dense_sparse",  HARRIER_MODEL_NAME)
 
-    #Vector size 364
-    #retrieveNonHybrid(question, 3, "medicaments",BAAI_MODEL_NAME)
-    # retrieveHybrid(question, 3, "medicaments__dense_sparse", BAAI_MODEL_NAME)
+    #BAAI_MODEL: vector size 364
+    #retrieveNonHybrid(question, 3, "medicaments",BAAI_MODEL_NAME) #ok
+    #retrieveHybrid(question, 3, "medicaments__dense_sparse", BAAI_MODEL_NAME) #ok

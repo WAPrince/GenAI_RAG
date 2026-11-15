@@ -1,0 +1,102 @@
+[Middleware] Tool-Aufruf 1 von maximal 1 wird ausgeführt...
+Ausgezeichnet! Ich habe umfangreiche Informationen aus der Wissensdatenbank erhalten. Hier ist eine strukturierte und vollständige Antwort auf Basis der gefundenen Beipackzettel-Daten der drei Medikamente: **Doxagamma 2 (Doxazosin)**, **Amlodipin-1A Pharma 10mg** und **Biso Lich 10mg (Bisoprolol)**.
+
+---
+
+# 💊 Nebenwirkungen bei Einnahme aller Medikamente
+
+Die Wissensdatenbank enthält Informationen zu **drei Medikamenten**: Doxagamma 2, Amlodipin 10mg und Biso Lich 10mg. Nachfolgend finden Sie eine Übersicht der Nebenwirkungen jedes einzelnen Präparats sowie besondere Hinweise zu **Wechselwirkungen** bei gemeinsamer Einnahme.
+
+---
+
+## 1️⃣ Doxagamma 2 (Doxazosin – Alpha-1-Blocker, Blutdrucksenker)
+
+### ⚡ Häufige Nebenwirkungen:
+- Schwindel, Benommenheit, Kopfschmerzen, Schläfrigkeit, Apathie, Erregtheit
+- **Blutdruckabfall (Hypotonie)**, auch beim Aufstehen (orthostatische Hypotonie)
+- Herzklopfen (Palpitationen), beschleunigte Herzschlagfolge (Tachykardie)
+- Wasseransammlungen (Ödeme), periphere Ödeme
+- Bronchitis, Husten, Atemnot, Nasenschleimhautentzündung (Rhinitis), verstopfte Nase
+- Übelkeit, Verstopfung, Bauchschmerzen, Mundtrockenheit
+- Juckreiz, Muskelkrämpfe, Rückenschmerzen
+- Harnwegsinfektionen, Harninkontinenz, häufigeres Wasserlassen, Ejakulationsstörungen
+- Müdigkeit, Brustschmerzen, grippeähnliche Symptome
+
+### ⚠️ Gelegentliche Nebenwirkungen:
+- Allergische Reaktionen, Gicht, Appetitstörungen, Kaliummangel
+- Depressionen, Angst, Schlaflosigkeit, Zittern, Albträume, Gedächtnisverlust
+- Hirnblutgefäß-Ereignisse, kurzzeitige Bewusstlosigkeit (Synkope)
+- Angina pectoris, Herzinfarkt, Herzrhythmusstörungen
+- Erbrechen, Blähungen, Durchfall, Leberenzymveränderungen, Gelbsucht
+- Hautausschlag, Haarausfall, Gelenkschmerzen
+- Impotenz
+
+---
+
+## 2️⃣ Amlodipin-1A Pharma 10mg (Calciumantagonist, Blutdrucksenker)
+
+### ⚡ Sehr häufige Nebenwirkungen:
+- **Ödeme** (Flüssigkeitsansammlung im Körper) – betrifft mehr als 1 von 10 Patienten
+
+### ⚡ Häufige Nebenwirkungen:
+- Kopfschmerzen, Schwindel, Schläfrigkeit (v. a. zu Beginn)
+- Herzklopfen (Palpitationen), Hautrötung mit Wärmegefühl
+- Atembeschwerden
+- Bauchschmerzen, Übelkeit, Durchfall, Verstopfung, Verdauungsstörungen
+- Müdigkeit, Schwächegefühl
+- Sehstörungen, Doppeltsehen
+- Muskelkrämpfe, Knöchelschwellungen
+
+### ⚠️ Gelegentliche und seltene Nebenwirkungen:
+- Stimmungsschwankungen, Angst, Depression, Schlaflosigkeit
+- Zittern, Geschmacksstörungen, kurze Bewusstlosigkeit
+- Kribbeln in den Extremitäten, Ohrgeräusche (Tinnitus)
+- Niedriger Blutdruck, Rhinitis, Husten, Mundtrockenheit, Erbrechen
+- Haarausfall, Schwitzen, Hautjucken, Ausschlag
+- Erektionsstörungen, Vergrößerung der Brustdrüsen beim Mann (Gynäkomastie)
+- **Herzinfarkt, ungewöhnlicher Herzschlag** (selten)
+- Leberentzündung (Hepatitis), Gelbsucht, Bauchspeicheldrüsenentzündung (sehr selten)
+
+---
+
+## 3️⃣ Biso Lich 10mg (Bisoprolol – Betablocker, Herzmedikament)
+
+### ⚡ Sehr häufige Nebenwirkungen:
+- **Verlangsamter Herzschlag (Bradykardie)**
+
+### ⚡ Häufige Nebenwirkungen:
+- Müdigkeit, Erschöpfung, Schwindel, Kopfschmerzen (v. a. zu Beginn)
+- Verschlechterung einer Herzschwäche mit Ödemen und/oder Atemnot
+- Kältegefühl/Taubheit in den Extremitäten (Raynaud-Syndrom), Blutdruckabfall
+- Übelkeit, Erbrechen, Durchfall, Bauchschmerzen, Verstopfung
+- Schwäche, Müdigkeit
+
+### ⚠️ Gelegentliche und seltene Nebenwirkungen:
+- Schlafstörungen, Depressionen, Verwirrtheit, Halluzinationen, Albträume
+- AV-Überleitungsstörungen, orthostatische Hypotonie
+- Bronchialverkrampfungen (Bronchospasmen), Rhinitis
+- Leberentzündung (Hepatitis), Hautentzündungen, Schuppenflechte (Psoriasis), Haarausfall
+- Muskelschwäche, Muskelkrämpfe, Gelenkerkrankungen
+- Libido- und Potenzstörungen
+- Erhöhte Blutfettwerte, Leberenzymerhöhung, Unterzuckerung (Hypoglykämie)
+
+---
+
+## 🔴 Besondere Wechselwirkungen bei gleichzeitiger Einnahme aller drei Medikamente
+
+Die gleichzeitige Einnahme aller drei Medikamente kann zu **kritischen Verstärkungseffekten** führen, insbesondere:
+
+| Kombination | Risiko |
+|---|---|
+| **Biso Lich + Amlodipin** (Calciumantagonist) | Stark verstärkte Blutdrucksenkung, mögliche Herzmuskelschwäche |
+| **Biso Lich + Doxagamma 2** | Verstärkte Blutdrucksenkung, orthostatische Hypotonie (Schwindel/Ohnmacht beim Aufstehen) |
+| **Doxagamma 2 + Amlodipin** | Weitere Blutdrucksenkung durch additive Wirkung beider Mittel |
+| **Alle drei zusammen** | ⚠️ **Erhöhtes Risiko für gefährlichen Blutdruckabfall, Bradykardie, Ohnmacht und Herzprobleme** |
+
+---
+
+## 🏥 Wichtiger Hinweis
+
+> **⚠️ Nehmen Sie niemals alle Medikamente ohne ausdrückliche ärztliche Anweisung gleichzeitig ein!** Die Kombination aller drei Präparate kann zu einem **gefährlichen Blutdruckabfall**, **Herzrhythmusstörungen** oder sogar einem **Herzstillstand** führen. Sprechen Sie unbedingt mit Ihrem Arzt oder Apotheker, bevor Sie Änderungen an Ihrer Medikation vornehmen.
+
+Bei Verdacht auf eine Überdosierung: **Sofort den Notruf (112) verständigen!**
