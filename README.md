@@ -18,6 +18,9 @@
 
 - MLflow   
 
+**RECOMMENDATION**
+
+test rag_hybridsearch_withAnthropic_hitlQuestionLoop_usecase03.2 !
 
 **PREREQUISITES**
 
@@ -29,6 +32,8 @@ For HuggingFace model usage ( reranking ) the HF_TOKEN must be set.
 
 
 **USE CASES**
+
+**-------------------------------------------------------------------------------------------------------------------**
 
 **rag_hybridsearch_withoutAgent_usecase01 ( without LLM and without MCP )**
 
@@ -64,6 +69,70 @@ Collections 'medicaments' and 'medicaments__dense_sparse' will be created!
 *2. Execute the query*
 
 python rag_hybridsearch_usecase01.py
+
+**-------------------------------------------------------------------------------------------------------------------**
+
+**rag_hybridsearch_withAnthropic_hitlQuestionLoop_usecase03.2 ( with LLM and with MCP - with HITL for question loop )**
+
+In this scenario an LLM decides what is to be done to answer the prompt question 
+
+=> therefore a LangGraph graph is created. It contains the famous agent loop of reasoning and acting.
+
+Acting means an MCP client : server communication, where the server calls Qdrant.
+
+The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
+
+How can it be tested:
+
+*1. Just start the Qdrant vector database* 
+
+docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
+
+Add the MEDICAMENTS document from data/input/medicemtns to Qdrant  ( embeddings! ):
+
+cd src
+src> ..\.venv\Scripts\python.exe -m utils.qdrantDataImporter
+
+UI: http://localhost:6333/dashboard#/collections 
+
+Collections 'medicaments' and 'medicaments__dense_sparse' will be created!
+
+
+*2. Start LangFuse*
+
+(   install:  git clone https://github.com/langfuse/langfuse.git &   dock-compose up -d )
+
+UI: http://localhost:3000/
+
+
+*3.[Optional] Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )*
+
+./mlflow.exe server --port 5000
+
+UI: http://localhost:5000/
+
+
+*4. Start MCP server*
+
+cd src
+src> ..\.venv\Scripts\python.exe -m mcp_server
+
+
+*5. Execute the query and interact with the agent*
+
+cd src
+
+Attention: activate the prompts you want to test!
+
+src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_hitlQuestionLoop_usecase03.2.py
+
+Type-in questions like: 
+
+Welche Nebenwirkung hat Doxagamma? Nutze Datenbank medicaments__dense_sparse! Nenne deine Quellen!
+
+Welche Nebenwirkung hat Amlodipin? Nutze Datenbank medicaments__dense_sparse! Nenne deine Quellen!
+                        
+quit
 
 **-------------------------------------------------------------------------------------------------------------------**
 
@@ -116,18 +185,6 @@ src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_usecase03.1.p
 src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withBedrock_usecase02.py
 
 Logs of successful runs are under ./data/results/logs.
-
-**-------------------------------------------------------------------------------------------------------------------**
-
-**rag_hybridsearch_withAnthropic_usecase03.2 ( with LLM and with MCP - with HITL for questions loop )**
-
-
-
-
-
-
-
-
 
 **rag_guardrail_usedcase01**
 

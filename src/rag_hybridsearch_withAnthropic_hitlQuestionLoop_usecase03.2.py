@@ -8,7 +8,7 @@ from opentelemetry.instrumentation.anthropic import AnthropicInstrumentor
 from transformers.trainer_callback import CallbackHandler
 from typing_extensions import TypedDict
 
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, RemoveMessage
 from langchain_openai import ChatOpenAI  # Oder ChatDatabricks(...)
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
@@ -70,8 +70,12 @@ async def run_mcp_agent(prompt:str, qdrant_collection:str):
                 if user_input.strip().lower() in ["exit", "quit", "ende", "stop", "beenden"]:
                     return {"should_exit": True}
 
+                # Löschbefehle für alle bisherigen Nachrichten (inkl. Tool-Calls) erzeugen
+                delete_messages = [RemoveMessage(id=m.id) for m in state["messages"]]
+
+                # Alte Nachrichten entfernen und nur die neue Frage als frischen Kontext setzen
                 return {
-                    "messages": [HumanMessage(content=user_input)],
+                    "messages": delete_messages + [HumanMessage(content=user_input)],
                     "should_exit": False,
                 }
 
@@ -135,14 +139,14 @@ async def run_mcp_agent(prompt:str, qdrant_collection:str):
 
                 # Graph mit der Nutzereingabe fortsetzen (astream für asynchrone MCP-Tools)
                 async for event in graph.astream(
-                    Command(resume=user_text), config, stream_mode="values"
+                    Command(resume=user_text), config, stream_mode="updates"#values"
                 ):
-                    if "messages" in event and event["messages"]:
-                        last_msg = event["messages"][-1]
-                        # Nur die finale Textantwort des Assistenten ausgeben (keine rohen Tool-Calls)
+                    # Wir prüfen gezielt nur auf Updates aus dem Knoten 'agent'
+                    if "agent" in event:
+                        last_msg = event["agent"]["messages"][-1]
                         if last_msg.type == "ai" and not last_msg.tool_calls:
                             print(f"\nAssistent: {last_msg.content}")
 
 
 if __name__ == "__main__":
-    asyncio.run(run_mcp_agent( prompt="Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicamentsWelche__dense_sparse', führe eine hybride Suche aus", qdrant_collection="medicaments__dense_sparse"))
+    asyncio.run(run_mcp_agent( prompt="Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments__dense_sparse', führe eine hybride Suche aus", qdrant_collection="medicaments__dense_sparse"))

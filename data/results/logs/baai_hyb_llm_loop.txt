@@ -1,0 +1,107 @@
+Du: Welceh NEbenwirkung hat Amlodipin? Suche in medicaments__dense_sparse!
+C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
+  return await func(*args, **kwargs)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
+  return await func(*args, **kwargs)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+
+Assistent: Hier sind die **Nebenwirkungen von Amlodipin** (Amlodipin-1A Pharma 10mg), basierend auf der Gebrauchsinformation:
+
+---
+
+## ⚠️ Nebenwirkungen von Amlodipin
+
+### 🔴 Sehr häufig *(betrifft mehr als 1 von 10 Behandelten)*
+- **Ödeme** (Flüssigkeitsansammlungen im Körper)
+
+---
+
+### 🟠 Häufig *(betrifft bis zu 1 von 10 Behandelten)*
+- Kopfschmerzen, Schwindel, Schläfrigkeit (besonders zu Beginn)
+- Herzklopfen (Palpitationen), Hautrötung mit Wärmegefühl
+- Atembeschwerden
+- Bauchschmerzen, Übelkeit
+- Verdauungsstörungen, Durchfall, Verstopfung
+- Müdigkeit, Schwächegefühl
+- Sehstörungen, Doppeltsehen
+- Muskelkrämpfe
+- Knöchelschwellungen
+
+---
+
+### 🟡 Gelegentlich *(betrifft bis zu 1 von 100 Behandelten)*
+- Stimmungsschwankungen, Angst, Depression, Schlaflosigkeit
+- Zittern, Geschmacksstörungen, kurze Bewusstlosigkeit
+- Kribbeln oder verminderte Empfindlichkeit in den Extremitäten
+- Ohrgeräusche (Tinnitus)
+- Niedriger Blutdruck
+- Schnupfen / laufende Nase (Rhinitis)
+- Husten
+- Mundtrockenheit, Erbrechen
+- Haarausfall, Schwitzen, Hautjucken, Ausschlag, Hautverfärbung
+- Störungen beim Wasserlassen
+- Erektionsstörungen
+- Vergrößerung der Brustdrüsen beim Mann
+
+---
+
+### 🔵 Seltene / Schwerwiegende Nebenwirkungen
+- **Herzinfarkt**, ungewöhnlicher Herzschlag
+- **Bauchspeicheldrüsenentzündung** (starke Bauch- und Rückenschmerzen)
+- **Leberentzündung (Hepatitis)** mit Gelbsucht, Fieber, Müdigkeit und dunklem Urin
+
+---
+
+> ℹ️ **Hinweis:** Bei Auftreten von Nebenwirkungen, insbesondere wenn sie länger als **1 Woche** anhalten oder stark ausgeprägt sind, sollte ein **Arzt oder Apotheker** aufgesucht werden.
+
+Du: welceh Nebenwirkung hat Doxagamma? Nutze medicaments__dense_sparse! Gib diene Quelle an!
+C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
+  return await func(*args, **kwargs)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
+  return await func(*args, **kwargs)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
+  return await func(*args, **kwargs)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+
+Assistent: Ich habe relevante Informationen gefunden. Hier ist eine Übersicht der Nebenwirkungen von **Doxagamma 2**, basierend auf den Daten aus der Wissensdatenbank (`medicaments__dense_sparse`):
+
+---
+
+## 💊 Nebenwirkungen von Doxagamma 2
+
+Aus den gefundenen Quellen (Packungsbeilage von Doxagamma 2, 2 mg Tabletten / Doxazosinmesilat) gehen folgende mögliche **Nebenwirkungen und Risiken** hervor:
+
+### ⚠️ Allgemeine Nebenwirkungen (Abschnitt 4 der Packungsbeilage):
+- **Schwindel und Schwächegefühl**, besonders zu Beginn der Behandlung
+- **Ohnmacht** (in seltenen Fällen)
+- **Orthostatische Hypotonie** (Blutdruckabfall beim Aufstehen aus dem Liegen oder Sitzen)
+- **Allergische Reaktionen** – insbesondere durch den Zusatzstoff **Gelborange S (E110)**
+
+### 🫀 Herzbedingte Risiken:
+- Verschlechterung von **Angina pectoris** bei zu raschem oder starkem Blutdruckabfall (bei Patienten mit koronarer Herzerkrankung)
+- Besondere Vorsicht bei: Lungenödem, High-Output-Herzinsuffizienz, Rechts- oder Linksherzinsuffizienz mit niedrigem Füllungsdruck
+
+### 👁️ Augen:
+- Probleme bei der **Staroperation (Katarakt-OP)** – Doxagamma 2 kann während der Operation zu Komplikationen führen (Intraoperatives Floppy-Iris-Syndrom)
+
+### 🩺 Sehr seltene Nebenwirkungen:
+- **Schmerzhafte Dauererektion (Priapismus)** – sofortige ärztliche Behandlung notwendig!
+
+### 💊 Wechselwirkungen, die Nebenwirkungen verstärken können:
+- **PDE-5-Hemmer** (z. B. Sildenafil, Tadalafil, Vardenafil): verstärkter Blutdruckabfall mit Schwindel und Ohnmacht
+- **Andere blutdrucksenkende Mittel**: verstärkte Hypotonie
+- **Antibiotika/Antimykotika** (z. B. Clarithromycin, Itraconazol, Ketoconazol): können die Wirkung von Doxagamma 2 verändern
+
+---
+
+## 📚 Quelle:
+> **Collection:** `medicaments__dense_sparse`
+> **Dokument:** *Gebrauchsinformation: Doxagamma 2, 2 mg Tabletten (Doxazosinmesilat)* – Packungsbeilage für Patienten, Abschnitte 2, 3 und 4.
+
+> ⚕️ **Hinweis:** Bei Auftreten von Nebenwirkungen sollten Sie umgehend Ihren Arzt oder Apotheker kontaktieren. Die vollständige Liste der Nebenwirkungen entnehmen Sie bitte der offiziellen Packungsbeilage (Abschnitt 4).
+
+Du: exit
+Sitzung beendet.
