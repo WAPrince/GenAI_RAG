@@ -1,6 +1,4 @@
-***Features***
-
-multiple use cases with the following features:
+***FEATURES***
 
 - LLM agents ( Anthropic & AWS Bedrock )
 
@@ -8,7 +6,7 @@ multiple use cases with the following features:
 
 - RAG non-hybrid search against a vector DB           
 
-- multiple embedding models ( BAAI/HARRIER/QWEN) 
+- multiple embedding models ( BAAI/HARRIER/QWEN ) 
 
 - RAG realized with LangGraph and MCP
 
@@ -21,39 +19,34 @@ multiple use cases with the following features:
 - MLflow   
 
 
-**Prerequisite**
+**PREREQUISITES**
 
 For direct Anthropic calls the ANTHROPIC_API_KEY env var must be set.
 
-For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set.
+For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set. The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. In AWS Bedrock you must activate an LLm model. 
 
 For HuggingFace model usage ( reranking ) the HF_TOKEN must be set.
 
-( The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. )
 
-In AWS Bedrock you must activate a LLm model. 
+**USE CASES**
 
-
-
-**-------------------------------------------------------------------------------------------------------------------**
-
-**rag_hybridsearch_usecase01**
+**rag_hybridsearch_withoutAgent_usecase01 ( without LLM and without MCP )**
 
 The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
 
-Without using LLM and Langgraph, the database can be directly accessed - 
+Without using LLM, MCP and Langgraph, the database can be directly accessed - 
 
-either via a normal search (  use retrieveNonHybrid ) or via a hybrid search (  use retrieveHybrid ). 
+either via a normal search or via a hybrid search ( with embedding types Harrier, Baai  ). 
 
 Hybrid search: 1st step: a sparse and a dense search are being executed. In the 2nd step both results are being reranked using a Hugging Face model.
 
 Screenshots of the results under and /data/results/normalSearch_notPrecise.png /data/results/hybridSearch_Precise.png .
 
-The use case allows to test 3 embedding types ( Harrier, Baai and Qwen ). 
-
 Attention: database and query must have the same embedding type. Use the qdrantDataImport with the same embedding type as the one used for searching!
 
+
 How can it be tested:
+
 
 *1. Just start the Qdrant vector database* 
 
@@ -67,19 +60,20 @@ UI: http://localhost:6333/dashboard#/collections
 
 Collections 'medicaments' and 'medicaments__dense_sparse' will be created!
 
+
 *2. Execute the query*
 
 python rag_hybridsearch_usecase01.py
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag_hybridsearch_withAnthropic_usecase03 rag_hybridsearch_withBedrock_usecase02**
+**rag_hybridsearch_withAnthropic_usecase03 rag_hybridsearch_withBedrock_usecase02 ( with LLM and with MCP )**
 
 The Qdrant vector database is configured with NEWS data ( use  /utils/qdrantDataImporter.py ).
 
 In this scenario an LLM ( AWS Bedrock ) decides what is to be done to answer the prompty question 
 
-=> therefore a LangGraph graph is created. It contains the famous agent  loop of reasoning and acting.
+=> therefore a LangGraph graph is created. It contains the famous agent loop of reasoning and acting.
 
 Acting means a MCP client : server communication, where the server calls Qdrant.
 
@@ -96,7 +90,7 @@ src> ..\.venv\Scripts\python.exe -m utils.qdrantDataImporter
 
 UI: http://localhost:6333/dashboard#/collections 
 
-Collections 'news' and 'news__dense_sparse' will be created!
+Collections 'medicaments' and 'medicaments__dense_sparse' will be created!
 
 
 *2. Start MLflow server for observability/tracing ( LLM,TOOl,CHAIN,RETRIEVER )*
@@ -104,6 +98,7 @@ Collections 'news' and 'news__dense_sparse' will be created!
 ./mlflow.exe server --port 5000
 
 UI: http://localhost:5000/
+
 
 *3. Start MCP server*
 
@@ -114,8 +109,12 @@ src> ..\.venv\Scripts\python.exe -m utils.fastmcpServer
 
 *4. Execute the query*
 cd src
+Attention: activate the prompts you want to test!
 src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_usecase03.py
+
 src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withBedrock_usecase02.py
+
+Logs of successful runs re under ./data/results/logs
 
 **-------------------------------------------------------------------------------------------------------------------**
 

@@ -40,27 +40,40 @@ def add(a: int, b: int) -> int:
     return a + b
 
 @mcp.tool()
-def search_in_vectordb(query: str, collection_name:str, limit: int = 3, embedding_model:str = "BAAI") -> str:
+def search_in_vectordb(query: str, collection_name:str, limit: int = 3, embedding_model:str = "BAAI", hybrid=True) -> str:
     """Search the qdrant vectordb ( knowledge base )  for information relevant to the query."""
     try:
-        print(f"MCP server: search_in_vectordb : params query: {query}, collection: {collection_name}")
+        print(f"MCP server: search_in_vectordb : params query: {query}, hybrid: {hybrid}, collection: {collection_name}")
         em=_get_embedding_model(embedding_model)
         print(f"Detected embedding model: {em})")
-        documents = qdrant_vector_search(query, limit=limit, collection_name=collection_name, embedding_model=em, hybrid=False)
+        documents = qdrant_vector_search(query, limit=limit, collection_name=collection_name, embedding_model=em, hybrid=hybrid)
     except Exception as e:
         print(f"search_in_vectordb Exception {e}")
         return "search_in_vectordb Exception "+{e}+"occurred!"
+
     if not documents:
         return "No relevant documents found!"
 
     result = []
     for document in documents:
-        result.append(
-            f"""
-    Source: {document["source"]}
-    Similarity: {document["score"]:.4f}
-    {document["text"]}
-    #""".strip())
+        print(f"search_in_vectordb - document: {document}")
+        if hybrid == False:
+            result.append(
+                    f"""
+            Source: {document["source"]}
+            Similarity: {document["score"]:.4f}
+            {document["text"]}
+            """.strip())
+        else :
+            payload = document.payload or {}
+            result.append(
+                f"""
+                Source: {payload.get("source", "None")}
+                Similarity: {document.score:.4f}
+                {payload.get("text", "")}
+                #""".strip()
+                )
+
     return "\n\n---\n\n".join(result)
 
 

@@ -1,0 +1,44 @@
+[Middleware] Tool-Aufruf 1 von maximal 1 wird ausgeführt...
+Hier sind die Ergebnisse basierend auf der Suche in der Vektordatenbank (`medicaments`, Modell: `BAAI`, kein Hybrid-Modus):
+
+---
+
+## 💊 Nebenwirkungen von Doxagamma 2 mg
+
+Die Suche hat Informationen aus dem Beipackzettel von **Doxagamma 2 mg** (einem Alpha-Rezeptorenblocker) gefunden. Hier sind die bekannten Nebenwirkungen:
+
+---
+
+### ⚠️ Häufige Nebenwirkungen *(bis zu 1 von 10 Behandelten)*
+| Kategorie | Nebenwirkungen |
+|---|---|
+| 🦠 Infektionen | Atemwegsinfektionen, Harnwegsinfektionen |
+| 🧠 Nervensystem | Schläfrigkeit, Benommenheit, Kopfschmerzen, Schwindel, Apathie, Erregtheit |
+| 👁️ Augen | Akkommodationsstörungen |
+| ❤️ Herz/Kreislauf | Herzklopfen, Tachykardie, Hypotonie, Blutdruckabfall, Ödeme |
+| 🫁 Atemwege | Bronchitis, Husten, Atemnot, Rhinitis, verstopfte Nase |
+| 🤢 Magen-Darm | Verstopfung, Bauchschmerzen, Mundtrockenheit, Übelkeit |
+| 🩺 Sonstige | Muskelkrämpfe, Rückenschmerzen, Müdigkeit, Brustschmerzen, Harnprobleme, Ejakulationsstörungen |
+
+---
+
+### ⚠️ Gelegentliche Nebenwirkungen *(bis zu 1 von 100 Behandelten)*
+| Kategorie | Nebenwirkungen |
+|---|---|
+| 🧪 Stoffwechsel | Gicht, Hypokaliämie, Appetitlosigkeit, Durstgefühl |
+| 🧠 Psyche | Depressionen, Angst, Schlaflosigkeit, Albträume, Zittern, Gedächtnisverlust |
+| 👁️ Sinne | Tinnitus, Lichtscheu, Tränenfluss |
+| ❤️ Herz | Angina pectoris, Herzinfarkt, Arrhythmien |
+| 🫁 Atemwege | Bronchospasmus, Nasenbluten, Rachenentzündung |
+| 🤢 Magen-Darm | Blähungen, Erbrechen, Durchfall, Leberenzymveränderungen, Gelbsucht |
+| 🩺 Sonstige | Haarausfall, Hautausschlag, Gelenkschmerzen, Impotenz, blutiger Urin |
+
+---
+
+### ⚠️ Besondere Risikohinweise
+- **Kombination mit PDE-5-Hemmern** (z. B. Sildenafil/Viagra, Tadalafil, Vardenafil): Kann zu starkem **Blutdruckabfall, Schwindel und Ohnmacht** führen.
+- **Überdosierung**: Kann zu deutlichem, andauerndem Blutdruckabfall, schnellem Puls und Schweißausbrüchen führen → **sofort Arzt verständigen!**
+
+---
+
+> 📌 **Hinweis:** Die Datenbanksuche hat ausschließlich Informationen zu **Doxagamma 2 mg** geliefert. Für Nebenwirkungen bei der gleichzeitigen Einnahme **mehrerer verschiedener Medikamente** (Wechselwirkungen) ist unbedingt eine **Beratung durch einen Arzt oder Apotheker** empfohlen, da diese individuell sehr unterschiedlich sein können.

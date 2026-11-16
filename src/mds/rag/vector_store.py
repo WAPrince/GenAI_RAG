@@ -15,7 +15,7 @@ QDRANT_URL = "http://localhost:6333"
 
 def _search(client, limit , collection, query, query_embedding, documents) -> dict:
     try:
-        print(f"_search - params: limit: {limit}, collection: {collection}, query: {query}, query_embedding: {query_embedding}, documents: {documents}")
+        print(f"_search - params: limit: {limit}, collection: {collection}, query: {query}, documents: {documents}")
         result = client.query_points(
             collection_name=collection,
             query=query_embedding.tolist(),
@@ -37,42 +37,47 @@ def _search(client, limit , collection, query, query_embedding, documents) -> di
 
 def _search_hybrid(client, limit , collection, query, query_embedding, documents) -> dict:
 
-    dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    # Query in beide Vektorformate umwandeln
-    # 1. Erzeugt die Liste aus 384 Kommazahlen für die Sinnsuche
-    query_dense = list(dense_model.embed([query]))[0].tolist()
+    try:
+        print(f"_search_hybrid - params: limit: {limit}, collection: {collection}, query: {query}, documents: {documents}")
+        dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+        # Query in beide Vektorformate umwandeln
+        # 1. Erzeugt die Liste aus 384 Kommazahlen für die Sinnsuche
+        query_dense = list(dense_model.embed([query]))[0].tolist()
 
-    sparse_model = SparseTextEmbedding(
-        model_name="Qdrant/bm25"
-    )
-    # 2. Erzeugt das Objekt mit Wort-Positionen und BM25-Gewichten für die Keyword-Suche
-    query_sparse = list(sparse_model.embed([query]))[0]
+        sparse_model = SparseTextEmbedding(
+            model_name="Qdrant/bm25"
+        )
+        # 2. Erzeugt das Objekt mit Wort-Positionen und BM25-Gewichten für die Keyword-Suche
+        query_sparse = list(sparse_model.embed([query]))[0]
 
-    results = client.query_points(
-        collection_name=collection,
-        prefetch=[
-            # 1. Semantische Suche
-            models.Prefetch(
-                query=query_dense,
-                using="dense",
-                limit=5,#max number of point to return
-            ),
-            # 2. Keyword-Suche (BM25)
-            models.Prefetch(
-                query=models.SparseVector(
-                    indices=query_sparse.indices.tolist(),
-                    values=query_sparse.values.tolist(),#
+        results = client.query_points(
+            collection_name=collection,
+            prefetch=[
+                # 1. Semantische Suche
+                models.Prefetch(
+                    query=query_dense,
+                    using="dense",
+                    limit=5,#max number of point to return
                 ),
-                using="sparse",
-                limit=5,#max number of point to return
-            ),
-        ],
-        # Beide Ergebnislisten mit Reciprocal Rank Fusion zusammenführen
-        query=models.FusionQuery(fusion=models.Fusion.RRF),
-        limit=limit
-    )
-    for hit in results.points:
-        print(f"Score: {hit.score:.4f} | Text: {hit.payload['text']}")
+                # 2. Keyword-Suche (BM25)
+                models.Prefetch(
+                    query=models.SparseVector(
+                        indices=query_sparse.indices.tolist(),
+                        values=query_sparse.values.tolist(),#
+                    ),
+                    using="sparse",
+                    limit=5,#max number of point to return
+                ),
+            ],
+            # Beide Ergebnislisten mit Reciprocal Rank Fusion zusammenführen
+            query=models.FusionQuery(fusion=models.Fusion.RRF),
+            limit=limit
+        )
+        print(f"_search_hybrid  documents: {documents}")
+        for hit in results.points:
+            print(f"Score: {hit.score:.4f} | Text: {hit.payload['text']}")
+    except Exception as e:
+        print(f"Exception _search_hybrid: {e}")
     return results.points
 
 
@@ -114,7 +119,7 @@ def qdrant_vector_search(
 
     documents= []
     try:
-        print("qdrant_vector_search 1")
+        print(f"qdrant_vector_search 1 - query: {query}, hybrid: {hybrid}, collection: {collection_name}")
         e_m = create_embedding_model(embedding_model)
         query_embedding =None
         print("qdrant_vector_search 2")
@@ -147,7 +152,7 @@ def qdrant_vector_search(
             documents=_search_hybrid(client, limit, collection_name, query, query_embedding, documents)
             print("qdrant_vector_search 8.2")
 
-    except Excepion as e:
+    except Exception as e:
         print(f"qdrant_vector_search Exception: {e}")
 
     return documents

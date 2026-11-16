@@ -21,7 +21,7 @@ mlflow.set_experiment("langgraph-" + str(uuid.uuid4()))
 
 
 @mlflow.trace(name="run_agent", span_type=SpanType.AGENT)
-async def run_agent(prompt: str) -> None:
+async def run_agent(prompt: str, collection_name:str) -> None:
     load_dotenv()
     print(f" Is the MLflow server running? ( .venv/Scripts/mlflow.exe server --port 5000  )")
     print(f" Is the MCP server running? )")
@@ -33,7 +33,7 @@ async def run_agent(prompt: str) -> None:
 
     ###########################################################################
 
-    async with streamable_http_client(mcp_url) as (read, write, _):
+    async with streamable_http_client(collection_name) as (read, write, _):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -123,22 +123,28 @@ def print_result(result: dict) -> None:
 
 
 
-async def main(embeddingModel:str = "BAAI", qdrantCollection:str = "news", hybrid:bool=TRUE ) -> None:
+async def main(embeddingModel:str = "BAAI", qdrantCollection:str = "news" ) -> None:
     """
     The system prompt controls: embedding model ( the same embedding model Qdrant must be applied to data and query for similarity search to work )
                                 qdrant collection / grounding data  ( Qdrant collections 'medicaments' and 'news' )
-                                hybrid search with reranking or simple search
     The user prompt contains:   user question
     """
 
     #mlflow.anthropic.autolog()
 
+    #PROMPT 1
+    # Non-hybrid search with BAAI data and query embeddings
     await run_agent(
-       "Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments', führe eine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'"
-
-        #"Übergebe Collection-Name 'news'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Harz, Eastwick, Hannover? Rufe die Vektordatenbank auf!"
-        #"Übergebe Collection-Name 'medicaments'  und Embedding-Model 'HARRIER' an das MCP Tool! Was findest du zu Amlodipin? Rufe die Vektordatenbank auf!"
+       "Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments', führe keine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'",
+        collection_name = "medicaments"
     )
+    #PROMPT 2
+    # hybrid search with BAAI data and query embeddings and re-ranking
+    #await run_agent(
+    #    "Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments__dense_sparse', führe eine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'",
+    #     qdrant_collection = "medicaments__dense_sparse"
+    #)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

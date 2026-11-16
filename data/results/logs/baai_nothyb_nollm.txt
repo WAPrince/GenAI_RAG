@@ -1,0 +1,119 @@
+C:\Users\smart\.local\bin\uv.exe run C:/Daten/IT/DEV/Python/GenAI_RAG/.venv/Scripts/python.exe C:\Daten\IT\DEV\Python\GenAI_RAG\src\rag_hybridsearch_withoutAgent_usecase01.py 
+ Have documents from ./data/input/medicaments been imported in Qdrant collections? ( use qdrantDataImporter.py ))
+qdrant_vector_search 1
+create_embedding_model BAAI/bge-small-en-v1.5
+qdrant_vector_search 2
+qdrant_vector_search 4.1
+qdrant_vector_search 4.22
+qdrant_vector_search 5
+qdrant_vector_search 6
+size=384 distance=<Distance.COSINE: 'Cosine'> hnsw_config=None quantization_config=None on_disk=None memory=None datatype=None multivector_config=None
+qdrant_vector_search 7.1
+_search - params: limit: 3, collection: medicaments, query: Welche Schmerzen können nach Einnahme der Medikamente auftreten?, query_embedding: [ 4.80506495e-02  4.40950990e-02 -1.90078802e-02 -2.38394924e-02
+  7.36422688e-02 -2.67066043e-02  5.05726449e-02  7.30051324e-02
+ -6.50940314e-02 -5.76607771e-02 -7.77836442e-02 -5.39441556e-02
+ -3.20691615e-02  3.53610292e-02 -1.25701558e-02  6.10588351e-03
+  3.15116681e-02  2.56712586e-02 -2.82728951e-02  6.99787363e-02
+ -3.61043550e-02  3.90577433e-03  7.83145949e-02 -1.38444277e-02
+  1.64991599e-02  5.87226711e-02  1.51585201e-02 -8.72875899e-02
+ -6.70585334e-02 -2.59101838e-02 -1.01676239e-02 -3.15382145e-02
+  1.06056547e-02 -2.57907212e-02 -1.18268309e-02  8.80043674e-03
+ -1.33997593e-02  7.64031857e-02 -4.96965833e-02  9.24510416e-03
+  2.63747629e-02  7.28458464e-02  2.10918449e-02  9.70968232e-03
+  5.14752530e-02 -2.03086995e-02  1.43090058e-02  2.29767058e-02
+  2.54057851e-02  2.82894867e-03 -8.80840048e-02 -2.00432260e-02
+  4.38030772e-02  4.72542308e-02  2.13971399e-02 -2.24822620e-03
+ -2.55385209e-02 -3.20724817e-03 -3.18899681e-03  5.09177595e-02
+  2.86711063e-02  1.42957317e-02 -1.20737210e-01  3.64030129e-03
+ -1.61142237e-02  2.69455295e-02 -6.77952170e-03 -3.05294171e-02
+  1.92335341e-02  6.21207282e-02  3.48831788e-02 -6.06606249e-03
+  1.22980457e-02  9.01547000e-02 -4.45663137e-03 -3.95024121e-02
+  4.56879362e-02 -2.57376265e-02 -3.08214389e-02  5.85633889e-02
+  5.76740503e-03  6.88239280e-03  1.26431612e-02 -9.19068232e-02
+  1.50390565e-02 -4.01395485e-02  2.77154017e-02 -2.26813671e-03
+ -3.23213614e-03 -9.96188167e-03 -4.35376056e-02 -6.32489892e-03
+ -2.42244285e-02 -2.86976527e-02 -4.30979155e-04 -3.45380642e-02
+ -7.95357674e-02  1.37780588e-02 -3.72989848e-02  3.30036283e-01
+ -7.40670189e-02 -3.99271697e-02  2.83259898e-02 -8.21374059e-02
+ -1.26431612e-02 -1.42691843e-02 -5.44220069e-03  5.42228995e-03
+  1.13323866e-03 -3.37441335e-04 -4.18385752e-02  1.03269070e-02
+  6.59966394e-02 -1.49461413e-02  5.61210327e-02  4.74931560e-02
+  6.19614460e-02 -2.14369614e-02  6.97663575e-02  8.99423212e-02
+ -6.88156288e-04  4.47056852e-02  7.24210888e-02 -1.90808857e-03
+  5.46874776e-02 -3.10603641e-02 -5.01478873e-02  8.28276351e-02
+ -3.70069630e-02  1.04198232e-02  3.29717696e-02 -2.82728951e-03
+  3.82015929e-02  2.49677543e-02  4.57675792e-02  1.02339918e-02
+ -2.40253247e-02 -2.29368843e-02  2.83525381e-02 -1.46010257e-02
+ -3.30779590e-02 -1.33798495e-01 -5.56431822e-02 -1.34329438e-01
+ -8.35709646e-02  4.72542308e-02 -3.36089060e-02 -7.58589664e-03
+ -3.29717696e-02 -3.35292667e-02  1.45612052e-02 -2.27245055e-02
+  2.35740207e-02  5.25106005e-02  2.37333048e-02 -3.27361631e-03
+  3.92900333e-02 -3.22284475e-02  1.23179564e-02 -1.58752967e-02
+  5.53843472e-03 -9.08449292e-02 -3.01577561e-02  1.96874931e-01
+ -4.91125435e-02 -1.12029687e-02 -7.47307064e-03  4.54224646e-02
+  5.90412393e-02  8.46195780e-03  2.51668599e-02  6.01031333e-02
+ -1.33400280e-02  6.11119308e-02 -7.60580692e-03 -2.79277805e-02
+  9.53579694e-02 -1.96051951e-02 -8.20312183e-03 -1.84636619e-02
+ -1.42160896e-02  2.26979591e-02 -1.29285445e-02  9.18537304e-02
+ -1.25037879e-02 -2.83790845e-02  5.90346009e-03 -1.43621005e-02
+  7.08813444e-02  1.48266777e-02 -1.61805917e-02  3.71662481e-03
+  1.22117670e-02 -5.11301383e-02  3.50159146e-02 -1.36055015e-02
+ -8.14471766e-02  4.15996499e-02 -2.89631262e-02  1.03667285e-02
+  9.57827270e-02  7.40139261e-02 -1.29949134e-02  5.27229756e-02
+  7.85800666e-02 -2.48217443e-03 -1.44019211e-02 -1.37515115e-02
+  5.89350499e-02  1.13091581e-02 -5.36255874e-02  7.88986310e-02
+  8.43673795e-02 -2.64975429e-03 -1.78530731e-03 -4.31725802e-03
+  4.06704955e-02 -1.71097480e-02  3.52415675e-03  3.93165797e-02
+  1.04530072e-02 -7.25803748e-02 -9.20661017e-02 -2.87348181e-01
+  6.19614460e-02 -3.11665535e-02 -5.71829267e-02 -1.20126624e-02
+  1.99635848e-02  7.63235427e-03 -2.70517189e-02 -2.69455295e-02
+ -1.55700035e-02  1.31462321e-01  9.64995101e-03 -2.38129459e-02
+  3.11765098e-03 -2.97329985e-02 -6.12181202e-02  4.66967374e-02
+ -3.93431298e-02 -2.85914633e-02  1.47470366e-02  7.47472979e-04
+ -1.04994653e-02  1.17471889e-02 -7.75845442e-03 -1.69902854e-02
+ -7.38546476e-02  1.30506620e-01  3.69538702e-02  1.24506932e-02
+ -1.13556162e-02 -1.35125862e-02  5.67581691e-02 -1.89149659e-03
+ -9.58889201e-02 -2.03883424e-02 -5.42361736e-02 -1.12295160e-02
+ -4.41481918e-02  2.69588027e-02  3.79361212e-02 -5.86695783e-02
+  4.31393944e-02  6.82266103e-03  2.73171924e-02 -5.45812882e-02
+ -4.72807772e-02 -7.43324962e-03 -2.18484439e-02 -5.31477332e-02
+  1.26166139e-02 -2.44235341e-02  1.07649378e-02 -3.28655802e-02
+ -2.09856555e-02 -2.13971399e-02 -9.94197093e-03 -6.32357150e-02
+ -3.53610292e-02 -7.95888677e-02 -2.43073888e-03 -1.98308472e-02
+  1.50125092e-02  1.57425608e-02 -2.49412078e-02 -1.07052065e-02
+ -2.57674931e-03 -2.39456818e-02 -3.62901874e-02  4.64047156e-02
+ -1.36453221e-02 -1.53443506e-02  6.74301907e-02 -6.19614460e-02
+ -3.53875756e-02  6.00500368e-02  3.43787782e-02  8.86016805e-03
+ -2.87772939e-02 -3.74848172e-02  2.78746858e-02  2.30696201e-02
+  1.75743252e-02  1.00083398e-02 -3.18036899e-02 -2.03352477e-02
+ -4.04581167e-02 -6.86248206e-03  2.15489577e-04  2.88536190e-03
+ -6.80938736e-03 -1.71495695e-02 -2.06670891e-02 -5.41565344e-02
+ -2.68957531e-03 -5.62471338e-03 -3.18302363e-02 -2.44235337e-01
+  1.08578540e-02  5.43423630e-02  1.89547855e-02 -2.62951199e-02
+  2.05608997e-02 -1.13728717e-01 -3.64760160e-02  2.57907212e-02
+ -8.21374059e-02  1.23378672e-02 -2.70251725e-02  2.90958621e-02
+  3.96351479e-02  3.87259037e-03  1.01609863e-02  2.81401593e-02
+ -3.26001085e-02  9.51455981e-02 -1.12162428e-02  5.03868125e-02
+  2.71844547e-02  1.51850671e-01 -9.43757221e-03 -4.02988307e-02
+  3.86794433e-02  2.44368073e-02  1.48001304e-02 -1.29484553e-02
+  5.09443060e-02  1.55832767e-02 -1.66053493e-02  8.09693262e-02
+ -7.76509102e-03  7.48634413e-02 -1.20790303e-02 -5.70236444e-02
+  2.18517636e-03  1.08445799e-02  1.63266025e-02 -4.50242534e-02
+ -8.40222649e-03  1.28356293e-02  4.67232838e-02  4.90063541e-02
+ -5.88288605e-02 -3.96086015e-02 -9.88091230e-02 -2.33085472e-02
+  1.23113198e-02  4.64578085e-02  4.87939753e-02  2.83525381e-02
+  7.64031857e-02 -2.40518712e-02  1.77203361e-02  2.00830474e-02
+ -3.45380642e-02 -5.11035929e-03 -1.39638903e-02 -3.51221040e-02
+  1.06720226e-02 -2.76092123e-02  5.19265570e-02  4.09359671e-02], documents: []
+Could not reach the Hub ([WinError 10054] Eine vorhandene Verbindung wurde vom Remotehost geschlossen). Using cached commit hash for 'BAAI/bge-reranker-v2-m3'.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|██████████| 393/393 [00:01<00:00, 345.14it/s]
+qdrant_vector_search 7.2
+Retrieval result:
+
+SCORE: 0.72161597
+TEXT: Schlafstörungen, Depressionen, Gefühlsschwankungen, Verwirrtheit, verstärkte Traumaktivität. Selten: Albträume, Halluzinationen. Nervensystem Häufig: Müdigkeit1), Erschöpfungszustand1), Schwindelgefühl1), Kopfschmerz1) (besonders zu Beginn der Behandlung, diese sind im Allgemeinen weniger ausgeprägt und verschwinden oft innerhalb von 1 bis 2 Wochen). Selten: Synkope (kurze Ohnmachtsanfälle). Augen Selten: verminderter Tränenfluss (beim Tragen von Kontaktlinsen zu beachten), Sehstörungen, Bindehautentzündung (Konjunktivitis). Ohren Selten: Hörstörungen, Ohrensausen. Herz Sehr häufig: verlangsamter Herzschlag (Bradykardie). Häufig: Verschlechterung der Herzschwäche (Herzinsuffizienz) mit peripheren Ödemen und/oder Atemnot (bei Belastung). Gelegentlich: AV-Überleitungsstörungen. Gefäßsystem Häufig: Kältegefühl und Taubheit in den Extremitäten (Raynaud-Syndrom), Verstärkung von bestehendem intermittierendem Hinken, Blutdruckabfall. Gelegentlich: durch Lagewechsel vom Liegen zum Stehen verursachter Blutdruckabfall (orthostatische Hypotonie). Atemwege Gelegentlich: Bronchialverkrampfungen (Bronchospasmen) bei Patienten mit Bronchialasthma oder die Atemwege verengenden Erkrankungen (obstruktiven Atemwegserkrankungen) in der Krankengeschichte. Selten: allergischer Schnupfen (Rhinitis). Magen-Darm-Trakt Häufig: Übelkeit, Erbrechen, Durchfall (Diarrhö), Bauchschmerzen, Verstopfung (Obstipation). Gelegentlich: Appetitlosigkeit. 9 C2-Internal Leber Selten: Leberentzündung (Hepatitis). Haut Gelegentlich: Hautausschlag bei UV-Belastung (photoallergisches Exanthem), Nesselsucht, Schwitzen. Selten: Überempfindlichkeitsreaktionen (Jucken, Flush – anfallsartige Hautrötungen besonders im Gesicht, Ausschlag). Suchen Sie sofort Ihren Arzt auf, wenn bei Ihnen schwerere allergische Reaktionen wie Gesichts-, Hals-, Zungen-, Mund- oder Rachenschwellungen oder Atembeschwerden auftreten. Sehr selten: Betarezeptorenblocker können eine Schuppenflechte (Psoriasis) auslösen, verschlechtern oder zu Ausschlägen führen, die einer Psoriasis ähneln. Haarausfall. Skelettmuskulatur, Bindegewebe und Knochen Gelegentlich: Muskelschwäche, Muskelkrämpfe, Gelenkerkrankungen (mit Befall eines oder mehrerer Gelenke [Mono- oder Polyarthritis]). Geschlechtsorgane Selten: Libido- und Potenzstörungen. Allgemeine Erkrankungen Häufig: Schwäche, Müdigkeit. Gelegentlich: Missempfindungen. Untersuchungen Selten: Erhöhung bestimmter Blutfettwerte (Triglyceride) und Cholesterin, Erhöhung der Leberenzyme (ALAT, ASAT), erniedrigter Blutzuckerwert (Hypoglykämie). Hinweis: 1)= Diese Erscheinungen treten insbesondere zu Beginn der Behandlung auf. Sie sind leichterer Art und verschwinden in der Regel innerhalb von 1 bis 2 Wochen nach Behandlungsbeginn. Besondere Hinweise Betarezeptorenblocker können die Empfindlichkeit gegenüber Allergenen und die Schwere anaphylaktischer Reaktionen, d. h. akuter allergischer Allgemeinreaktionen, erhöhen. Bei Patienten mit schweren Überempfindlichkeitsreaktionen in der
+SCORE: 0.72351205
+TEXT: in den oberen Harnwegen, einem chronischen Harnwegsinfekt oder Blasensteinen leiden. Warnhinweise und Vorsichtsmaßnahmen Bitte sprechen Sie mit Ihrem Arzt oder Apotheker, bevor Sie Doxagamma 2 einnehmen. Zu Beginn der Behandlung Mit Doxagamma 2 kann es zu Schwindel- oder Schwächegefühlen und in seltenen Fällen zu einer Ohnmacht kommen. Sie sollten besonders zu Beginn der Behandlung Situationen meiden, bei denen Schwindel und Schwächegefühl zu einem Verletzungsrisiko führen könnten. Wie bei Arzneimitteln dieser Gruppe üblich, wird Ihr Blutdruck zu Beginn der Therapie regelmäßig kontrolliert werden. 1 Wenn Sie sich schwindelig oder schwach fühlen, legen Sie sich flach hin, und die Beschwerden müssten dann rasch wieder verschwinden. Bei Patienten mit akuten Herzbeschwerden Wie bei allen Arzneimitteln dieser Gruppe üblich, sollte Doxagamma 2 bei Patienten mit folgenden akuten Herzbeschwerden vorsichtig eingesetzt werden: - Wasseransammlung in den Lungen (Lungenödem) durch Herzklappenverengung im linken Herzen (Aorten- oder Mitralklappenstenose) - mangelhafte Sauerstoffversorgung der Organe und Gewebe bei erhöhter Pumpleistung des Herzens (High-Output-Herzinsuffizienz) - Herzmuskelschwäche des rechten Herzens (Rechtsherzinsuffizienz) durch Lungenembolie oder Herzbeutelerguss - Herzmuskelschwäche des linken Herzens (Linksherzinsuffizienz) mit niedrigem Füllungsdruck Bei Patienten mit eingeschränkter Leberfunktion Bei eingeschränkter Funktion der Leber (Leberinsuffizienz), sollte Doxagamma 2 mit besonderer Vorsicht eingesetzt werden. Aufgrund fehlender Erfahrungen kann die Anwendung von Doxagamma 2 bei Patienten mit schwerer Einschränkung der Leberfunktion nicht empfohlen werden. Bei Patienten die gleichzeitig Phosphodiesterase-5 Hemmer einnehmen Doxagamma 2 und bestimmte andere Arzneimittel zur Behandlung von erektiler Dysfunktion (Phosphodiesterase-5 Hemmer oder PDE-5 Hemmer wie z. B. Sildenafil, Tadalafil und Vardenafil) haben eine blutdrucksenkende Wirkung. Wenn beide Arzneimittel zusammen eingenommen werden, kann es deshalb zu einem Blutdruckabfall mit Schwindel und Ohnmacht kommen, wenn Sie beispielsweise vom Liegen aufstehen. Um dieses Risiko zu verringern, sollten PDE-5 Hemmer erst dann zusammen mit Doxagamma 2 eingenommen werden, nachdem Ihre Blutdruckwerte unter Doxagamma 2 stabil sind. Weiterhin sollten Sie die Behandlung mit dem PDE-5
+SCORE: 0.7529497
+TEXT: unzureichenden Erfahrungen kann die Anwendung dieses Arzneimittels bei Patienten mit schwerwiegender Leberfunktionsstörung nicht empfohlen werden (siehe Abschnitt 2 „Warnhinweise und Vorsichtsmaßnahmen“). Art der Anwendung Nehmen Sie die Tabletten bitte mit ausreichend Flüssigkeit ein.. 4 Hinweis zum Teilen der Tabletten Zum exakten Halbieren der Tablette legen Sie diese mit der Bruchrille nach oben auf eine glatte, feste Unterlage (Tischplatte oder Ähnliches) und drücken Sie mit beiden Zeigefingern gleichzeitig links und rechts der Bruchrille fest auf die Tablette. Die Bruchkerbe dient nur zum Teilen der Tablette, um das Schlucken zu erleichtern, und nicht zum Teilen in gleiche Dosen. Dauer der Anwendung Über die Dauer der Anwendung entscheidet der behandelnde Arzt. Eine bestimmte zeitliche Begrenzung ist nicht vorgesehen. Bitte sprechen Sie mit Ihrem Arzt oder Apotheker, wenn Sie den Eindruck haben, dass die Wirkung von Doxagamma 2 zu stark oder zu schwach ist. Wenn Sie eine größere Menge von Doxagamma 2 eingenommen haben, als Sie sollten Eine starke Überdosis Doxagamma 2 kann zu deutlichem und andauerndem Blutdruckabfall führen. Das kann sich z. B. durch Schwindel, schnellen Puls oder einen Schweißausbruch äußern. Verständigen Sie sofort einen Arzt bei Verdacht auf eine Überdosierung. Legen Sie sich flach auf den Rücken mit hochgelagerten Beinen. Weitere unterstützende Maßnahmen sollten, falls erforderlich, vom Arzt durchgeführt werden. Wenn Sie die Einnahme von Doxagamma 2 vergessen haben Wenn Sie zu wenig Doxagamma 2 eingenommen oder eine Dosis vergessen haben, lassen Sie die vergessene Dosis aus und fahren in Ihrem normalen Einnahmezyklus fort. Nehmen Sie nicht die doppelte Menge ein, wenn Sie die vorherige Einnahme vergessen haben. Wenn Sie die Einnahme von Doxagamma 2 abbrechen Die medikamentöse Behandlung des Bluthochdrucks ist in der Regel eine Dauertherapie. Sie sollten daher auf keinen Fall die Einnahme von Doxagamma 2 ohne Rücksprache mit Ihrem Arzt unterbrechen oder vorzeitig beenden, da sich sonst Ihr Blutdruck

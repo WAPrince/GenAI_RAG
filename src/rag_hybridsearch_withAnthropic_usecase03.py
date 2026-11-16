@@ -104,15 +104,23 @@ async def main(embeddingModel:str = "BAAI", qdrantCollection:str = "news", hybri
     """
     The system prompt controls: embedding model ( the same embedding model Qdrant must be applied to data and query for similarity search to work )
                                 qdrant collection / grounding data  ( Qdrant collections 'medicaments' and 'news' )
-                                hybrid search with reranking or simple search
+                                hybrid search with reranking or non-hybrid search without reranking
     The user prompt contains:   user question
     """
 
+    # PROMPT 1
+    # Non-hybrid search with BAAI data and query embeddings
     await run_agent(
-        "Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments__dense_sparse', führe eine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'",
-        #f"Verwende Embedding-Model {HARRIER_MODEL_NAME}, übergebe Collection-Name 'medicaments__dense_sparse', führe eine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'",
-        qdrant_collection="medicaments__dense_sparse"
+       "Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments', führe keine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'",
+        qdrant_collection="medicaments",
     )
+
+    #  2
+    # hybrid search with BAAI data and query embeddings and re-ranking
+    #await run_agent(
+    #    "Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments__dense_sparse', führe eine hybride Suche aus und beantworte die Benutzerfrage: 'Welche Nebenwirkungen gibt es, wenn ich alle Medikamente einnehme?'",
+    #    qdrant_collection="medicaments__dense_sparse",
+    #)
 
 
 if __name__ == "__main__":

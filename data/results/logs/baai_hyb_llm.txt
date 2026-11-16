@@ -1,0 +1,42 @@
+[Middleware] Tool-Aufruf 1 von maximal 1 wird ausgeführt...
+Basierend auf den Ergebnissen der hybriden Suche in der Vektordatenbank (`medicaments__dense_sparse`) mit dem Embedding-Modell `BAAI` hier eine strukturierte Antwort zu den gefundenen Nebenwirkungen und Wechselwirkungen:
+
+---
+
+## ⚠️ Nebenwirkungen & Wechselwirkungen der gefundenen Medikamente
+
+Die Suche lieferte Informationen zu zwei Medikamenten: **Doxagamma 2** und **Biso Lich 10 mg**. Wenn diese Medikamente zusammen oder mit anderen Präparaten eingenommen werden, können folgende Risiken auftreten:
+
+---
+
+### 💊 Doxagamma 2 – Wichtige Hinweise & Wechselwirkungen
+
+| Risiko | Beschreibung |
+|---|---|
+| 🔴 **Blutdruckabfall** | Besonders gefährlich bei Patienten mit Hypotonie oder orthostatischer Hypotonie (Schwindel beim Aufstehen) |
+| 🔴 **Angina-pectoris-Verschlechterung** | Bei schwerer koronarer Herzerkrankung kann ein zu starker Blutdruckabfall die Beschwerden verschlimmern |
+| 🔴 **Augenoperation (Katarakt)** | Kann während einer Staroperation zu Komplikationen führen → Augenarzt vorab informieren! |
+| 🔴 **Schmerzhafte Dauererektion** | Sehr selten, aber sofortiger Arztbesuch erforderlich |
+| ⚠️ **Wechselwirkungen** | PDE-5-Hemmer (Sildenafil, Tadalafil, Vardenafil), blutdrucksenkende Mittel, Antibiotika/Antimykotika (z. B. Clarithromycin, Itraconazol, Ketoconazol) |
+
+---
+
+### 💊 Biso Lich 10 mg (Bisoprolol) – Wichtige Hinweise & Wechselwirkungen
+
+| Risiko | Beschreibung |
+|---|---|
+| 🔴 **Anaphylaktische Reaktionen** | Erhöhte Empfindlichkeit gegenüber Allergenen; überschießende allergische Reaktionen möglich |
+| 🔴 **Verschleierung von Schilddrüsenproblemen** | Symptome einer Schilddrüsenüberfunktion (Herzrasen, Zittern) können verdeckt werden |
+| 🔴 **Niemals abrupt absetzen** | Ohne ärztliche Anweisung nicht plötzlich stoppen – kann gefährlich sein |
+| ⚠️ **Nicht für Kinder** | Keine Therapieerfahrungen für Kinder vorhanden |
+| ⚠️ **Wechselwirkungen** | Kombination mit anderen Arzneimitteln kann problematisch sein → Arzt/Apotheker befragen |
+
+---
+
+### 🩺 Allgemeine Empfehlungen
+
+> ❗ **Wenn Sie Nebenwirkungen bemerken**, wenden Sie sich sofort an Ihren **Arzt oder Apotheker**.
+> Nebenwirkungen können auch dem **Bundesinstitut für Arzneimittel und Medizinprodukte (BfArM)** gemeldet werden:
+> 🌐 [www.bfarm.de](http://www.bfarm.de)
+
+**Bitte nehmen Sie niemals mehrere Medikamente gleichzeitig ein, ohne vorher ärztlichen Rat eingeholt zu haben!** Wechselwirkungen können gefährlich sein und individuell sehr unterschiedlich ausfallen.
