@@ -5,6 +5,7 @@ from langchain.chat_models import init_chat_model
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langfuse.langchain import CallbackHandler
+from langfuse import get_client
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.constants import START, END
 from langgraph.graph import StateGraph
@@ -111,6 +112,8 @@ async def run_agent(prompt: str, qdrant_collection: str) -> None:
                 messages = result.get("messages", [])
                 if messages:
                     print(messages[-1].content)
+
+                get_client().flush()
 
 
 async def main(embeddingModel:str = "BAAI", qdrantCollection:str = "news", hybrid:bool=True ) -> None:
