@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     #BAAI_MODEL: vector size 364
     #retrieveNonHybrid(question, 3, "medicaments",BAAI_MODEL_NAME) #ok
-    #retrieveHybrid(question, 3, "medicaments__dense_sparse", BAAI_MODEL_NAME) #ok
+    retrieveHybrid(question, 3, "medicaments__dense_sparse", BAAI_MODEL_NAME) #ok
 
     #HARRIER_MODEL: vector size 1024
     #retrieveNonHybrid(question,10, "medicaments", HARRIER_MODEL_NAME)

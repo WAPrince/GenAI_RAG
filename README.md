@@ -104,7 +104,7 @@ UI: http://localhost:5000/
 *3. Start MCP server*
 
 cd src
-src> ..\.venv\Scripts\python.exe -m utils.fastmcpServer
+src> ..\.venv\Scripts\python.exe -m mcp_server
 
 
 
