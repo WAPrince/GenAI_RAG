@@ -1,10 +1,10 @@
 import asyncio, os
 import uuid
-from mds.rag.embeddings import BAAI_MODEL_NAME, QWEN_MODEL_NAME, HARRIER_MODEL_NAME
 from typing import Literal
 from langchain.chat_models import init_chat_model
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
+from langfuse.langchain import CallbackHandler
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.constants import START, END
 from langgraph.graph import StateGraph
@@ -15,21 +15,33 @@ import mlflow
 from mlflow.entities import SpanType
 from mlflow.genai.scorers import RelevanceToQuery, Correctness
 from dotenv import load_dotenv
-from mds.llm.bedrock import create_llm
-from mds.rag.mcp.fastmcpClient import create_mcp_client
 from mds.graph.state import AgentState
 from mds.rag.mcp.fastmcpClient import MCP_SERVERS
+from opentelemetry.instrumentation.anthropic import AnthropicInstrumentor
+
+
 
 #TRACKING_URI:str = "http://localhost:5000"
 MCP_URL:str = "http://localhost:3006/mcp"
 MAX_TOOL_CALLS:int = 1
 
+
+
 async def run_agent(prompt: str, qdrant_collection: str) -> None:
 
     load_dotenv()
+
     print(f" ANTHROPIC_API_KEY: {os.getenv("ANTHROPIC_API_KEY")}")
+    print(f" LANGFUSE_PUBLIC_KEY: {os.getenv("LANGFUSE_PUBLIC_KEY")}")
+    print(f" LANGFUSE_SECRET_KEY: {os.getenv("LANGFUSE_SECRET_KEY")}")
+    print(f" LANGFUSE_BASE_URL: {os.getenv("LANGFUSE_BASE_URL")}")
+
     print(f" Is the MCP server running? )")
-    print(f" Have documents from ./data/input/news and/or /data/input/medicaments been imported into Qdrant collections? ( use qdrantDataImporter.py ))")
+    print(f" Have documents from ./data/input/news and/or /data/input/medicaments been imported into the Qdrant collections? ( use qdrantDataImporter.py ))")
+
+    # OpenTelemetry für Anthropic aktivieren
+    AnthropicInstrumentor().instrument()
+    langfuse_handler = CallbackHandler()
 
     ###########################################################################
 
@@ -83,7 +95,8 @@ async def run_agent(prompt: str, qdrant_collection: str) -> None:
 
                 config = {
                     "configurable": {
-                        "thread_id": "console-session-"+str(uuid.uuid4())
+                        "thread_id": "console-session-"+str(uuid.uuid4()),
+                        "callbacks": [langfuse_handler]
                     }
                 }
 

@@ -12,11 +12,11 @@ flask
 flask_cors
 
 langgraph
-langchain
 langchain-anthropic
 langchain-core>=1.6.3
 langchain-aws>=1.7.8
 langchain-mcp-adapters>=0.3.2
+langfuse
 
 mcp[cli,srv]
 
@@ -29,6 +29,8 @@ python-dotenv
 pydantic-settings>=2.15.0
 pandas
 pyspark
+
+opentelemetry-instrumentation-anthropic
 
 qdrant-client[fastembed]>=1.19.1
 
