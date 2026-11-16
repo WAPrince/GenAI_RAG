@@ -69,13 +69,14 @@ python rag_hybridsearch_usecase01.py
 
 **rag_hybridsearch_withAnthropic_usecase03 rag_hybridsearch_withBedrock_usecase02 ( with LLM and with MCP )**
 
-The Qdrant vector database is configured with NEWS data ( use  /utils/qdrantDataImporter.py ).
-
-In this scenario an LLM ( AWS Bedrock ) decides what is to be done to answer the prompty question 
+In this scenario an LLM decides what is to be done to answer the prompt question 
 
 => therefore a LangGraph graph is created. It contains the famous agent loop of reasoning and acting.
 
-Acting means a MCP client : server communication, where the server calls Qdrant.
+Acting means an MCP client : server communication, where the server calls Qdrant.
+
+The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
+
 
 How can it be tested:
 
@@ -83,7 +84,7 @@ How can it be tested:
 
 docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
 
-Add the NEWS document from data/input/news to Qdrant  ( embeddings! ):
+Add the MEDICAMENTS document from data/input/medicemtns to Qdrant  ( embeddings! ):
 
 cd src
 src> ..\.venv\Scripts\python.exe -m utils.qdrantDataImporter
@@ -114,7 +115,7 @@ src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_usecase03.py
 
 src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withBedrock_usecase02.py
 
-Logs of successful runs re under ./data/results/logs
+Logs of successful runs are under ./data/results/logs.
 
 **-------------------------------------------------------------------------------------------------------------------**
 
