@@ -67,7 +67,7 @@ python rag_hybridsearch_usecase01.py
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag_hybridsearch_withAnthropic_usecase03 rag_hybridsearch_withBedrock_usecase02 ( with LLM and with MCP )**
+**rag_hybridsearch_withAnthropic_usecase03.1 rag_hybridsearch_withBedrock_usecase02 ( with LLM and with MCP - without HITL )**
 
 In this scenario an LLM decides what is to be done to answer the prompt question 
 
@@ -111,13 +111,23 @@ src> ..\.venv\Scripts\python.exe -m mcp_server
 *4. Execute the query*
 cd src
 Attention: activate the prompts you want to test!
-src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_usecase03.py
+src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_usecase03.1.py
 
 src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withBedrock_usecase02.py
 
 Logs of successful runs are under ./data/results/logs.
 
 **-------------------------------------------------------------------------------------------------------------------**
+
+**rag_hybridsearch_withAnthropic_usecase03.2 ( with LLM and with MCP - with HITL for questions loop )**
+
+
+
+
+
+
+
+
 
 **rag_guardrail_usedcase01**
 
