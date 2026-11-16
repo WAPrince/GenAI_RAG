@@ -1,61 +1,54 @@
-Du: Welceh NEbenwirkung hat Amlodipin? Suche in medicaments__dense_sparse!
-C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
-  return await func(*args, **kwargs)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
-  return await func(*args, **kwargs)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+Du: Welche Wirkung hat Amlodipin? Sieh in datenbank medicaments__dense_sparse nach, suche darin hybrid! Nenne deine Quellen!
 
-Assistent: Hier sind die **Nebenwirkungen von Amlodipin** (Amlodipin-1A Pharma 10mg), basierend auf der Gebrauchsinformation:
+Assistent: ## Wirkung von Amlodipin 💊
+
+Hier sind die Ergebnisse aus der Datenbankrecherche zusammengefasst:
 
 ---
 
-## ⚠️ Nebenwirkungen von Amlodipin
-
-### 🔴 Sehr häufig *(betrifft mehr als 1 von 10 Behandelten)*
-- **Ödeme** (Flüssigkeitsansammlungen im Körper)
+### 🔬 Wirkstoffklasse
+Amlodipin gehört zur Gruppe der **Kalziumantagonisten**. Es hemmt den Einstrom von Kalziumionen in die glatten Muskelzellen der Blutgefäße und des Herzens.
 
 ---
 
-### 🟠 Häufig *(betrifft bis zu 1 von 10 Behandelten)*
-- Kopfschmerzen, Schwindel, Schläfrigkeit (besonders zu Beginn)
-- Herzklopfen (Palpitationen), Hautrötung mit Wärmegefühl
-- Atembeschwerden
-- Bauchschmerzen, Übelkeit
-- Verdauungsstörungen, Durchfall, Verstopfung
-- Müdigkeit, Schwächegefühl
-- Sehstörungen, Doppeltsehen
-- Muskelkrämpfe
-- Knöchelschwellungen
+### 🎯 Anwendungsgebiete & Wirkungsmechanismus
+
+| Indikation | Wirkung |
+|---|---|
+| **Bluthochdruck (Hypertonie)** | Amlodipin bewirkt eine **Erweiterung der Blutgefäße (Vasodilatation)**, sodass das Blut leichter durchfließen kann → Blutdrucksenkung |
+| **Angina pectoris** | Verbessert die **Blutversorgung des Herzmuskels**, der dadurch besser mit Sauerstoff versorgt wird → Vorbeugung von Brustschmerzen |
+| **Vasospastische (Prinzmetal-)Angina** | Verhindert Gefäßkrämpfe der Herzkranzgefäße |
+
+> ⚠️ **Wichtig:** Akute Angina-pectoris-Schmerzen werden durch Amlodipin **nicht sofort** gelindert – es wirkt vorbeugend, nicht als Notfallmedikament.
 
 ---
 
-### 🟡 Gelegentlich *(betrifft bis zu 1 von 100 Behandelten)*
-- Stimmungsschwankungen, Angst, Depression, Schlaflosigkeit
-- Zittern, Geschmacksstörungen, kurze Bewusstlosigkeit
-- Kribbeln oder verminderte Empfindlichkeit in den Extremitäten
-- Ohrgeräusche (Tinnitus)
-- Niedriger Blutdruck
-- Schnupfen / laufende Nase (Rhinitis)
-- Husten
-- Mundtrockenheit, Erbrechen
-- Haarausfall, Schwitzen, Hautjucken, Ausschlag, Hautverfärbung
-- Störungen beim Wasserlassen
-- Erektionsstörungen
-- Vergrößerung der Brustdrüsen beim Mann
+### ⚠️ Wichtige Wechselwirkungen
+Amlodipin kann von folgenden Substanzen beeinflusst werden (Wirkspiegel-Erhöhung oder -Senkung):
+- **Antimykotika:** Ketoconazol, Itraconazol
+- **HIV-Proteasehemmer:** Ritonavir, Indinavir, Nelfinavir
+- **Antibiotika:** Rifampicin, Erythromycin, Clarithromycin
+- **Johanniskraut** (Hypericum perforatum)
+- **Herzmedikamente:** Verapamil, Diltiazem
+- **Cholesterinsenker:** Simvastatin
+- **Immunsuppressiva:** Tacrolimus, Ciclosporin, Sirolimus, Everolimus
+
+> 🍊 **Grapefruit meiden!** Grapefruit und Grapefruitsaft erhöhen den Blutspiegel von Amlodipin unkontrolliert und können die blutdrucksenkende Wirkung verstärken.
 
 ---
 
-### 🔵 Seltene / Schwerwiegende Nebenwirkungen
-- **Herzinfarkt**, ungewöhnlicher Herzschlag
-- **Bauchspeicheldrüsenentzündung** (starke Bauch- und Rückenschmerzen)
-- **Leberentzündung (Hepatitis)** mit Gelbsucht, Fieber, Müdigkeit und dunklem Urin
+### 📚 Quelle
+> **Gebrauchsinformation:** *Amlodipin – 1A Pharma® 10 mg Tabletten N*, Packungsbeilage, **Stand: Juni 2022**
+> Datenbank: `medicaments__dense_sparse` (Hybrid-Suche)
 
 ---
+*Bei Fragen zur Einnahme wenden Sie sich bitte an Ihren Arzt oder Apotheker.*
 
-> ℹ️ **Hinweis:** Bei Auftreten von Nebenwirkungen, insbesondere wenn sie länger als **1 Woche** anhalten oder stark ausgeprägt sind, sollte ein **Arzt oder Apotheker** aufgesucht werden.
 
-Du: welceh Nebenwirkung hat Doxagamma? Nutze medicaments__dense_sparse! Gib diene Quelle an!
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+Du: Welche Nebenwirkung hat Doxagamma? suche hybrid in medicaments__dense_sparse! Nenne deine Quellen!
 C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
   return await func(*args, **kwargs)
 RuntimeWarning: Enable tracemalloc to get the object allocation traceback
@@ -66,42 +59,67 @@ C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumen
   return await func(*args, **kwargs)
 RuntimeWarning: Enable tracemalloc to get the object allocation traceback
 
-Assistent: Ich habe relevante Informationen gefunden. Hier ist eine Übersicht der Nebenwirkungen von **Doxagamma 2**, basierend auf den Daten aus der Wissensdatenbank (`medicaments__dense_sparse`):
+Assistent: Hier sind alle relevanten Informationen aus der Wissensdatenbank zusammengefasst:
 
 ---
 
 ## 💊 Nebenwirkungen von Doxagamma 2
 
-Aus den gefundenen Quellen (Packungsbeilage von Doxagamma 2, 2 mg Tabletten / Doxazosinmesilat) gehen folgende mögliche **Nebenwirkungen und Risiken** hervor:
-
-### ⚠️ Allgemeine Nebenwirkungen (Abschnitt 4 der Packungsbeilage):
-- **Schwindel und Schwächegefühl**, besonders zu Beginn der Behandlung
-- **Ohnmacht** (in seltenen Fällen)
-- **Orthostatische Hypotonie** (Blutdruckabfall beim Aufstehen aus dem Liegen oder Sitzen)
-- **Allergische Reaktionen** – insbesondere durch den Zusatzstoff **Gelborange S (E110)**
-
-### 🫀 Herzbedingte Risiken:
-- Verschlechterung von **Angina pectoris** bei zu raschem oder starkem Blutdruckabfall (bei Patienten mit koronarer Herzerkrankung)
-- Besondere Vorsicht bei: Lungenödem, High-Output-Herzinsuffizienz, Rechts- oder Linksherzinsuffizienz mit niedrigem Füllungsdruck
-
-### 👁️ Augen:
-- Probleme bei der **Staroperation (Katarakt-OP)** – Doxagamma 2 kann während der Operation zu Komplikationen führen (Intraoperatives Floppy-Iris-Syndrom)
-
-### 🩺 Sehr seltene Nebenwirkungen:
-- **Schmerzhafte Dauererektion (Priapismus)** – sofortige ärztliche Behandlung notwendig!
-
-### 💊 Wechselwirkungen, die Nebenwirkungen verstärken können:
-- **PDE-5-Hemmer** (z. B. Sildenafil, Tadalafil, Vardenafil): verstärkter Blutdruckabfall mit Schwindel und Ohnmacht
-- **Andere blutdrucksenkende Mittel**: verstärkte Hypotonie
-- **Antibiotika/Antimykotika** (z. B. Clarithromycin, Itraconazol, Ketoconazol): können die Wirkung von Doxagamma 2 verändern
+Basierend auf den gefundenen Informationen aus der Packungsbeilage von **Doxagamma 2 (Wirkstoff: Doxazosinmesilat)** sind folgende Nebenwirkungen und Risiken bekannt:
 
 ---
 
-## 📚 Quelle:
-> **Collection:** `medicaments__dense_sparse`
-> **Dokument:** *Gebrauchsinformation: Doxagamma 2, 2 mg Tabletten (Doxazosinmesilat)* – Packungsbeilage für Patienten, Abschnitte 2, 3 und 4.
+### ⚠️ Häufige / bekannte Nebenwirkungen & Risiken
 
-> ⚕️ **Hinweis:** Bei Auftreten von Nebenwirkungen sollten Sie umgehend Ihren Arzt oder Apotheker kontaktieren. Die vollständige Liste der Nebenwirkungen entnehmen Sie bitte der offiziellen Packungsbeilage (Abschnitt 4).
+| Bereich | Nebenwirkung |
+|---|---|
+| **Kreislauf** | Schwindel, Schwächegefühl, **Ohnmacht** (besonders zu Therapiebeginn) |
+| **Blutdruck** | Blutdruckabfall bei Lagewechsel (**orthostatische Hypotonie**) |
+| **Allergisch** | **Allergische Reaktionen** durch den Farbstoff Gelborange S (E110) |
+| **Augen** | Komplikationen bei **Katarakt-OP** (sog. „Floppy Iris Syndrom") |
+| **Sexualfunktion** | Sehr selten: **schmerzhafte Dauererektion (Priapismus)** – sofort Arzt aufsuchen! |
+| **Herzerkrankung** | Bei koronarer Herzerkrankung: Verschlechterung von **Angina pectoris** möglich |
+| **Wechselwirkung** | Kombination mit **PDE-5-Hemmern** (Sildenafil, Tadalafil, Vardenafil) → starker Blutdruckabfall, Schwindel, Ohnmacht |
+
+---
+
+### 🫀 Besondere Vorsicht bei folgenden Herzerkrankungen:
+- Lungenödem (Aorten- oder Mitralklappenstenose)
+- High-Output-Herzinsuffizienz
+- Rechtsherzinsuffizienz (z. B. durch Lungenembolie)
+- Linksherzinsuffizienz mit niedrigem Füllungsdruck
+
+---
+
+### 👨‍⚕️ Wichtige Hinweise
+- **Kinder und Jugendliche unter 18 Jahren**: Nicht empfohlen (Sicherheit nicht erwiesen)
+- **Eingeschränkte Leberfunktion**: Besondere Vorsicht nötig
+- Wenn Nebenwirkungen auftreten → **Arzt oder Apotheker informieren**
+
+---
+
+## 📚 Quellen (aus der Vektordatenbank `medicaments__dense_sparse`)
+
+| # | Quelle | Similarity |
+|---|---|---|
+| 1 | Packungsbeilage **Doxagamma 2, 2 mg Tabletten** – Abschnitt 2 (Warnhinweise, Vorsichtsmaßnahmen, Wechselwirkungen) | 0.8333 |
+| 2 | Packungsbeilage **Doxagamma 2, 2 mg Tabletten** – Einleitung & Abschnitt 1–4 (Inhaltsverzeichnis, Nebenwirkungen) | 0.7500 |
+| 3 | Packungsbeilage **Doxagamma 2, 2 mg Tabletten** – Abschnitt 2 (PDE-5-Hemmer, Augen-OP, Herzerkrankungen) | 0.5833 |
+
+> ⚠️ **Hinweis**: Die detaillierte Nebenwirkungstabelle (Abschnitt 4 der Packungsbeilage) war in der Datenbank nicht vollständig indexiert. Für eine vollständige Liste empfiehlt sich die **vollständige Packungsbeilage** oder eine Rücksprache mit **Arzt oder Apotheker**.
+
+
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+Du: danke. Exit
+
+Assistent: Auf Wiedersehen! 😊 Falls Sie weitere Fragen haben oder Hilfe benötigen, stehe ich jederzeit gerne zur Verfügung. Tschüss! 👋
+
+
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
 
 Du: exit
 Sitzung beendet.

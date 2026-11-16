@@ -74,6 +74,8 @@ python rag_hybridsearch_usecase01.py
 
 **rag_hybridsearch_withAnthropic_hitlQuestionLoop_usecase03.2 ( with LLM and with MCP - with HITL for question loop )**
 
+( Log output of this usecase: => data/results/logs/baai_hyb_llm_loop.txt )
+
 In this scenario an LLM decides what is to be done to answer the prompt question 
 
 => therefore a LangGraph graph is created. It contains the famous agent loop of reasoning and acting.
