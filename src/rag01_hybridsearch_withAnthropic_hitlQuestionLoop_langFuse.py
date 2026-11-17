@@ -11,7 +11,7 @@ from typing_extensions import TypedDict
 from langchain_core.messages import HumanMessage, RemoveMessage
 from langchain_openai import ChatOpenAI  # Oder ChatDatabricks(...)
 from langchain_mcp_adapters.client import MultiServerMCPClient
-
+from langfuse.langchain import CallbackHandler
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
@@ -38,22 +38,19 @@ async def run_mcp_agent(prompt:str, qdrant_collection:str):
 
     print(f" Is the MCP server running? )")
     print(
-        f" Have documents from ./data/input/news and/or /data/input/medicaments been imported into the Qdrant collections? ( use qdrantDataImporter.py ))")
+        f" Have documents from ./data/input/medicaments been imported into the Qdrant collections? ( use qdrant_data_importer.py ))")
 
     # OpenTelemetry für Anthropic aktivieren
     AnthropicInstrumentor().instrument()
-    #langfuse_handler = CallbackHandler()
+    langfuse_handler = CallbackHandler()
 
     # MCP-Client starten und Tools dynamisch vom Server laden
     client = MultiServerMCPClient(MCP_SERVERS)
-        #mcp_tools = client.get_tools()
 
-        # LLM mit den geladenen MCP-Tools verknüpfen
     model = init_chat_model(
         model="claude-sonnet-4-6",
         model_provider="anthropic"
     )
-        #client = MultiServerMCPClient(MCP_SERVERS)
 
     async with client.session(qdrant_collection) as session:
             mcp_tools = await load_mcp_tools(session)

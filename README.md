@@ -16,13 +16,13 @@
 
 - guardrails
 
-- MLflow   
+- MLflow, LangFuse   
 
-**RECOMMENDATION**
+***RECOMMENDATION***
 
-test rag_hybridsearch_withAnthropic_hitlQuestionLoop_usecase03.2 !
+test rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse !
 
-**PREREQUISITES**
+***PREREQUISITES***
 
 For direct Anthropic calls the ANTHROPIC_API_KEY env var must be set.
 
@@ -31,48 +31,9 @@ For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set. The AWS 
 For HuggingFace model usage ( reranking ) the HF_TOKEN must be set.
 
 
-**USE CASES**
+***USE CASES***
 
-**-------------------------------------------------------------------------------------------------------------------**
-
-**rag_hybridsearch_withoutAgent_usecase01 ( without LLM and without MCP )**
-
-The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
-
-Without using LLM, MCP and Langgraph, the database can be directly accessed - 
-
-either via a normal search or via a hybrid search ( with embedding types Harrier, Baai  ). 
-
-Hybrid search: 1st step: a sparse and a dense search are being executed. In the 2nd step both results are being reranked using a Hugging Face model.
-
-Screenshots of the results under and /data/results/normalSearch_notPrecise.png /data/results/hybridSearch_Precise.png .
-
-Attention: database and query must have the same embedding type. Use the qdrantDataImport with the same embedding type as the one used for searching!
-
-
-How can it be tested:
-
-
-*1. Just start the Qdrant vector database* 
-
-docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
-
-Add MEDICAMENTS documents from data/input/medicament to Qdrant  ( embeddings! ):
-
-python  qdrantDataImporter
-
-UI: http://localhost:6333/dashboard#/collections 
-
-Collections 'medicaments' and 'medicaments__dense_sparse' will be created!
-
-
-*2. Execute the query*
-
-python rag_hybridsearch_usecase01.py
-
-**-------------------------------------------------------------------------------------------------------------------**
-
-**rag_hybridsearch_withAnthropic_hitlQuestionLoop_usecase03.2 ( with LLM and with MCP - with HITL for question loop )**
+**rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse ( with LLM and with MCP - with HITL for question loop )**
 
 ( Log output of this usecase: => data/results/logs/baai_hyb_llm_loop.txt )
 
@@ -126,7 +87,7 @@ cd src
 
 Attention: activate the prompts you want to test!
 
-src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_hitlQuestionLoop_usecase03.2.py
+src> ..\.venv\Scripts\python.exe -m rag01hybridsearch_withAnthropic_hitlQuestionLoop.py
 
 Type-in questions like: 
 
@@ -136,9 +97,12 @@ Welche Nebenwirkung hat Amlodipin? Nutze Datenbank medicaments__dense_sparse! Ne
                         
 quit
 
+![LangFuse view of the use case during runtime](./data/results/observability/LangFuse_Traces02_rag01.png)
+
+
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag_hybridsearch_withAnthropic_usecase03.1 rag_hybridsearch_withBedrock_usecase02 ( with LLM and with MCP - without HITL )**
+**rag02_hybridsearch_withAnthropic, rag04_hybridsearch_withBedrock ( with LLM and with MCP - without HITL, without question loop )**
 
 In this scenario an LLM decides what is to be done to answer the prompt question 
 
@@ -177,14 +141,13 @@ UI: http://localhost:5000/
 cd src
 src> ..\.venv\Scripts\python.exe -m mcp_server
 
-
-
 *4. Execute the query*
 cd src
 Attention: activate the prompts you want to test!
-src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withAnthropic_usecase03.1.py
 
-src> ..\.venv\Scripts\python.exe -m rag_hybridsearch_withBedrock_usecase02.py
+src> ..\.venv\Scripts\python.exe -m rag02_hybridsearch_withAnthropic.py
+
+src> ..\.venv\Scripts\python.exe -m rag03_hybridsearch_withBedrock.py
 
 Logs of successful runs are under ./data/results/logs.
 
@@ -194,8 +157,6 @@ The prompt contains inappropriate language  / an email address.
 
 No LLM is called.
 
-The LangGraph passes control to AWS Guardrail which detects appropriate rule violation.
-
 The rules have been configured in AWS.
 
 The AWS Guardrail answer gets interpreted.
@@ -204,15 +165,55 @@ No Agent loop.
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag_guardrail_usedcase02**
+**rag04_hybridsearch_withoutAgent ( without LLM and without MCP - utilityx to just test retrieval performance )**
 
-The prompt contains inappropriate language  / an email address.
+The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
 
-AWS Guardrail is called before the LLM is called.
+Without using LLM, MCP and Langgraph, the database can be directly accessed - 
+
+either via a normal search or via a hybrid search ( with embedding types Harrier, Baai  ). 
+
+Hybrid search: 1st step: a sparse and a dense search are being executed. In the 2nd step both results are being reranked using a Hugging Face model.
+
+Screenshots of the results under and /data/results/normalSearch_notPrecise.png /data/results/hybridSearch_Precise.png .
+
+Attention: database and query must have the same embedding type. Use the qdrantDataImport with the same embedding type as the one used for searching!
+
+
+How can it be tested:
+
+
+*1. Just start the Qdrant vector database* 
+
+docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
+
+Add MEDICAMENTS documents from data/input/medicament to Qdrant  ( embeddings! ):
+
+python  qdrantDataImporter
+
+UI: http://localhost:6333/dashboard#/collections 
+
+Collections 'medicaments' and 'medicaments__dense_sparse' will be created!
+
+
+*2. Execute the query*
+
+python rag_hybridsearch_usecase01.py
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**agentorchestation_usecase01**
+
+
+
+**rag_guardrail05_withoutAgent, rag06_guardrail_withAgent**
+
+The prompt contains inappropriate language  / an email address.
+
+AWS Guardrail is called before the LLM is called ( 06 ).
+
+**-------------------------------------------------------------------------------------------------------------------**
+
+**agentorchestation**
 
 Agent hierarchy: a supervisor agents  coordinates 3 low-level agents. 
 
@@ -224,13 +225,13 @@ No  LLM.
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**hitl_usecase01**
+**hitl01_withoutAgent**
 
 LangGraph-based.
 
 No LLM.
 
-**hitl_usecase02**
+**hitl02_withAgent**
 
 LangGraph and LLM.
 
