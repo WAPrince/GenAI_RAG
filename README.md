@@ -40,15 +40,16 @@ For HuggingFace model usage ( reranking ) the HF_TOKEN must be set.
   <figcaption>LangFuse view of the use case rag01 during runtime</figcaption>
 </figure>
 
-( Log output of this usecase: => data/results/logs/baai_hyb_llm_loop.txt )
 
-In this scenario an LLM decides what is to be done to answer the prompt question 
+In this scenario a user asks for the adverse effects of medicament Amlodipin. An LLM answers based on data in the Qdrant vector database. The user can continue to ask further questions.
 
-=> therefore a LangGraph graph is created. It contains the famous agent loop of reasoning and acting.
+Technically, an LLM decides what is to be done to answer the prompt question 
+
+Therefore a LangGraph graph is created. It contains the famous agent loop of reasoning and acting.
 
 Acting means an MCP client : server communication, where the server calls Qdrant.
 
-The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
+The Qdrant vector database is configured with the MEDICAMENTS__DENSE_SPARSE data ( use  /utils/qdrant_data_importer.py ).
 
 How can it be tested:
 
