@@ -49,15 +49,7 @@ Amlodipin kann von folgenden Substanzen beeinflusst werden (Wirkspiegel-Erhöhun
 ########################################################################################################################
 ########################################################################################################################
 Du: Welche Nebenwirkung hat Doxagamma? suche hybrid in medicaments__dense_sparse! Nenne deine Quellen!
-C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
-  return await func(*args, **kwargs)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
-  return await func(*args, **kwargs)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-C:\Daten\IT\DEV\Python\GenAI_RAG\.venv\Lib\site-packages\opentelemetry\instrumentation\anthropic\utils.py:45: RuntimeWarning: coroutine 'AsyncAPIResponse.parse' was never awaited
-  return await func(*args, **kwargs)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+
 
 Assistent: Hier sind alle relevanten Informationen aus der Wissensdatenbank zusammengefasst:
 
