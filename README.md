@@ -35,6 +35,11 @@ For HuggingFace model usage ( reranking ) the HF_TOKEN must be set.
 
 **rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse ( with LLM and with MCP - with HITL for question loop )**
 
+<figure>
+  <img src="./data/results/observability/LangFuse_Traces02_rag01.png" alt="LangFuse view of the use case during runtime">
+  <figcaption>LangFuse view of the use case rag01 during runtime</figcaption>
+</figure>
+
 ( Log output of this usecase: => data/results/logs/baai_hyb_llm_loop.txt )
 
 In this scenario an LLM decides what is to be done to answer the prompt question 
@@ -97,7 +102,7 @@ Welche Nebenwirkung hat Amlodipin? Nutze Datenbank medicaments__dense_sparse! Ne
                         
 quit
 
-![LangFuse view of the use case during runtime](./data/results/observability/LangFuse_Traces02_rag01.png)
+
 
 
 **-------------------------------------------------------------------------------------------------------------------**
