@@ -29,6 +29,7 @@ python-dotenv
 pydantic-settings>=2.15.0
 pandas
 pyspark
+pytest
 
 opentelemetry-instrumentation-anthropic
 
@@ -38,3 +39,4 @@ sqlalchemy
 sentence-transformers
 transformers
 torch
+

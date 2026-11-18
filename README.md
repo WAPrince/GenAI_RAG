@@ -62,9 +62,10 @@ How can it be tested:
 
 docker run --name ai-agent-qdrant -p 6333:6333 -p 6334:6334 qdrant/qdrant
 
-Add the MEDICAMENTS document from data/input/medicemtns to Qdrant  ( embeddings! ):
+IMPORTANT: Add the MEDICAMENTS documents from data/input/medicaments to Qdrant :
 
 cd src
+
 src> ..\.venv\Scripts\python.exe -m utils.qdrantDataImporter
 
 UI: http://localhost:6333/dashboard#/collections 

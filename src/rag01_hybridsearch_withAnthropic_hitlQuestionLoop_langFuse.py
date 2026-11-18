@@ -19,7 +19,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt, Command
 
 from mds.rag.mcp.fastmcpClient import MCP_SERVERS
-
+import warnings
 
 # 1. State definieren
 class AgentState(TypedDict):
@@ -145,5 +145,8 @@ async def run_mcp_agent(prompt:str, qdrant_collection:str):
                             print(f"\nAssistent: {last_msg.content}")
 
 
+
+
 if __name__ == "__main__":
+
     asyncio.run(run_mcp_agent( prompt="Verwende Embedding-Model 'BAAI', übergebe Collection-Name 'medicaments__dense_sparse', führe eine hybride Suche aus", qdrant_collection="medicaments__dense_sparse"))
