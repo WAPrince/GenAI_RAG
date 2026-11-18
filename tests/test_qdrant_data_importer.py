@@ -155,4 +155,3 @@ class TestSplitIntoChunks:
         chunks = sut._split_into_chunks(f, chunk_size=300)
         assert len(chunks) == 2
 
-    
