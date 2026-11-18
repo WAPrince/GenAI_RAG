@@ -7,7 +7,7 @@ from qdrant_client import models
 from sentence_transformers import SentenceTransformer
 from mds.rag.vector_store import _create_qdrant_client
 
-from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME, HARRIER_MODEL_NAME
+from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME,MINILM_MODEL_NAME,HARRIER_MODEL_NAME,QWEN_MODEL_NAME,BM25_MODEL_NAME,RERANKER_MODEL_NAME,SEMANTIC_SEARCH_EMBEDDING_MODEL
 import pathlib
 
 # Paths are valid if program started from src folder
@@ -47,9 +47,9 @@ def _split_into_chunks(
     print(f"Created {len(chunks)} chunks")
     return chunks
 
-def _get_embeddings(embedding_model_id:str, chunks) -> list[dict]:
+def _get_embeddings(semantic_search_embedding_model_id:str, chunks) -> list[dict]:
     data_embeddings = None
-    embedding_model = create_embedding_model(embedding_model_id)
+    embedding_model = create_embedding_model(semantic_search_embedding_model_id)
     if (type(embedding_model) == SentenceTransformer):
         print(f"_get_embeddings {embedding_model}")
         data_embeddings = embedding_model.encode(chunks, prompt_name="query")
@@ -94,6 +94,10 @@ def _collection(client, vector_size, path):
 
 
 def _collection_dense_sparse(client, path):
+    """
+        create vectors for hybrid search: semantic search  => dense & keyword search => sparse
+    """
+
     collections = client.get_collections()
     collection__dense_saprse_exists = any(
         collection.name == _path_to_collection(path)+"__dense_sparse"
@@ -147,8 +151,8 @@ def _upsert(file, client, chunks, data_embeddings, path):
 def _upsert_dense_space(client, chunks: list, data_embeddings, path):
 
     current_sparse_dense_count = client.count(collection_name=_path_to_collection(path)+"__dense_sparse").count
-    dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    sparse_model = SparseTextEmbedding(model_name="Qdrant/bm25")
+    dense_model = TextEmbedding(model_name=SEMANTIC_SEARCH_EMBEDDING_MODEL)
+    sparse_model = SparseTextEmbedding(model_name=BM25_MODEL_NAME)
 
     # Embeddings generieren
     dense_embeddings = list(dense_model.embed(chunks))
@@ -164,7 +168,7 @@ def _upsert_dense_space(client, chunks: list, data_embeddings, path):
                     "dense": dense_vec.tolist(),
                     "sparse": models.Document(
                         text=doc,
-                        model="Qdrant/bm25",
+                        model=BM25_MODEL_NAME,#"Qdrant/bm25",
                         options={"language": "german"} # Optional für deutsche Stoppwörter/Stemming
                     )
                 }
@@ -176,12 +180,12 @@ def _upsert_dense_space(client, chunks: list, data_embeddings, path):
 
 
 @measure_time
-def ingest(file : str, embedding_model_id : str, path:str) -> None:
+def ingest(file : str, semantic_search_embedding_model_id : str, path:str) -> None:
 
     try:
         chunks = _split_into_chunks(file=file)
 
-        data_embeddings =  _get_embeddings(embedding_model_id, chunks)
+        data_embeddings =  _get_embeddings(semantic_search_embedding_model_id, chunks)
 
         client = _create_qdrant_client()
 
@@ -201,8 +205,12 @@ if __name__ == "__main__":
     # .iterdir() produces a generator Which you can wrap in a list() constructor to materialize
     for f in list(input_folder.iterdir()):
         print(f"Ingest file {f}")
-        #vector size 364
-        ingest(f, BAAI_MODEL_NAME , MEDICAMENTS_PATH)
+
+        #configure SEMANTIC_SEARCH_EMBEDDING_MODEL in .env
+        ingest(f, SEMANTIC_SEARCH_EMBEDDING_MODEL, MEDICAMENTS_PATH)
+
+
+        #ingest(f, BAAI_MODEL_NAME , MEDICAMENTS_PATH)
         #ingest(f, HARRIER_MODEL_NAME , MEDICAMENTS_PATH)
 
 

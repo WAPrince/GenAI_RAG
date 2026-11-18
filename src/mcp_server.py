@@ -4,8 +4,7 @@ import uuid
 import inspect
 from fastmcp import FastMCP
 import mlflow
-
-from mds.rag.embeddings import BAAI_MODEL_NAME,QWEN_MODEL_NAME, HARRIER_MODEL_NAME
+from mds.rag.embeddings import SEMANTIC_SEARCH_EMBEDDING_MODEL
 from mds.rag.vector_store import qdrant_vector_search
 
 
@@ -23,30 +22,17 @@ print(inspect.signature(mcp.run))
 
 
 
-def _get_embedding_model(embedding_model : str) -> str :
-    if embedding_model == "HARRIER":
-        return HARRIER_MODEL_NAME
-    elif embedding_model == "QWEN":
-        return QWEN_MODEL_NAME
-    elif embedding_model == "BAAI":
-        return BAAI_MODEL_NAME
-    else:
-        print("Error get_embedding_model")
-        return
-
 @mcp.tool()
 def add(a: int, b: int) -> int:
     """Add two integers."""
     return a + b
 
 @mcp.tool()
-def search_in_vectordb(query: str, collection_name:str, limit: int = 3, embedding_model:str = "BAAI", hybrid=True) -> str:
+def search_in_vectordb(query: str, collection_name:str, limit: int = 3, semantic_search_embedding_model:str = SEMANTIC_SEARCH_EMBEDDING_MODEL, hybrid=True) -> str:
     """Search the qdrant vectordb ( knowledge base )  for information relevant to the query."""
     try:
-        print(f"MCP server: search_in_vectordb : params query: {query}, hybrid: {hybrid}, collection: {collection_name}")
-        em=_get_embedding_model(embedding_model)
-        print(f"Detected embedding model: {em})")
-        documents = qdrant_vector_search(query, limit=limit, collection_name=collection_name, embedding_model=em, hybrid=hybrid)
+        print(f"MCP server: search_in_vectordb : params query: {query}, semantic_search_embedding_model: {semantic_search_embedding_model}, hybrid: {hybrid}, collection: {collection_name}")
+        documents = qdrant_vector_search(query, limit=limit, collection_name=collection_name, semantic_search_embedding_model=semantic_search_embedding_model, hybrid=hybrid)
     except Exception as e:
         print(f"search_in_vectordb Exception {e}")
         return "search_in_vectordb Exception "+{e}+"occurred!"

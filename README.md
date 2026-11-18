@@ -2,7 +2,7 @@
 
 - LLM agents ( Anthropic & AWS Bedrock )
 
-- RAG hybrid search against a vector DB  with reranking
+- RAG hybrid search ( semantic and keyword ) against a vector DB  with reranking
 
 - RAG non-hybrid search against a vector DB           
 
@@ -23,12 +23,17 @@
 test rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse !
 
 ***PREREQUISITES***
+!!! Configure your .env file !!! => Use .env.example as template!
 
-For direct Anthropic calls the ANTHROPIC_API_KEY env var must be set.
+1  direct Anthropic calls the ANTHROPIC_API_KEY env var must be set.
 
-For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set. The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. In AWS Bedrock you must activate an LLm model. 
+2 For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set. The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. In AWS Bedrock you must activate an LLm model. 
 
-For HuggingFace model usage ( reranking ) the HF_TOKEN must be set.
+3 LANGFUSE_SECRET_KEY and LANGFUSE_PUBLIC_KEY must be set.
+
+4 For HuggingFace model usage ( reranking ) the HF_TOKEN can be set.
+
+
 
 
 ***USE CASES***

@@ -6,7 +6,7 @@ from qdrant_client import QdrantClient
 from qdrant_client import models
 from sentence_transformers import SentenceTransformer, CrossEncoder
 
-from mds.rag.embeddings import create_embedding_model, BAAI_MODEL_NAME
+from mds.rag.embeddings import create_embedding_model, BM25_MODEL_NAME,RERANKER_MODEL_NAME,SEMANTIC_SEARCH_EMBEDDING_MODEL
 import mlflow
 
 QDRANT_URL = "http://localhost:6333"
@@ -35,17 +35,19 @@ def _search(client, limit , collection, query, query_embedding, documents) -> di
 
     return rerank(documents, query)
 
-def _search_hybrid(client, limit , collection, query, query_embedding, documents) -> dict:
-
+def _search_hybrid(client, limit , collection, query, semantic_search_embedding_model, query_embedding, documents) -> dict:
+    """
+        apply a semantic and a keyword-based search nd rerank the result
+    """
     try:
         print(f"_search_hybrid - params: limit: {limit}, collection: {collection}, query: {query}, documents: {documents}")
-        dense_model = TextEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
+        dense_model = TextEmbedding(model_name=semantic_search_embedding_model)
         # Query in beide Vektorformate umwandeln
         # 1. Erzeugt die Liste aus 384 Kommazahlen für die Sinnsuche
         query_dense = list(dense_model.embed([query]))[0].tolist()
 
         sparse_model = SparseTextEmbedding(
-            model_name="Qdrant/bm25"
+            model_name=BM25_MODEL_NAME
         )
         # 2. Erzeugt das Objekt mit Wort-Positionen und BM25-Gewichten für die Keyword-Suche
         query_sparse = list(sparse_model.embed([query]))[0]
@@ -78,11 +80,12 @@ def _search_hybrid(client, limit , collection, query, query_embedding, documents
             print(f"Score: {hit.score:.4f} | Text: {hit.payload['text']}")
     except Exception as e:
         print(f"Exception _search_hybrid: {e}")
+
     return results.points
 
 
 def rerank(retrieved_docs : list[str], query:str) -> list[dict]:
-    reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
+    reranker = CrossEncoder(RERANKER_MODEL_NAME)
 
     # 1. RICHTIG: Nur reine Text-Paare [Query, Text] für den Reranker bauen
     text_paare = [[query, item["text"]] for item in retrieved_docs]
@@ -113,44 +116,33 @@ def qdrant_vector_search(
     query: str,
     limit: int = 3,
     collection_name: str = None,
-    embedding_model :str = BAAI_MODEL_NAME,
+    semantic_search_embedding_model :str = SEMANTIC_SEARCH_EMBEDDING_MODEL,
     hybrid : bool = False
 ) -> dict[Any, Any] | None:
 
     documents= []
     try:
         print(f"qdrant_vector_search 1 - query: {query}, hybrid: {hybrid}, collection: {collection_name}")
-        e_m = create_embedding_model(embedding_model)
+        e_m = create_embedding_model(semantic_search_embedding_model)
         query_embedding =None
-        print("qdrant_vector_search 2")
         if(type(e_m) == SentenceTransformer):
-            print("qdrant_vector_search 3.1")
             query_embedding  = e_m.encode(query, prompt_name="query")
-            print("qdrant_vector_search 3.2")
         elif(type(e_m) == TextEmbedding):
-            print("qdrant_vector_search 4.1")
             query_embedding = next(
                 e_m.embed([query])
             )
-            print("qdrant_vector_search 4.22")
         else:
             print("Query embedding failed!")
             return
 
-        print("qdrant_vector_search 5")
         client = _create_qdrant_client()
-        print("qdrant_vector_search 6")
         info = client.get_collection(collection_name=collection_name)
         print(info.config.params.vectors)
 
         if hybrid == False:
-            print("qdrant_vector_search 7.1")
-            documents=_search(client, limit, collection_name, query, query_embedding, documents)
-            print("qdrant_vector_search 7.2")
+            documents=_search(client, limit, collection_name, query,  query_embedding, documents)
         else:
-            print("qdrant_vector_search 8.1")
-            documents=_search_hybrid(client, limit, collection_name, query, query_embedding, documents)
-            print("qdrant_vector_search 8.2")
+            documents=_search_hybrid(client, limit, collection_name, query, semantic_search_embedding_model, query_embedding, documents)
 
     except Exception as e:
         print(f"qdrant_vector_search Exception: {e}")
