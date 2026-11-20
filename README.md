@@ -21,13 +21,9 @@
 ***PREREQUISITES***
 !!! Configure your .env file !!! => Use .env.example as template!
 
-1  direct Anthropic calls the ANTHROPIC_API_KEY env var must be set.
+=> ANTHROPIC_API_KEY, AWS_PROFILE ( if AWS Bedrock and Guardrails is used ) , LANGFUSE_SECRET_KEY and LANGFUSE_PUBLIC_KEY 
 
-2 For AWS Bedrock calls you need an AWS acount & AWS_PROFILE must be set. The AWS IAM role behind AWS_PROFILE needs to have a policy assigned to allow for AWS Bedrock functionality to be called. In AWS Bedrock you must activate an LLm model. 
 
-3 LANGFUSE_SECRET_KEY and LANGFUSE_PUBLIC_KEY must be set.
-
-4 For HuggingFace model usage ( reranking ) the HF_TOKEN can be set.
 
 
 ***USE CASES***
