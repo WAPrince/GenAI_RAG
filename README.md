@@ -101,14 +101,14 @@ quit
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag01_fastapi_frontend.py**
+**rag01_streaming_frontend.py**
 
 <figure>
   <img src="./data/results/streaming/FastAPI_React_Usecase.png" alt="A user can chat with an LLM">
-  <figcaption>LangFuse view of the use case rag01 during runtime</figcaption>
+  <figcaption>React frontend with streaming response display</figcaption>
 </figure>
 
-Start LangFuse, start MLflow, start mcp server:
+Start ( LangFuse, start MLflow,) start the mcp server:
 
 see above
 
@@ -119,6 +119,7 @@ cd src
 uvicorn.exe rag01_fastapi_frontend:app --reload --port 8000
 
 Start the frontend:
+
 npm create vite@latest frontend -- --template react 
 
 npm run dev
