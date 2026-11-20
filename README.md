@@ -18,10 +18,6 @@
 
 - MLflow, LangFuse   
 
-***RECOMMENDATION***
-
-test rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse !
-
 ***PREREQUISITES***
 !!! Configure your .env file !!! => Use .env.example as template!
 
@@ -34,11 +30,9 @@ test rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse !
 4 For HuggingFace model usage ( reranking ) the HF_TOKEN can be set.
 
 
-
-
 ***USE CASES***
 
-**rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse ( with LLM and with MCP - with HITL for question loop )**
+**rag01_hybridsearch_withAnthropic_hitlQuestionLoop_langFuse**
 
 <figure>
   <img src="./data/results/observability/LangFuse_Traces02_rag01.png" alt="LangFuse view of the use case during runtime">
@@ -177,7 +171,7 @@ No Agent loop.
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag04_hybridsearch_withoutAgent ( without LLM and without MCP - utilityx to just test retrieval performance )**
+**rag04_hybridsearch_withoutAgent ( without LLM and without MCP - utility to just test retrieval performance )**
 
 The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
 
@@ -217,7 +211,7 @@ python rag_hybridsearch_usecase01.py
 
 
 
-**rag_guardrail05_withoutAgent, rag06_guardrail_withAgent**
+**rag_guardrail05_withoutAgent, rag06_guardrail_withAgent ( use AWS Guardrail )**
 
 The prompt contains inappropriate language  / an email address.
 

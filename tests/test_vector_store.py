@@ -117,27 +117,6 @@ mlflow_mod.trace = lambda *a, **kw: (lambda f: f)  # no-op decorator
 sys.modules["mlflow"] = mlflow_mod
 sys.modules["mlflow.entities"] = mlflow_entities_mod
 
-# # ── mds.rag.embeddings ────────────────────────────────────────────────────────
-# mds_mod = types.ModuleType("mds")
-# mds_rag_mod = types.ModuleType("mds.rag")
-# mds_rag_emb_mod = types.ModuleType("mds.rag.embeddings")
-# mds_rag_emb_mod.create_embedding_model = lambda model_id: _FakeTextEmbedding()
-# mds_rag_emb_mod.BM25_MODEL_NAME = "bm25"
-# mds_rag_emb_mod.RERANKER_MODEL_NAME = "reranker"
-# mds_rag_emb_mod.SEMANTIC_SEARCH_EMBEDDING_MODEL = "semantic"
-# mds_mod.rag = mds_rag_mod
-# sys.modules["mds"] = mds_mod
-# sys.modules["mds.rag"] = mds_rag_mod
-# sys.modules["mds.rag.embeddings"] = mds_rag_emb_mod
-#
-# # ---------------------------------------------------------------------------
-# # Now import the module under test
-# # ---------------------------------------------------------------------------
-# import pytest
-# import numpy as np
-# from pathlib import Path
-# from unittest.mock import MagicMock, patch
-
 # ── mds.rag.embeddings ────────────────────────────────────────────────────────
 mds_rag_emb_mod = types.ModuleType("mds.rag.embeddings")
 mds_rag_emb_mod.create_embedding_model = lambda model_id: _FakeTextEmbedding()
