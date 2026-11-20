@@ -1,13 +1,13 @@
 from typing import Any
 
 from fastembed import TextEmbedding, SparseTextEmbedding
-from mlflow.entities import SpanType
+#from mlflow.entities import SpanType
 from qdrant_client import QdrantClient
 from qdrant_client import models
 from sentence_transformers import SentenceTransformer, CrossEncoder
 
 from mds.rag.embeddings import create_embedding_model, BM25_MODEL_NAME,RERANKER_MODEL_NAME,SEMANTIC_SEARCH_EMBEDDING_MODEL
-import mlflow
+#import mlflow
 
 QDRANT_URL = "http://localhost:6333"
 

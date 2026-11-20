@@ -99,8 +99,29 @@ Welche Nebenwirkung hat Amlodipin? Nutze Datenbank medicaments__dense_sparse! Ne
                         
 quit
 
+**-------------------------------------------------------------------------------------------------------------------**
 
+**rag01_fastapi_frontend.py**
 
+<figure>
+  <img src="./data/results/streaming/FastAPI_React_Usecase.png" alt="A user can chat with an LLM">
+  <figcaption>LangFuse view of the use case rag01 during runtime</figcaption>
+</figure>
+
+Start LangFuse, start MLflow, start mcp server:
+
+see above
+
+Start the backend :
+
+cd src
+
+uvicorn.exe rag01_fastapi_frontend:app --reload --port 8000
+
+Start the frontend:
+npm create vite@latest frontend -- --template react 
+
+npm run dev
 
 **-------------------------------------------------------------------------------------------------------------------**
 

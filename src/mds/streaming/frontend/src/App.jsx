@@ -1,205 +1,166 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
-const API_URL = "http://localhost:8000";
-
-function App() {
-  const [messages, setMessages] = useState([]);
+export default function App() {
   const [input, setInput] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [toolStatus, setToolStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // <--- NEU: Eindeutige Thread-ID pro Chat-Sitzung
   const [threadId, setThreadId] = useState(() => crypto.randomUUID());
-  const textareaRef = useRef(null);
 
-  async function sendMessage(event) {
-    event?.preventDefault();
+  // <--- NEU: Funktion zum Starten eines frischen Chats
+  const startNewChat = () => {
+    if (isLoading) return;
+    setMessages([]);
+    setThreadId(crypto.randomUUID());
+    setToolStatus("");
+  };
 
-    const text = input.trim();
-    if (!text || busy) return;
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
 
-    setError("");
+    const userMsg = { role: "user", text: input };
+    setMessages((prev) => [...prev, userMsg, { role: "assistant", text: "" }]);
     setInput("");
-    setBusy(true);
-
-    setMessages((current) => [
-      ...current,
-      { role: "user", content: text },
-      { role: "assistant", content: "" },
-    ]);
+    setIsLoading(true);
+    setToolStatus("");
 
     try {
-      const response = await fetch(`${API_URL}/chat/stream`, {
+      const response = await fetch("http://localhost:8000/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "text/event-stream",
-        },
-        body: JSON.stringify({
-          message: text,
-          thread_id: threadId,
-        }),
+        headers: { "Content-Type": "application/json" },
+        // <--- NEU: thread_id im Body mitsenden
+        body: JSON.stringify({ message: userMsg.text, thread_id: threadId }),
       });
 
-      if (!response.ok || !response.body) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
       const reader = response.body.getReader();
-      const decoder = new TextDecoder();
+      const decoder = new TextDecoder("utf-8");
       let buffer = "";
 
       while (true) {
-        const { value, done } = await reader.read();
+        const { done, value } = await reader.read();
         if (done) break;
 
         buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop() || "";
 
-        const events = buffer.split("\n\n");
-        buffer = events.pop() ?? "";
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          const dataStr = line.replace("data: ", "").trim();
+          if (dataStr === "[DONE]") break;
 
-        for (const rawEvent of events) {
-          const lines = rawEvent.split("\n");
-          const eventLine = lines.find((line) => line.startsWith("event:"));
-          const dataLine = lines.find((line) => line.startsWith("data:"));
+          const parsed = JSON.parse(dataStr);
 
-          if (!eventLine || !dataLine) continue;
-
-          const eventName = eventLine.slice(6).trim();
-          const data = dataLine.slice(5).trim();
-
-          if (eventName === "thread") {
-            setThreadId(data);
-          }
-
-          if (eventName === "token") {
-            const token = JSON.parse(data);
-
-            setMessages((current) => {
-              const copy = [...current];
-              const last = copy.length - 1;
-
-              copy[last] = {
-                ...copy[last],
-                content: copy[last].content + token,
+          if (parsed.type === "tool") {
+            setToolStatus(parsed.content);
+          } else if (parsed.type === "token") {
+            setToolStatus("");
+            setMessages((prev) => {
+              const updated = [...prev];
+              const lastIndex = updated.length - 1;
+              updated[lastIndex] = {
+                ...updated[lastIndex],
+                text: updated[lastIndex].text + parsed.content,
               };
-
-              return copy;
+              return updated;
             });
           }
         }
       }
-    } catch (err) {
-      console.error(err);
-      setError(
-        "Verbindung zum Backend fehlgeschlagen. Läuft FastAPI auf Port 8000?"
-      );
-
-      setMessages((current) => {
-        const copy = [...current];
-        const last = copy.length - 1;
-
-        if (copy[last]?.role === "assistant" && !copy[last].content) {
-          copy[last] = {
-            ...copy[last],
-            content: "Fehler beim Abrufen der Antwort.",
-          };
-        }
-
-        return copy;
-      });
+    } catch (error) {
+      console.error("Streaming-Fehler:", error);
     } finally {
-      setBusy(false);
-      textareaRef.current?.focus();
+      setIsLoading(false);
+      setToolStatus("");
     }
-  }
-
-  function newChat() {
-    if (busy) return;
-    setMessages([]);
-    setThreadId(crypto.randomUUID());
-    setError("");
-    setInput("");
-  }
-
-  function handleKeyDown(event) {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
-    }
-  }
+  };
 
   return (
-    <div className="page">
-      <main className="chat">
-        <header className="header">
-          <div>
-            <h1>🤖 LangGraph Chat</h1>
-            <p>React · FastAPI · LangGraph · Anthropic</p>
-          </div>
-          <button className="new-chat" onClick={newChat} disabled={busy}>
-            Neuer Chat
-          </button>
-        </header>
+    <div style={{ maxWidth: 650, margin: "40px auto", fontFamily: "sans-serif" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <h2 style={{ margin: 0 }}>Anthropic + LangGraph + MCP Chat</h2>
+        <button
+          onClick={startNewChat}
+          disabled={isLoading}
+          style={{
+            padding: "6px 12px",
+            borderRadius: 6,
+            border: "1px solid #ccc",
+            backgroundColor: "#fff",
+            cursor: "pointer",
+          }}
+        >
+          + Neuer Chat
+        </button>
+      </div>
 
-        <section className="messages">
-          {messages.length === 0 && (
-            <div className="welcome">
-              <div className="welcome-icon">💬</div>
-              <h2>Wie kann ich helfen?</h2>
-              <p>
-                Die Antwort von Claude wird direkt während der Generierung
-                angezeigt.
-              </p>
-            </div>
-          )}
-
-          {messages.map((message, index) => (
-            <div
-              className={`row ${message.role}`}
-              key={`${index}-${message.role}`}
-            >
-              <div className="avatar">
-                {message.role === "user" ? "Du" : "AI"}
-              </div>
-              <div className="bubble">
-                {message.content}
-                {busy &&
-                  message.role === "assistant" &&
-                  index === messages.length - 1 && (
-                    <span className="cursor">▌</span>
-                  )}
-              </div>
-            </div>
-          ))}
-        </section>
-
-        {error && <div className="error">{error}</div>}
-
-        <form className="composer" onSubmit={sendMessage}>
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Nachricht eingeben …"
-            rows="1"
-            disabled={busy}
-          />
-          <button
-            className="send"
-            type="submit"
-            disabled={busy || !input.trim()}
+      <div
+        style={{
+          border: "1px solid #ddd",
+          borderRadius: 8,
+          padding: 16,
+          height: 400,
+          overflowY: "auto",
+          marginBottom: 16,
+          backgroundColor: "#fafafa",
+        }}
+      >
+        {messages.map((msg, idx) => (
+          <div
+            key={idx}
+            style={{
+              marginBottom: 12,
+              textAlign: msg.role === "user" ? "right" : "left",
+            }}
           >
-            {busy ? "…" : "Senden"}
-          </button>
-        </form>
+            <div
+              style={{
+                display: "inline-block",
+                padding: "10px 14px",
+                borderRadius: 12,
+                backgroundColor: msg.role === "user" ? "#007bff" : "#e9ecef",
+                color: msg.role === "user" ? "#fff" : "#000",
+                whiteSpace: "pre-wrap",
+                maxWidth: "80%",
+              }}
+            >
+              {msg.text || (isLoading && idx === messages.length - 1 ? "..." : "")}
+            </div>
+          </div>
+        ))}
+        {toolStatus && (
+          <div style={{ fontSize: 13, color: "#666", fontStyle: "italic" }}>
+            ⚙️ {toolStatus}
+          </div>
+        )}
+      </div>
 
-        <footer>
-          Enter = senden · Shift+Enter = neue Zeile · Thread:{" "}
-          {threadId.slice(0, 8)}
-        </footer>
-      </main>
+      <form onSubmit={sendMessage} style={{ display: "flex", gap: 8 }}>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Nachricht schreiben..."
+          style={{ flex: 1, padding: 10, borderRadius: 6, border: "1px solid #ccc" }}
+        />
+        <button
+          type="submit"
+          disabled={isLoading}
+          style={{
+            padding: "10px 20px",
+            borderRadius: 6,
+            border: "none",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            cursor: "pointer",
+          }}
+        >
+          Senden
+        </button>
+      </form>
     </div>
   );
 }
-
-export default App;

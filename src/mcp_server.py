@@ -3,7 +3,7 @@ import uvicorn
 import uuid
 import inspect
 from fastmcp import FastMCP
-import mlflow
+#import mlflow
 from mds.rag.embeddings import SEMANTIC_SEARCH_EMBEDDING_MODEL
 from mds.rag.vector_store import qdrant_vector_search
 
@@ -21,11 +21,6 @@ print(inspect.signature(mcp.run))
 
 
 
-
-@mcp.tool()
-def add(a: int, b: int) -> int:
-    """Add two integers."""
-    return a + b
 
 @mcp.tool()
 def search_in_vectordb(query: str, collection_name:str, limit: int = 3, semantic_search_embedding_model:str = SEMANTIC_SEARCH_EMBEDDING_MODEL, hybrid=True) -> str:

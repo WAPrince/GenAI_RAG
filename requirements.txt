@@ -7,11 +7,13 @@ boto3-stubs~=1.43.98
 
 checkpointer>=2.14.12
 
+fastapi
 fastmcp
 flask
 flask_cors
 
 langgraph
+langchain
 langchain-anthropic
 langchain-core>=1.6.3
 langchain-aws>=1.7.8
