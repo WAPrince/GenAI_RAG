@@ -15,7 +15,7 @@ from langgraph.checkpoint.memory import MemorySaver  # <--- NEU: MemorySaver imp
 
 
 load_dotenv()
-os.environ.setdefault("ANTHROPIC_API_KEY", "DEIN_ANTHROPIC_API_KEY")
+#os.environ.setdefault("ANTHROPIC_API_KEY", "DEIN_ANTHROPIC_API_KEY")
 
 agent_executor = None
 mcp_client = None
