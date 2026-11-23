@@ -224,7 +224,7 @@ AWS Guardrail is called before the LLM is called ( 06 ).
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**agentorchestation** ( agent hierarchy, stonlgy asyncio-based )
+**agentorchestation01** ( agent hierarchy, stonlgy asyncio-based )
 
 Agent hierarchy: a supervisor agents  coordinates 3 low-level agents. 
 
@@ -236,7 +236,7 @@ No  LLM.
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**hitl01_withoutAgent ( ealy prototype ) **
+**hitl01_withoutAgent ( early prototype )**
 
 LangGraph-based.
 
