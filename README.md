@@ -1,22 +1,24 @@
-***FEATURES***
+Repository with GenAI apps targetting single are aggregated features of modern GenAI such as:
 
-- LLM agents ( Anthropic & AWS Bedrock )
+- LLM: Anthropic & AWS Bedrock 
 
-- RAG hybrid search ( semantic and keyword ) against a vector DB  with reranking
+- Agent orchestration
 
-- RAG non-hybrid search against a vector DB           
+- RAG 
 
-- multiple embedding models ( BAAI/HARRIER/QWEN ) 
+  - realized with LangGraph and MCP
 
-- RAG realized with LangGraph and MCP
+  - hybrid search ( semantic and keyword ) against a vector DB  with reranking
+  
+  - non-hybrid search against a vector DB
 
-- agent orchestration
+- Indexing: Multiple embedding models ( BAAI/HARRIER/QWEN ) 
 
-- HITL
+- Human interaction: HITL
 
-- guardrails
+- Security: Guardrails
 
-- MLflow, LangFuse   
+- Observability: MLflow, LangFuse   
 
 ***PREREQUISITES***
 !!! Configure your .env file !!! => Use .env.example as template!
@@ -101,7 +103,7 @@ quit
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag01_streaming_frontend.py**
+**rag01_streaming_frontend.py ( React frontend, connected to 'RAG backend' allowing for chats )**
 
 <figure>
   <img src="./data/results/streaming/FastAPI_React_Usecase.png" alt="A user can chat with an LLM">
@@ -126,7 +128,7 @@ npm run dev
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag02_hybridsearch_withAnthropic, rag04_hybridsearch_withBedrock ( with LLM and with MCP - without HITL, without question loop )**
+**rag02_hybridsearch_withAnthropic & rag04_hybridsearch_withBedrock ( deprecated, prototype of rag01 )**
 
 In this scenario an LLM decides what is to be done to answer the prompt question 
 
@@ -175,21 +177,9 @@ src> ..\.venv\Scripts\python.exe -m rag03_hybridsearch_withBedrock.py
 
 Logs of successful runs are under ./data/results/logs.
 
-**rag_guardrail_usedcase01**
-
-The prompt contains inappropriate language  / an email address.
-
-No LLM is called.
-
-The rules have been configured in AWS.
-
-The AWS Guardrail answer gets interpreted.
-
-No Agent loop.
-
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag04_hybridsearch_withoutAgent ( without LLM and without MCP - utility to just test retrieval performance )**
+**rag04_hybridsearch_withoutAgent (  utility to just test retrieval performance, no MCP, no LLM )**
 
 The Qdrant vector database is configured with MEDICAMENTS data ( use  /utils/qdrantDataImporter.py ).
 
@@ -226,10 +216,7 @@ python rag_hybridsearch_usecase01.py
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-
-
-
-**rag_guardrail05_withoutAgent, rag06_guardrail_withAgent ( use AWS Guardrail )**
+**rag05_guardrail_withoutAgent & rag06_guardrail_withAgent ( show how to integrate AWS Guardrail )**
 
 The prompt contains inappropriate language  / an email address.
 
@@ -237,7 +224,7 @@ AWS Guardrail is called before the LLM is called ( 06 ).
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**agentorchestation**
+**agentorchestation** ( agent hierarchy, stonlgy asyncio-based )
 
 Agent hierarchy: a supervisor agents  coordinates 3 low-level agents. 
 
@@ -249,13 +236,13 @@ No  LLM.
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**hitl01_withoutAgent**
+**hitl01_withoutAgent ( ealy prototype ) **
 
 LangGraph-based.
 
 No LLM.
 
-**hitl02_withAgent**
+**hitl02_withAgent ( ealy prototype )**
 
 LangGraph and LLM.
 
@@ -263,30 +250,3 @@ Tools contain MCP tools and the delete tool.
 
 A user must confirm, that a file is to be deleted.
 
-
-
-
-**--------------------------------------------------------------------------------------------------------------------**
-
-###
-**Utilities**
-
-*Document ingestion*
-
-src/pycharmai/rag/ingestAPI.py
-
-*AWS* 
-
-AWS Identität
-aws sts get-caller-identity
-
-AWS Profile
-$env:AWS_PROFILE="..."
-
-Dependencies
-uv add boto3
-
-Bedrock Demo
-uv run python src/PyCharmAI/aws/bedrock.py
-
-[Code partially created with help of Gemini & ChatGpt]
