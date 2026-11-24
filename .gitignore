@@ -19,4 +19,4 @@ fastembed_cache
 start.sh
 .env
 
-/src/mds/streaming/frontend/node_modules/
+/src/mds/streaming/Xfrontend/node_modules/

@@ -103,7 +103,7 @@ quit
 
 **-------------------------------------------------------------------------------------------------------------------**
 
-**rag01_streaming_backend.py ( React frontend, connected to 'RAG backend with vector db' allowing for chats )**
+**rag01_streaming_langgraph_backend.py ( Browser user interface for chatting with LLM and knowledge database )**
 
 <figure>
   <img src="./data/results/streaming/FastAPI_React_Usecase.png" alt="A user can chat with an LLM">
@@ -118,15 +118,13 @@ Start the backend :
 
 cd src
 
-uvicorn.exe rag01_streaming_backend:app --reload --port 8000
+uvicorn.exe rag01_streaming_langgraph_backend:app --reload --port 8000
 
 Start the frontend:
 
-cd src/mds/frontend
+cd src/mds/streaming/frontend
 
-npm create vite@latest frontend -- --template react 
-
-npm run dev
+open index.html in browser
 
 **-------------------------------------------------------------------------------------------------------------------**
 

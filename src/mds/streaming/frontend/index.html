@@ -1,12 +1,230 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LangGraph Chat</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude + LangGraph MCP Chat</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --chat-bg: #ffffff;
+            --user-msg: #2563eb;
+            --bot-msg: #f1f5f9;
+            --tool-bg: #fef3c7;
+            --tool-text: #92400e;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--chat-bg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h2 { margin: 0; font-size: 1.2rem; color: #1e293b; }
+        .session-badge {
+            font-size: 0.8rem;
+            background: #e2e8f0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: #475569;
+        }
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .user {
+            align-self: flex-end;
+            background-color: var(--user-msg);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+        .assistant {
+            align-self: flex-start;
+            background-color: var(--bot-msg);
+            color: #1e293b;
+            border-bottom-left-radius: 2px;
+        }
+        .tool-indicator {
+            align-self: flex-start;
+            background-color: var(--tool-bg);
+            color: var(--tool-text);
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #fde68a;
+        }
+        .input-area {
+            padding: 16px 24px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="text"]:focus { border-color: var(--user-msg); }
+        button {
+            padding: 12px 24px;
+            background-color: var(--user-msg);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="header">
+        <h2>Claude + LangGraph MCP</h2>
+        <span class="session-badge" id="session-display"></span>
+    </div>
+
+    <div id="messages">
+        <div class="message assistant">Hallo! Ich bin Claude und habe Zugriff auf deine MCP-Tools. Wie kann ich helfen?</div>
+    </div>
+
+    <form class="input-area" id="chat-form">
+        <input type="text" id="user-input" placeholder="Schreibe eine Nachricht..." autocomplete="off" required />
+        <button type="submit" id="send-btn">Senden</button>
+    </form>
+</div>
+
+<script>
+    const API_URL = "http://localhost:8000/chat/stream";
+    // Eindeutige Thread-ID für diese Browser-Sitzung
+    const threadId = "session-" + Math.random().toString(36).substring(2, 9);
+    document.getElementById("session-display").textContent = `Session: ${threadId}`;
+
+    const messagesDiv = document.getElementById("messages");
+    const chatForm = document.getElementById("chat-form");
+    const userInput = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    function appendMessage(text, className) {
+        const div = document.createElement("div");
+        div.className = `message ${className}`;
+        div.textContent = text;
+        messagesDiv.appendChild(div);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        return div;
+    }
+
+    chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        // UI sperren & Nutzernachricht anzeigen
+        userInput.value = "";
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+        appendMessage(text, "user");
+
+        // Platzhalter für die Antwort des Assistenten
+        let assistantMsgDiv = null;
+        let activeToolDiv = null;
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: text, thread_id: threadId })
+            });
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+            let buffer = "";
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split("\n\n");
+                buffer = lines.pop(); // Unvollständige Zeile im Puffer behalten
+
+                for (const line of lines) {
+                    if (line.startsWith("data: ")) {
+                        const data = JSON.parse(line.slice(6));
+
+                        if (data.type === "token") {
+                            if (!assistantMsgDiv) {
+                                assistantMsgDiv = appendMessage("", "assistant");
+                            }
+                            // Hinweis: Anthropic sendet je nach Version Strings oder Content-Listen
+                            const tokenText = typeof data.content === "string"
+                                ? data.content
+                                : (data.content[0]?.text || "");
+                            assistantMsgDiv.textContent += tokenText;
+                            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                        }
+                        else if (data.type === "tool_start") {
+                            activeToolDiv = document.createElement("div");
+                            activeToolDiv.className = "tool-indicator";
+                            activeToolDiv.textContent = `⚙️ Führe MCP-Tool aus: ${data.tool}...`;
+                            messagesDiv.appendChild(activeToolDiv);
+                            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                        }
+                        else if (data.type === "tool_end") {
+                            if (activeToolDiv) {
+                                activeToolDiv.textContent = `✅ Tool abgeschlossen: ${data.tool}`;
+                                activeToolDiv = null;
+                            }
+                        }
+                        else if (data.type === "error") {
+                            appendMessage(`Fehler: ${data.detail}`, "assistant");
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            appendMessage("Verbindungsfehler zum Backend.", "assistant");
+            console.error(err);
+        } finally {
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            userInput.focus();
+        }
+    });
+</script>
+
+</body>
 </html>
